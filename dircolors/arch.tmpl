@@ -1,0 +1,272 @@
+# Configuration file for dircolors, a utility to help you set the
+# LS_COLORS environment variable used by GNU ls with the --color option.
+# Copyright (C) 1996-2024 Free Software Foundation, Inc.
+# Copying and distribution of this file, with or without modification,
+# are permitted provided the copyright notice and this notice are preserved.
+#
+# The keywords COLOR, OPTIONS, and EIGHTBIT (honored by the
+# slackware version of dircolors) are recognized but ignored.
+# Global config options can be specified before TERM or COLORTERM entries
+#  ==================================================================
+# Terminal filters
+#  ==================================================================
+# Below are TERM or COLORTERM entries, which can be glob patterns, which
+# restrict following config to systems with matching environment variables.
+
+COLORTERM ?*
+TERM Eterm
+TERM ansi
+TERM *color*
+TERM con[0-9]*x[0-9]*
+TERM cons25
+TERM console
+TERM cygwin
+TERM *direct*
+TERM dtterm
+TERM gnome
+TERM hurd
+TERM jfbterm
+TERM konsole
+TERM kterm
+TERM linux
+TERM linux-c
+TERM mlterm
+TERM putty
+TERM rxvt*
+TERM screen*
+TERM st
+TERM terminator
+TERM tmux*
+TERM vt100
+TERM xterm*
+
+FILE 00;38;2;230;230;250
+RESET 0 # reset to "normal" color
+
+DIR 01;38;2;122;162;247 # Bold Blue for directories (#7AA2F7)
+LINK 01;38;2;125;207;255 # Bold Light Blue for symlinks (#7DCFFF)
+EXEC 01;38;2;158;206;106 # Bold Green for executables (#9ECE6A)
+
+# Compilable source files
+.c 00;38;2;255;158;100 # orange
+.cpp 00;38;2;255;158;100 # Orange
+.rs 00;38;2;255;158;100 # Orange
+
+# Script files
+.sh 00;38;2;115;218;202 # Light Green for shell scripts (#73DACA)
+.pl 00;38;2;187;154;247 # Purple for Perl scripts (#BB9AF7)
+.lua 00;38;2;125;207;255 # Light Blue for Lua scripts (#7DCFFF)
+
+# Note files
+.txt 00;38;2;169;177;214 # Light Gray for text files (#A9B1D6)
+.md 00;38;2;169;177;214 # Light Gray for markdown files (#A9B1D6)
+
+# Compressed files
+.tar 01;38;2;219;75;75 # Bold Red for tar archives (#DB4B4B)
+.tgz 01;38;2;219;75;75 # Bold Red for tgz archives (#DB4B4B)
+.zip 01;38;2;219;75;75 # Bold Red for zip archives (#DB4B4B)
+.gz 01;38;2;219;75;75 # Bold Red for gzip archives (#DB4B4B)
+.xz 01;38;2;219;75;75 # Bold Red for xz archives (#DB4B4B)
+
+MULTIHARDLINK 00;38;2;232;220;192 # regular file with more than one link (Soft Wheat)
+FIFO 01;38;2;255;232;120 # pipe (Soft Pastel Yellow)
+SOCK 01;38;2;165;105;255 # socket (Vivid Lavender)
+DOOR 01;38;2;165;105;255 # door (Vivid Lavender)
+BLK 01;38;2;255;232;120 # block device driver (Soft Pastel Yellow)
+CHR 01;38;2;255;232;120 # character device driver (Soft Pastel Yellow)
+ORPHAN 01;38;2;255;207;232 # symlink to nonexistent file (Soft Pink)
+MISSING 00;38;2;255;207;232 # ... and the files they point to (Soft Pink)
+SETUID 01;38;2;255;207;232 # file that is setuid (u+s) (Soft Pink)
+SETGID 01;38;2;255;232;120 # file that is setgid (g+s) (Soft Pastel Yellow)
+CAPABILITY 00;38;2;165;105;255 # file with capability (Vivid Lavender)
+STICKY_OTHER_WRITABLE 01;38;2;255;232;120 # dir that is sticky and other-writable (Soft Pastel Yellow)
+OTHER_WRITABLE 01;38;2;255;232;120 # dir that is other-writable and not sticky (Soft Pastel Yellow)
+STICKY 01;38;2;165;105;255 # dir with the sticky bit set and not other-writable (Vivid Lavender)
+
+# This is for files with execute permission:
+#EXEC 00;38;02;255;154;239
+
+#  ==================================================================
+# File extension attributes
+#  ==================================================================
+# List any file extensions like '.gz' or '.tar' that you would like ls
+# to color below. Put the suffix, a space, and the color init string.
+# (and any comments you want to add after a '#').
+# Suffixes are matched case insensitively, but if you define different
+# init strings for separate cases, those will be honored.
+#
+# If you use DOS-style suffixes, you may want to uncomment the following:
+#.cmd 01;32 # executables (bright green)
+#.exe 01;32
+#.com 01;32
+#.btm 01;32
+#.bat 01;32
+
+# Or if you want to color scripts even if they do not have the
+# executable bit actually set.
+#.sh 01;32
+#.csh 01;32
+
+# archives or compressed (bright red)
+# wow i really like this orange
+
+# 00;38;02;255;137;09
+#.rs 00;38;02;255;137;09
+#.c 00;38;02;110;162;247
+#.cc 00;38;02;110;162;247
+#.cpp 00;38;02;110;162;247
+#.h 00;38;02;110;162;247
+#.hh 00;38;02;110;162;247
+#.hpp 00;38;02;110;162;247
+#
+
+## notes
+#.txt 00;38;02;161;235;89
+#.md 00;38;02;161;235;89
+
+# rest
+.7z 00;38;02;255;137;148
+.ace 00;38;02;255;137;148
+.alz 00;38;02;255;137;148
+.apk 00;38;02;255;137;148
+.arc 00;38;02;255;137;148
+.arj 00;38;02;255;137;148
+.bz 00;38;02;255;137;148
+.bz2 00;38;02;255;137;148
+.cab 00;38;02;255;137;148
+.cpio 00;38;02;255;137;148
+.crate 00;38;02;255;137;148
+.deb 00;38;02;255;137;148
+.drpm 00;38;02;255;137;148
+.dwm 00;38;02;255;137;148
+.dz 00;38;02;255;137;148
+.ear 00;38;02;255;137;148
+.egg 00;38;02;255;137;148
+.esd 00;38;02;255;137;148
+.gz 00;38;02;255;137;148
+.jar 00;38;02;255;137;148
+.lha 00;38;02;255;137;148
+.lrz 00;38;02;255;137;148
+.lz 00;38;02;255;137;148
+.lz4 00;38;02;255;137;148
+.lzh 00;38;02;255;137;148
+.lzma 00;38;02;255;137;148
+.lzo 00;38;02;255;137;148
+.pyz 00;38;02;255;137;148
+.rar 00;38;02;255;137;148
+.rpm 00;38;02;255;137;148
+.rz 00;38;02;255;137;148
+.sar 00;38;02;255;137;148
+.swm 00;38;02;255;137;148
+.t7z 00;38;02;255;137;148
+.tar 00;38;02;255;137;148
+.taz 00;38;02;255;137;148
+.tbz 00;38;02;255;137;148
+.tbz2 00;38;02;255;137;148
+.tgz 00;38;02;255;137;148
+.tlz 00;38;02;255;137;148
+.txz 00;38;02;255;137;148
+.tz 00;38;02;255;137;148
+.tzo 00;38;02;255;137;148
+.tzst 00;38;02;255;137;148
+.udeb 00;38;02;255;137;148
+.war 00;38;02;255;137;148
+.whl 00;38;02;255;137;148
+.wim 00;38;02;255;137;148
+.xz 00;38;02;255;137;148
+.z 00;38;02;255;137;148
+.zip 00;38;02;255;137;148
+.zoo 00;38;02;255;137;148
+.zst 00;38;02;255;137;148
+# image formats
+.avif 01;35
+.jpg 01;35
+.jpeg 01;35
+.mjpg 01;35
+.mjpeg 01;35
+.gif 01;35
+.bmp 01;35
+.pbm 01;35
+.pgm 01;35
+.ppm 01;35
+.tga 01;35
+.xbm 01;35
+.xpm 01;35
+.tif 01;35
+.tiff 01;35
+.png 01;35
+.svg 01;35
+.svgz 01;35
+.mng 01;35
+.pcx 01;35
+.mov 01;35
+.mpg 01;35
+.mpeg 01;35
+.m2v 01;35
+.mkv 01;35
+.webm 01;35
+.webp 01;35
+.ogm 01;35
+.mp4 01;35
+.m4v 01;35
+.mp4v 01;35
+.vob 01;35
+.qt 01;35
+.nuv 01;35
+.wmv 01;35
+.asf 01;35
+.rm 01;35
+.rmvb 01;35
+.flc 01;35
+.avi 01;35
+.fli 01;35
+.flv 01;35
+.gl 01;35
+.dl 01;35
+.xcf 01;35
+.xwd 01;35
+.yuv 01;35
+.cgm 01;35
+.emf 01;35
+# https://wiki.xiph.org/MIME_Types_and_File_Extensions
+.ogv 01;35
+.ogx 01;35
+# audio formats
+.aac 00;36
+.au 00;36
+.flac 00;36
+.m4a 00;36
+.mid 00;36
+.midi 00;36
+.mka 00;36
+.mp3 00;36
+.mpc 00;36
+.ogg 00;36
+.ra 00;36
+.wav 00;36
+# https://wiki.xiph.org/MIME_Types_and_File_Extensions
+.oga 00;36
+.opus 00;36
+.spx 00;36
+.xspf 00;36
+# backup files
+*~ 00;90
+*# 00;90
+.bak 00;90
+.crdownload 00;90
+.dpkg-dist 00;90
+.dpkg-new 00;90
+.dpkg-old 00;90
+.dpkg-tmp 00;90
+.old 00;90
+.orig 00;90
+.part 00;90
+.rej 00;90
+.rpmnew 00;90
+.rpmorig 00;90
+.rpmsave 00;90
+.swp 00;90
+.tmp 00;90
+.ucf-dist 00;90
+.ucf-new 00;90
+.ucf-old 00;90

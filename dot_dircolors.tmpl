@@ -1,0 +1,7 @@
+{{- $distro := .chezmoi.osRelease.id -}}
+{{- $ver := .chezmoi.osRelease.version_id -}}
+{{- if and (eq $id "centos") (eq $ver "7") -}}
+{{ include "dircolors/centos7.tmpl" }}
+{{- else -}}
+{{ include "dircolors/arch.tmpl" }}
+{{- end -}}
