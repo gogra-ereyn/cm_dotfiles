@@ -1,0 +1,82 @@
+[[ $- != *i* ]] && return
+
+if [[ -d ~/bash_core ]]; then
+    for script in ~/bash_core/* ; do
+        [[ -r "$script" ]] && source "$script"
+    done
+fi
+
+[[ -f ~/.bashrc.local ]] && source ~/.bashrc.local
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+export HISTCONTROL=ignoreboth
+#export HISTIGNORE="clear:bg:fg:cd:cd -:cd ..:exit:date:w:* --help:ls:l:ll:lll"
+export BARTIB_FILE="$HOME/.todos/bartib"
+export CARGO_TARGET_DIR="/apps/cargo_targets"
+export EDITOR=nvim
+export QMK_HOME="${HOME}/git/qmk_parent/qmk"
+export CBIN_DIR="${HOME}/local/cbin"
+export PATH=$PATH:~/local/bin:~/.cargo/bin:~/local/cbin:~/.local/bin
+
+if [[ -f /etc/bash_completion ]] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+
+if [[ ! -f ~/git-completion.bash ]]; then
+    curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > ~/git-completion.bash
+fi
+
+source ~/git-completion.bash
+
+plike() {
+	[[ -z "$1" ]] && { echo "didnt pass an arg bro"; return 1; }
+	ps -aux | rg -i "$(whoami)" | rg "$@"
+}
+
+if [[ -z "$ZELLIJ" ]]; then
+    if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
+        zellij attach -c
+    else
+        zellij
+    fi
+    if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
+        exit
+    fi
+fi
+
+
+ignore_untracked() {
+    local exclude_file
+    local repo_root
+
+    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        echo "not in a git repository"
+        return 1
+    fi
+
+    repo_root=$(git rev-parse --show-toplevel)
+    exclude_file="$repo_root/.git/info/exclude"
+    (
+        cd "$repo_root" || exit 1
+        git status --porcelain | grep '^??' | sed 's/^?? //' | while read -r file; do
+            echo "${file}" >> "$exclude_file"
+        done
+
+    )
+    echo "added untracked files to $exclude_file" >&2
+}
+
+
+avr_dg() {
+    sudo pacman -U /var/cache/pacman/pkg/avr-gcc-8.3.0-1-x86_64.pkg.tar.xz
+}
+
