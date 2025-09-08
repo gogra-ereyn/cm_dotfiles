@@ -1,0 +1,70 @@
+[user]
+	name = {{ .username | quote }}
+	email = {{ .email | quote }}
+
+[http]
+	version = HTTP/2
+
+[color]
+  ui = true
+
+[alias]
+    c = commit
+    s = status
+    st = status
+    lg = log --oneline
+    last = log -1 HEAD
+    f = push --force-with-lease
+    # ss: show patch of most recent stash whose message matches given text
+    ss = "!f() { git stash show stash^{/$*} -p; }; f"
+    # sa: apply most recent stash whose message matches given text
+    sa = "!f() { git stash apply stash^{/$*}; }; f"
+    sl = stash list
+    lg = log --graph --decorate --oneline --all
+    lg1 = log --graph --decorate --oneline --all --simplify-by-decoration
+    up = !git fetch --prune && git rebase --autostash --rebase-merges @{u}
+
+[pull]
+	ff = only
+
+[push]
+    default = simple
+
+[color "branch"]
+  current = 114 # bright green
+  local = 180 # yellow
+  remote = 39 # blue
+
+[color "diff"]
+  meta = 39 # blue
+  frag = 141 # purple
+  old = 203 # red
+  new = 114 # bright green
+  whitespace = 203 reverse # red (reverse)
+
+[color "status"]
+  added = 114 # bright green
+  changed = 180 # yellow
+  untracked = 203 # red
+
+[color "decorate"]
+  branch = 39 # blue
+  remoteBranch = 39 # blue
+  tag = 180 # yellow
+  stash = 141 # purple
+  HEAD = 114 # bright green
+
+[core]
+    excludesFile = ~/.gitignore
+    autocrlf = input
+    safecrlf = true
+
+[merge]
+  tool = nvim -d
+
+[diff]
+  algorithm = patience
+  compactionHeuristic = true
+
+[protocol]
+  version = 2
