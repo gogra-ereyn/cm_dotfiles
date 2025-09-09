@@ -1,0 +1,12 @@
+{{- if ne .chezmoi.osRelease.id "arch" -}}
+connect
+**/qmk/*
+**/mpv
+**/obsidian
+**/flameshot
+**/rofi
+**/polybar*
+.xinitrc
+**/i3
+**/alacritty
+{{- end }}
