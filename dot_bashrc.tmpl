@@ -25,7 +25,7 @@ export CARGO_TARGET_DIR={{ get . "cargo_target_dir" | default "~/cargo_targets" 
 export EDITOR={{ get . "editorpath" | default "nvim" | quote }}
 export QMK_HOME="${HOME}/git/qmk_parent/qmk"
 export CBIN_DIR="${HOME}/local/cbin"
-export PATH=$PATH:~/local/bin:~/.cargo/bin:~/local/cbin:~/.local/bin
+export PATH="$HOME/.local/bin:$HOME/cargo/bin:$HOME/local/bin:$PATH"
 
 if [[ -f /etc/bash_completion ]] && ! shopt -oq posix; then
     . /etc/bash_completion
