@@ -1,0 +1,15 @@
+function(env_passthru env_var)
+    if(DEFINED ENV{${env_var}})
+        add_compile_definitions(${env_var}=$ENV{${env_var}})
+    endif()
+endfunction()
+
+function(create_bin_link tgt)
+    add_custom_command(TARGET ${tgt} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E create_symlink
+            build/$<TARGET_FILE_NAME:${tgt}>
+            ${CMAKE_CURRENT_SOURCE_DIR}/${tgt}
+        COMMENT "Creating symlink to ${tgt} in project root"
+    )
+endfunction()
+

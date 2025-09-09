@@ -1,0 +1,16 @@
+define dostuff
+    display insert_at
+    display head
+    display i
+end
+
+define redebug
+    kill
+    run
+end
+
+break insert
+set args < input.txt
+run
+
+

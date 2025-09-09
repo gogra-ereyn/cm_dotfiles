@@ -1,0 +1,30 @@
+
+CompileFlags:
+  Add: [-Wno-char-subscripts]
+
+Diagnostics:
+  Suppress:
+    - cppcoreguidelines-init-variables
+    - cert-err33-c
+    - llvmlibc-restrict-system-libc-headers
+    - concurrency-mt-unsafe
+    - altera-unroll-loops
+    - bugprone-assignment-in-if-condition
+    - hicpp-signed-bitwise
+    - bugprone-narrowing-conversions
+    - -Wc99-designator
+    - bugprone-reserved-identifier
+    - cert-dcl51-cpp
+    - initializer-overrides
+
+  ClangTidy:
+    Remove:
+      - llvmlibc-restrict-system-libc-headers
+      - llvmlibc-*
+      - modernize-*
+      - readability-identifier-naming
+      - cppcoreguidelines-*
+      - google-*
+      - llvm-*
+      - readability-magic-numbers
+      - readability-isolate-declaration

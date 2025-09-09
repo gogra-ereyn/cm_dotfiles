@@ -1,0 +1,55 @@
+[colors.bright]
+black = "#565f89"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+green = "#73daca"
+magenta = "#bb9af7"
+red = "#f7768e"
+white = "#c0caf5"
+yellow = "#ffee00"
+
+[colors.normal]
+black = "#000000"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+green = "#9ece6a"
+magenta = "#bb9af7"
+red = "#db4b4b"
+white = "#a9b1d6"
+yellow = "#ffdd00"
+
+[colors.primary]
+background = "#251a34"
+foreground = "#FAF0E6"
+
+[colors.cursor]
+text='#251a34'
+cursor='#fdfdaf'
+
+[font]
+size = 8.0
+
+[font.bold]
+family = "JetBrainsMono NFM"
+style = "Bold"
+
+[font.bold_italic]
+family = "JetBrainsMono NFM"
+style = "Bold Italic"
+
+[font.italic]
+family = "JetBrainsMono NFM"
+style = "Italic"
+
+[font.normal]
+family = "JetBrainsMono NFM"
+style = "Regular"
+
+[selection]
+save_to_clipboard = true
+
+[keyboard]
+bindings = [
+{ key = "=", mods = "Control", action = "IncreaseFontSize" },
+{ key = "-", mods = "Control", action = "DecreaseFontSize" },
+]

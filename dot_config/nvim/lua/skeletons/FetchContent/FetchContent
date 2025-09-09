@@ -1,0 +1,9 @@
+include(FetchContent)
+FetchContent_Declare(
+    cunit
+    GIT_REPOSITORY https://gitlab.com/cunity/cunit.git
+    GIT_TAG        master
+)
+
+FetchContent_MakeAvailable(cunit)
+target_link_libraries(your_test_target cunit)

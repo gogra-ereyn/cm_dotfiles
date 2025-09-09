@@ -1,0 +1,7 @@
+@theme "~/.config/rofi/themes/bibjaw_mini.rasi"
+
+configuration {
+    modi: "drun";
+    show: "drun";
+}
+

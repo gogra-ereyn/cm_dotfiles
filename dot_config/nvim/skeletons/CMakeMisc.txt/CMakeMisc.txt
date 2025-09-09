@@ -1,0 +1,24 @@
+cmake_minimum_required(VERSION 3.15)
+project(ptils)
+
+
+# for a headeronly lib (like ptils)
+add_library(ptils INTERFACE)
+target_include_directories(ptils INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<INSTALL_INTERFACE:include>
+)
+
+# for a lib with hddr+source(s)
+add_library(mylib ${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c  ${CMAKE_CURRENT_SOURCE_DIR}/src/lexer.c )
+# if include is in /include, then amend he build interface as approparite.
+target_include_directories(ptils PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<INSTALL_INTERFACE:include>
+)
+
+# if e.g. there are private headers we use for building
+target_include_directories(mylib_parser PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal
+)
+

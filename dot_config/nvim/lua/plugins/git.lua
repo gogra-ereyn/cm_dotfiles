@@ -1,0 +1,28 @@
+return {
+    --    {
+    --        "tpope/vim-fugitive",
+    --        cmd = { "G", "Git", "Gdiffsplit", "Gvdiffsplit", "Gedit", "Gsplit", "Gread", "Gwrite", "Ggrep", "Glgrep", "Gmove", "Gdelete", "Gblame", "Gbrowse", "Gclog" },
+    --        keys = {
+    --            { "<leader>g", "<cmd>G<cr>", desc = "Git status" },
+    --            { "<leader>gd", "<cmd>Gdiffsplit<cr>", desc = "Git diff" },
+    --            { "<leader>gc", "<cmd>Gcommit<cr>", desc = "Git commit" },
+    --            { "<leader>gb", "<cmd>Gblame<cr>", desc = "Git blame" },
+    --            { "<leader>gl", "<cmd>Gclog<cr>", desc = "Git log" },
+    --            { "<leader>gp", "<cmd>Git push<cr>", desc = "Git push" },
+    --            { "<leader>gh", "<cmd>diffget //2<cr>", desc = "Get diff from left (target)" },
+    --            { "<leader>gl", "<cmd>diffget //3<cr>", desc = "Get diff from right (merge)" },
+    --        },
+    --    },
+    --    {
+    --        {
+    --            "junegunn/gv.vim",
+    --            cmd = { "GV" },
+    --            keys = {
+    --                { "<leader>gv",  "<cmd>GV<cr>",  desc = "Git commit browser" },
+    --                { "<leader>gfh", "<cmd>GV!<cr>", desc = "File history" },
+    --            },
+    --            dependencies = { "tpope/vim-fugitive" },
+    --        },
+    --    }
+    --
+}
