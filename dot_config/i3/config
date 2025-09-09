@@ -241,25 +241,22 @@ floating_modifier $mod
 # ===== work
 #assign [class="Vmware-view"] $ws3
 #  ======= steam + games
-# assign [class="steam"] $ws4
+assign [class="steam"] $ws7
 
 for_window [class="^steam$"] move container to output DP-2
 for_window [class="^steam_app_"] move container to output DP-2
 for_window [class="^steam_app_"] move container to output DP-2
 #for_window [class="^steam_app_"] floating disable
 
-
-
-#for_window [class="^steam$" title="^Friends$"] floating enable
-#for_window [class="^steam$" title="Steam - News"] floating enable
-#for_window [class="^steam$" title=".* - Chat"] floating enable
-#for_window [class="^steam$" title="^Settings$"] floating enable
-#for_window [class="^steam$" title=".* - event started"] floating enable
-#for_window [class="^steam$" title=".* CD key"] floating enable
-#for_window [class="^steam$" title="^Steam - Self Updater$"] floating enable
-#for_window [class="^steam$" title="^Screenshot Uploader$"] floating enable
-#for_window [class="^steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
-#for_window [title="^steam Keyboard$"] floating enable
+for_window [class="^steam$" title="^Friends$"] floating enable
+for_window [class="^steam$" title="Steam - News"] floating enable
+for_window [class="^steam$" title=".* - Chat"] floating enable
+for_window [class="^steam$" title="^Settings$"] floating enable
+for_window [class="^steam$" title=".* - event started"] floating enable
+for_window [class="^steam$" title=".* CD key"] floating enable
+for_window [class="^steam$" title="^Steam - Self Updater$"] floating enable
+for_window [class="^steam$" title="^Screenshot Uploader$"] floating enable
+for_window [class="^steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
 
 
 ## reload the configuration file

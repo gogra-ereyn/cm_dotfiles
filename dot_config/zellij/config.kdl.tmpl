@@ -189,31 +189,7 @@ plugins {
     session-manager { path "session-manager"; }
 }
 
-// Choose the path to the default shell that zellij will use for opening new panes
 default_shell "bash"
-
-// Choose the path to override cwd that zellij will use for opening new panes
-//
-// default_cwd ""
-
-// Toggle between having pane frames around the panes
-// Options:
-//   - true (default)
-//   - false
-//
-// pane_frames true
-
-// Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
-// Options:
-//   - true (default)
-//   - false
-//
-// auto_layout true
-
-// Scrollback lines to serialize along with the pane viewport when serializing sessions, 0
-// defaults to the scrollback size. If this number is higher than the scrollback size, it will
-// also default to the scrollback size. This does nothing if `serialize_pane_viewport` is not true.
-// scrollback_lines_to_serialize 10000
 
 sessions_serialization false
 
@@ -238,5 +214,5 @@ theme "ereneyic"
 mouse_mode false
 pane_frames false
 scroll_buffer_size 20000
-scrollback_editor "/usr/bin/nvim"
+scrollback_editor {{ get . "editorpath" | default "nvim" | quote }}
 styled_underlines false
