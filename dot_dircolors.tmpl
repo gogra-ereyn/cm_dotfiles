@@ -1,6 +1,6 @@
 {{- $distro := .chezmoi.osRelease.id -}}
 {{- $ver := default "" (index .chezmoi.osRelease "version_id") -}}
-{{- if and (eq $distro "centos") (eq $ver "7") -}}
+{{- if eq $distro "centos" -}}
 {{-     template "dircolors_centos7.tmpl" . -}}
 {{- else -}}
 {{-     template "dircolors_arch.tmpl" . -}}
