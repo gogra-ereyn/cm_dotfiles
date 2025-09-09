@@ -1,7 +1,7 @@
 [[ $- != *i* ]] && return
 
-if [[ -d ~/bash_core ]]; then
-    for script in ~/bash_core/* ; do
+if [[ -d ~/.bash_core ]]; then
+    for script in ~/.bash_core/* ; do
         [[ -r "$script" ]] && source "$script"
     done
 fi
