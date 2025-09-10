@@ -3,9 +3,6 @@ return {
         "neovim/nvim-lspconfig",
         dependencies = {
             "folke/neodev.nvim",
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
-            "WhoIsSethDaniel/mason-tool-installer.nvim",
             { "j-hui/fidget.nvim",   opts = {} },
             { 'mrcjkb/rustaceanvim', version = '^5', lazy = false },
             "stevearc/conform.nvim",
@@ -48,7 +45,7 @@ return {
                     root_dir=lspconfig.util.root_pattern(".git", ".marksman.toml"),
                 },
                 clangd = {
-                    cmd = { "clangd", "--background-index", "--enable-config", "--clang-tidy", "--cross-file-rename", "--completion-style=detailed", "--header-insertion=iwyu" },
+                    cmd = { "clangd", "--background-index", "--enable-config", "--clang-tidy", "--cross-file-rename", "--completion-style=detailed", "--query-driver=**/*", "--header-insertion=iwyu" },
                     filetypes = { "c", "cpp" },
                     init_options = {
                         clangdFileStatus = true,
@@ -63,8 +60,6 @@ return {
                     end,
                 },
             }
-
-            require("mason").setup()
 
             for name, config in pairs(servers) do
                 if config == true then
