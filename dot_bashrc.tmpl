@@ -21,12 +21,15 @@ export HISTFILESIZE=20000
 export HISTCONTROL=ignoreboth
 #export HISTIGNORE="clear:bg:fg:cd:cd -:cd ..:exit:date:w:* --help:ls:l:ll:lll"
 export BARTIB_FILE="$HOME/.todos/bartib"
-export CARGO_TARGET_DIR={{ get . "cargo_target_dir" | default "~/cargo_targets" | quote }}
-export CARGO_HOME={{ get . "cargo_home" | default "~/.cargo" | quote }}
+export CARGO_TARGET_DIR={{ get . "cargo_target_dir" | default "$HOME/cargo_targets" | quote }}
+export CARGO_HOME={{ get . "cargo_home" | default "$HOME/.cargo" | quote }}
 export EDITOR={{ get . "editorpath" | default "nvim" | quote }}
 export QMK_HOME="${HOME}/git/qmk_parent/qmk"
 export CBIN_DIR="${HOME}/local/cbin"
 export PATH="$HOME/.local/bin:$CARGO_HOME/bin:$HOME/local/bin:$PATH"
+
+
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
 
 if [[ -f /etc/bash_completion ]] && ! shopt -oq posix; then
     . /etc/bash_completion
