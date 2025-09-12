@@ -1,0 +1,15 @@
+#!/bin/bash
+
+i3-msg -t get_tree | jq -r '
+  def ws: select(.type == "workspace");
+  def cons: select(.type == "con" and .window_properties != null);
+  recurse(.nodes[])
+  | ws as $w
+  | ($w.num | tostring) as $wsnum
+  | $w | recurse(.nodes[])
+  | cons
+  | "\($wsnum): \(.window_properties.class) - \(.name)"
+'
+
+
+# i3-msg -t get_tree | jq -r '.. | (.nodes? // empty)[] | select(.window_properties? != null) | "\(.window_properties.class) -> Workspace \(.workspace)"' | sort | uniq
