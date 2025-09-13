@@ -5,3 +5,7 @@ take() {
     mkdir "$dir" && cd "$dir"
 }
 
+fpv() {
+    pv -bartF '%t %a %r %b' > /dev/null
+}
+
