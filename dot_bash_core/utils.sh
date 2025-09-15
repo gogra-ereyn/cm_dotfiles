@@ -19,6 +19,11 @@ timepv() {
 
 }
 
+comparepid() {
+    pidstat -rud -h -p ${1:?missing pid1},${2:?missing pid2} 1 | tee ${3:-pidstat.log}
+}
+
+
 pss() {
     ps --sort=start_time "$@"
 }
