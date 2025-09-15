@@ -9,3 +9,7 @@ fpv() {
     pv -bartF '%t %a %r %b' > /dev/null
 }
 
+pss() {
+    ps --sort=start_time "$@"
+}
+
