@@ -141,18 +141,25 @@ keybinds {
         unbind "Ctrl T"
         unbind "Ctrl p"
         unbind "Ctrl P"
+
         bind "Alt n" { NewPane "Right"; }
         bind "Alt N" { NewPane "Down"; }
+
         bind "Alt h" { MoveFocus "Left"; }
         bind "Alt l" { MoveFocus "Right"; }
         bind "Alt j" { MoveFocus "Down"; }
         bind "Alt k" { MoveFocus "Up"; }
+
+        bind "Alt e" { EditScrollback; SwitchToMode "Normal"; }
         bind "Alt =" "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
+
         bind "Alt w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
+
         bind "Alt R" { MovePaneBackwards; }
+
         bind "Alt Left" { GoToPreviousTab; }
         bind "Alt Right" { GoToNextTab; }
         bind "Alt Down" { MoveTab "Left"; }
@@ -216,3 +223,4 @@ pane_frames false
 scroll_buffer_size 20000
 scrollback_editor {{ get . "editorpath" | default "nvim" | quote }}
 styled_underlines false
+show_startup_tips false
