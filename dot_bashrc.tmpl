@@ -67,6 +67,7 @@ ignore_untracked() {
     echo "added untracked files to $exclude_file" >&2
 }
 
+eval "$(zellij setup --generate-auto-start bash)"
 
 avr_dg() {
     sudo pacman -U /var/cache/pacman/pkg/avr-gcc-8.3.0-1-x86_64.pkg.tar.xz
