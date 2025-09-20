@@ -17,6 +17,7 @@
     f = push --force-with-lease
     # ss: show patch of most recent stash whose message matches given text
     ss = "!f() { git stash show stash^{/$*} -p; }; f"
+    d = diff
     ds = diff --staged
     # sa: apply most recent stash whose message matches given text
     sa = "!f() { git stash apply stash^{/$*}; }; f"
