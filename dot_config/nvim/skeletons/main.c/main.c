@@ -4,14 +4,6 @@
 #include <stdarg.h>
 #include <fcntl.h>
 
-#define DEBUG
-#ifdef DEBUG
-#define log(fmt, ...) fprintf(stderr, fmt "\n", ##__VA_ARGS__)
-#else
-#define log(fmt, ...) ((void)0)
-#endif
-
-
 char *envstr(char *name)
 {
 	char *value;
