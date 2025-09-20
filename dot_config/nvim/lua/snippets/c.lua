@@ -81,6 +81,19 @@ int usage(char *name, int rc)
 	} while (0)
 ]]),
 
+    code_snippet("use_color", [[
+static int use_color(void)
+{
+	const char *nc;
+	nc = getenv("NO_COLOR");
+	if (nc && *nc)
+		return 0;
+	if (!isatty(2))
+		return 0;
+	return 1;
+}
+]]),
+
     code_snippet("or_ret", [[
 #define or_ret(expr)       \
 	do {                   \
