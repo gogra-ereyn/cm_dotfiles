@@ -93,6 +93,57 @@ int setup_listening_socket_choose(int port, int ipv6)
 	return fd;
 }
 
+int setup_listening_socket_retport(int port, uint16_t *out_port)
+{
+	struct sockaddr_in addr = { 0 };
+	socklen_t len = sizeof(addr);
+	int fd, enable, ret;
+
+	fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
+	if (fd == -1)
+		return -1;
+
+	enable = 1;
+	ret = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable));
+	if (ret < 0) {
+		close(fd);
+		return -1;
+	}
+
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(port);
+	addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	ret = bind(fd, (const struct sockaddr *)&addr, sizeof(addr));
+	if (ret < 0) {
+		close(fd);
+		return -1;
+	}
+
+	if (listen(fd, 1024) < 0) {
+		close(fd);
+		return -1;
+	}
+
+	if (getsockname(fd, (struct sockaddr *)&addr, &len) < 0) {
+		close(fd);
+		return -1;
+	}
+	if (len < sizeof(addr)) {
+		close(fd);
+		errno = EINVAL;
+		return -1;
+	}
+
+	*out_port = ntohs(addr.sin_port);
+	return fd;
+}
+
+int setup_listening_socket_randport(uint16_t *port)
+{
+	return setup_listening_socket_retport(0, port);
+}
+
 int bind_free_port(int fd, struct sockaddr_in *addr)
 {
 	socklen_t addrlen;

@@ -51,11 +51,5 @@ static inline const char *extract_filename(const char *path)
 #define error(fmt, ...) ((void)0)
 #endif
 
-#define t_error(status, fmt, ...)          \
-	do {                               \
-		error(fmt, ##__VA_ARGS__); \
-		exit(status);              \
-	} while (0)
-
 #endif // LOG_H
 
