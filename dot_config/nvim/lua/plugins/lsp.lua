@@ -45,7 +45,7 @@ return {
                     root_dir=lspconfig.util.root_pattern(".git", ".marksman.toml"),
                 },
                 clangd = {
-                    cmd = { "clangd", "--background-index", "--enable-config", "--clang-tidy", "--cross-file-rename", "--completion-style=detailed", "--query-driver=**/*", "--header-insertion=iwyu" },
+                    cmd = { "clangd", "--background-index", "--enable-config", "--clang-tidy", "--cross-file-rename", "--completion-style=detailed", "--query-driver=**", "--header-insertion=iwyu" },
                     filetypes = { "c", "cpp" },
                     init_options = {
                         clangdFileStatus = true,

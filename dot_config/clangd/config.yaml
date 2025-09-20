@@ -1,7 +1,6 @@
 
 CompileFlags:
   Add:
-    - --query-driver=**/*
     - -Wno-char-subscripts
 
 Diagnostics:
