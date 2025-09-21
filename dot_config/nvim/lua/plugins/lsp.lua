@@ -92,46 +92,6 @@ return {
                     vim.keymap.set({ 'n', 'v' }, '<leader>a', vim.lsp.buf.code_action, opts)
                 end
             })
-
-
-            local function setup_cmake_compile_commands()
-                local function find_project_root()
-                    local current_dir = vim.fn.getcwd()
-                    while current_dir ~= '/' do
-                        if vim.fn.filereadable(current_dir .. '/CMakeLists.txt') == 1 then
-                            return current_dir
-                        end
-                        current_dir = vim.fn.fnamemodify(current_dir, ':h')
-                    end
-                    return nil
-                end
-
-                local function on_vim_enter()
-                    local project_root = find_project_root()
-                    if project_root then
-                        local build_dir = project_root .. '/build'
-                        if vim.fn.isdirectory(build_dir) == 0 then
-                            vim.fn.mkdir(build_dir, 'p')
-                        end
-                        if vim.fn.filereadable(build_dir .. '/compile_commands.json') == 0 then
-                            vim.fn.system('cmake -S ' .. project_root .. ' -B ' .. build_dir)
-                        end
-                        if vim.fn.filereadable(project_root .. '/compile_commands.json') == 0 then
-                            vim.fn.system('ln -s ' ..
-                                build_dir ..
-                                '/compile_commands.json ' ..
-                                project_root ..
-                                '/compile_commands.json')
-                        end
-                    end
-                end
-
-                vim.api.nvim_create_autocmd("VimEnter", {
-                    callback = on_vim_enter,
-                    group = vim.api.nvim_create_augroup("CMakeSetup", { clear = true }),
-                })
-            end
-            setup_cmake_compile_commands()
         end,
     },
 }
