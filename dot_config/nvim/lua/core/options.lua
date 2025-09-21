@@ -46,10 +46,9 @@ opt.foldlevelstart = 99
 --opt.wrap = false
 -- remove useless edit suggestions
 
---opt.wildmode = 'list:longest'
---opt.wildmenu=true
+opt.wildmenu=true
+opt.wildoptions="pum"
 --opt.wildignorecase=true
---opt.wildoptions="pum"
 opt.wildmode = 'longest:full,full'
 opt.wildignore = '.hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site'
 
@@ -60,6 +59,8 @@ opt.vb = true
 opt.diffopt:append('iwhite')
 opt.diffopt:append('algorithm:histogram')
 opt.diffopt:append('indent-heuristic')
+
+opt.colorcolumn = '100'
 
 opt.shortmess = "A"
 opt.listchars = {
