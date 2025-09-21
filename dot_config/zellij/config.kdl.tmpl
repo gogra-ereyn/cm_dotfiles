@@ -93,8 +93,8 @@ keybinds {
         // bind "Alt c" { Copy; }
     }
     search {
-        bind "Alt s" { SwitchToMode "Normal"; }
         bind "Alt G" { ScrollToBottom; SwitchToMode "Normal"; }
+        bind "Alt g" { ScrollToBottom; SwitchToMode "Normal"; }
         bind "j" "Down" { ScrollDown; }
         bind "k" "Up" { ScrollUp; }
         bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
@@ -119,7 +119,6 @@ keybinds {
         bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
     }
     session {
-        bind "Alt s" { SwitchToMode "Scroll"; }
         bind "d" { Detach; }
         bind "w" {
             LaunchOrFocusPlugin "zellij:session-manager" {
@@ -151,6 +150,8 @@ keybinds {
         bind "Alt k" { MoveFocus "Up"; }
 
         bind "Alt e" { EditScrollback; SwitchToMode "Normal"; }
+        bind "Alt s" { SwitchToMode "Scroll"; }
+
         bind "Alt =" "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt [" { PreviousSwapLayout; }
@@ -173,9 +174,6 @@ keybinds {
     }
     shared_except "resize" "locked" {
         bind "Alt r" { SwitchToMode "Resize"; }
-    }
-    shared_except "scroll" "locked" {
-        bind "Alt s" { SwitchToMode "Scroll"; }
     }
     shared_except "session" "locked" {
         bind "Alt o" { SwitchToMode "Session"; }
