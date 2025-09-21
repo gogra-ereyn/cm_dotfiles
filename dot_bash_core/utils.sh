@@ -28,3 +28,10 @@ pss() {
     ps --sort=start_time "$@"
 }
 
+print_zlen() {
+    find . -type f -size 0b -print
+}
+
+delete_zlen() {
+    find . -type f -size 0b -delete
+}
