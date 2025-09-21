@@ -17,6 +17,20 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
+vim.api.nvim_create_autocmd(
+    'BufReadPost',
+    {
+        pattern = '*',
+        callback = function(_)
+            if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+                if not vim.fn.expand('%:p'):find('.git', 1, true) then
+                    vim.cmd('exe "normal! g\'\\""')
+                end
+            end
+        end
+    }
+)
+
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "c", "h" },
     callback = function()
