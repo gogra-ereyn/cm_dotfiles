@@ -46,7 +46,11 @@ opt.foldlevelstart = 99
 --opt.wrap = false
 -- remove useless edit suggestions
 
-opt.wildmode = 'list:longest'
+--opt.wildmode = 'list:longest'
+--opt.wildmenu=true
+--opt.wildignorecase=true
+--opt.wildoptions="pum"
+opt.wildmode = 'longest:full,full'
 opt.wildignore = '.hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site'
 
 opt.ignorecase = true
