@@ -105,24 +105,6 @@ int main(int argc, char **argv)
 	char *addr = 0, *pstr = 0;
 	port = -1;
 
-	while ((c = getopt_long(argc, argv, "hai:", long_options,
-				&option_index)) != -1) {
-		switch (c) {
-		case 'h':
-			usage(*argv, 0);
-			return 0;
-		case 'i': {
-			if ((fd = open(optarg, O_RDONLY | O_CLOEXEC)) < 0)
-				invalid_input("Failed to open input file: %s",
-					      optarg);
-		} break;
-		case '?':
-			return 1;
-		default:
-			break;
-		}
-	}
-
 	while ((c = getopt_long(argc, argv, "ha:p:", long_options,
 				&option_index)) != -1) {
 		switch (c) {
