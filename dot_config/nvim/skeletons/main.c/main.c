@@ -93,20 +93,17 @@ static int parse_int(char *input, int *res)
 
 int main(int argc, char **argv)
 {
-	static struct option long_options[] = {
-		{ "help", no_argument, 0, 'h' },
-		{ "address", required_argument, 0, 'a' },
-		{ "port", required_argument, 0, 'p' },
-		{ 0, 0, 0, 0 }
-	};
+	static struct option long_options[] = { { "help", no_argument, 0, 'h' },
+						{ "address", required_argument, 0, 'a' },
+						{ "port", required_argument, 0, 'p' },
+						{ 0, 0, 0, 0 } };
 
 	int c, rc, option_index = 0, port, sock, ep;
 
-	char *addr = 0, *pstr = 0;
+	char *addr = 0, *portstr = 0;
 	port = -1;
 
-	while ((c = getopt_long(argc, argv, "ha:p:", long_options,
-				&option_index)) != -1) {
+	while ((c = getopt_long(argc, argv, "ha:p:", long_options, &option_index)) != -1) {
 		switch (c) {
 		case 'h':
 			usage(*argv, 0);
@@ -115,9 +112,7 @@ int main(int argc, char **argv)
 			addr = optarg;
 			break;
 		case 'p':
-			rc = parse_int(optarg, &port);
-			if (rc)
-				invalid_input("Invalid port format '%s'", port);
+			portstr = optarg;
 			break;
 		case '?':
 			return 1;
@@ -126,34 +121,22 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (!addr) {
-		addr = getenv("ADDR");
-		if (!addr)
-			addr = "0.0.0.0";
-	}
-
-	if (port < 0) {
-		pstr = getenv("PORT");
-		if (!pstr) {
-			port = 0;
-		} else {
-			rc = parse_int(pstr, &port);
-			if (rc)
-				invalid_input(
-					"Invalid env var provided for PORT: '%s'",
-					pstr);
-		}
-	}
-
-	if (!port) {
-		sock = setup_listening_socket_randport(&port);
-		if (sock == -1)
-			t_error(1, errno, "Failed to bind to port 0");
+	addr = addr ?: (getenv("ADDRESS") ?: "0.0.0.0");
+	portstr = portstr ?: (getenv("PORT") ?: 0);
+	if (portstr) {
+		if (parse_int(portstr, &port))
+			invalid_input("Invalid port format: '%s'", portstr);
 	} else {
-		sock = setup_listening_socket(port);
-		if (sock == -1)
-			t_error(1, errno, "Failed to bind to port '%d'", port);
+		port = 0;
 	}
+
+	if (port)
+		sock = setup_listening_socket(port);
+	else
+		sock = setup_listening_socket_randport(&port);
+
+	if (sock == -1)
+		t_error(1, errno, "Failed to bind to port '%d'", port);
 
 	dprintf(2, "Listening on: '%s:%d'\n", addr, port);
 	return 0;
