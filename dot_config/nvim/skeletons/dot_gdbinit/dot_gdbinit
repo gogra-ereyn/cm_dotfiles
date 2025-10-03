@@ -1,3 +1,6 @@
+set print pretty
+set print object
+
 define dostuff
     display insert_at
     display head
