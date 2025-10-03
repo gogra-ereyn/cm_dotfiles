@@ -21,7 +21,11 @@ endif()
 
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
-add_executable(main ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
+
+file(GLOB SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+
+
+add_executable(main ${SRCS})
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     enable_testing()
