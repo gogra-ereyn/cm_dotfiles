@@ -9,9 +9,9 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(FAST_OPTS "-O3 -march=native -pipe -flto")
-set(CMAKE_C_FLAGS_RELEASE          "${FAST_OPTS} -DNDEBUG")
-set(CMAKE_C_FLAGS_RELWITHDEBINFO   "${FAST_OPTS} -g")
+set(FAST_OPTS "-march=native -pipe -flto")
+set(CMAKE_C_FLAGS_RELEASE          "${FAST_OPTS} -03 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELWITHDEBINFO   "${FAST_OPTS} -02 -g")
 set(CMAKE_C_FLAGS_DEBUG "-O0 -g3 -ggdb")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
