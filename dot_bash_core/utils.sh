@@ -35,3 +35,8 @@ print_zlen() {
 delete_zlen() {
     find . -type f -size 0b -delete
 }
+
+bcs() {
+    git branch --sort=-committerdate
+}
+
