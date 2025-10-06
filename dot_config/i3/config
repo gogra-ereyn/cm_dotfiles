@@ -259,6 +259,12 @@ for_window [class="^steam$" title="^Screenshot Uploader$"] floating enable
 for_window [class="^steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
 
 
+
+for_window [class="mpv"] floating enable
+for_window [class="mpvk"] floating enable
+
+
+
 ## reload the configuration file
 bindsym $mod+Shift+c reload
 default_border none
