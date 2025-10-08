@@ -27,7 +27,7 @@ export EDITOR={{ get . "editorpath" | default "nvim" | quote }}
 export QMK_HOME="${HOME}/git/qmk_parent/qmk"
 export CBIN_DIR="${HOME}/local/cbin"
 export PATH="$HOME/.local/bin:$HOME/.local/scripts:$CARGO_HOME/bin:$HOME/local/bin:$PATH"
-
+export SYSTEMD_PAGER=
 
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
 

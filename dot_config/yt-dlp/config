@@ -1,0 +1,5 @@
+-o "/apps/yt/%(uploader)s/%(upload_date>%Y-%m-%d)s_%(title).50s_%(id)s.%(ext)s"
+--restrict-filenames
+--embed-thumbnail
+--embed-metadata
+--format "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
