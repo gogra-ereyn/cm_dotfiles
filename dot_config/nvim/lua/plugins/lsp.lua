@@ -29,6 +29,11 @@ return {
                         },
                     },
                 },
+                {
+                    cmd = { "ruby-lsp" },
+                    filetypes = { "ruby" },
+                    init_options = { formatter = "auto", linters = { "rubocop" } },
+                },
                 yamlls = {
                     settings = {
                         yaml = {
@@ -41,8 +46,8 @@ return {
                     },
                 },
                 marksman = {
-                    filetypes={"markdown", "markdown.mdx"},
-                    root_dir=lspconfig.util.root_pattern(".git", ".marksman.toml"),
+                    filetypes = { "markdown", "markdown.mdx" },
+                    root_dir = lspconfig.util.root_pattern(".git", ".marksman.toml"),
                 },
                 clangd = {
                     cmd = { "clangd", "--background-index", "--enable-config", "--clang-tidy", "--cross-file-rename", "--completion-style=detailed", "--query-driver=**", "--header-insertion=iwyu" },
