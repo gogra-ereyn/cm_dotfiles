@@ -1,4 +1,4 @@
--o "/apps/yt/%(uploader)s/%(upload_date>%Y-%m-%d)s_%(title).50s_%(id)s.%(ext)s"
+-o "/apps/yt/%(extractor)s/%(uploader)s/%(upload_date>%Y-%m-%d)s_%(title).50s_%(id)s.%(ext)s"
 --restrict-filenames
 --embed-thumbnail
 --embed-metadata
