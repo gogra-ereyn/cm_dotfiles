@@ -36,7 +36,7 @@ install_rustup() {
     fi
 
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
-    . "$CARGO_HOME/env"
+    . "${CARGO_HOME:-$HOME/.cargo}/env"
 }
 
 install_cargo_tools() {
