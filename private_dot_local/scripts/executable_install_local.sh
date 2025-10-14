@@ -23,9 +23,9 @@ install_neovim_arch() {
 
 install_neovim_centos() {
     cd /tmp
-    curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
-    tar xzf nvim-linux64.tar.gz
-    mv nvim-linux64 "$HOME/.local/nvim"
+    curl -LO https://github.com/neovim/neovim-releases/releases/download/v0.11.4/nvim-linux-x86_64.tar.gz
+    tar -zxzf nvim-linux-x86_64.tar.gz
+    mv nvim-linux-x86_64 "$HOME/.local/nvim"
     ln -sf "$HOME/.local/nvim/bin/nvim" "$BIN_DIR/nvim"
 }
 
