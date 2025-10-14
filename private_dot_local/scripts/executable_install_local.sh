@@ -17,6 +17,10 @@ install_from_source() {
     rm -rf "$NAME"*
 }
 
+install_neovim_arch() {
+    sudo pacman -Syu nvim
+}
+
 install_neovim_centos() {
     cd /tmp
     curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
@@ -41,7 +45,7 @@ install_cargo_tools() {
         install_rustup
     fi
 
-    cargo install ripgrep fd-find bat
+    cargo install ripgrep fd-find bat zellij
 }
 
 install_fzf() {
@@ -51,10 +55,10 @@ install_fzf() {
 }
 
 main() {
+    install_neovim_centos
     install_rustup
     install_cargo_tools
     install_fzf
-    install_neovim_centos
 }
 
 main "$@"
