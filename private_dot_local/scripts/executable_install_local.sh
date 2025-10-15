@@ -54,11 +54,27 @@ install_fzf() {
     ln -sf "$HOME/.fzf/bin/fzf" "$BIN_DIR/fzf"
 }
 
+install_ruby() {
+    git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+    rbenv install 3.3.5
+    rbenv global 3.3.5
+    gem install --user-install ruby-lsp rubocop cookstyle
+    export PATH="$HOME/.rbenv/bin:$HOME/.local/share/gem/ruby/3.3.0/bin:$PATH"
+    if ! [[ -d "$HOME/.rbenv" ]]; then
+        install
+    fi
+    eval "$(rbenv init - bash)"
+}
+
 main() {
     install_neovim_centos
     install_rustup
     install_cargo_tools
     install_fzf
+
+    [[ -n $INSTALL_RUBY ]] && install_ruby
+
 }
 
 main "$@"
