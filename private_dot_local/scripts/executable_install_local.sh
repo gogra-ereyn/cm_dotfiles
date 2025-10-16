@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PREFIX="$HOME/.local"
 BIN_DIR="$PREFIX/bin"
@@ -49,6 +49,10 @@ install_cargo_tools() {
 }
 
 install_fzf() {
+    if [[ -f  "$HOME/.fzf" ]]; then
+        echo "fzf already installed" >&2
+        return 0
+    fi
     git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
     "$HOME/.fzf/install" --bin
     ln -sf "$HOME/.fzf/bin/fzf" "$BIN_DIR/fzf"
