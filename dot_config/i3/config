@@ -167,7 +167,7 @@ bindsym $mod+0 focus child
 
 #bindsym $mod+d focus child
 
-#bindsym $mod+t exec flameshot gui -s -p /home/ryangeor/mga
+bindsym $mod+z exec flameshot gui -s -p /apps/flameshot
 #bindsym $mod+Shift+t exec flameshot gui
 
 
