@@ -75,10 +75,8 @@ main() {
     install_neovim_centos
     install_rustup
     install_cargo_tools
-    install_fzf
-
+    [[ -n $INSTALL_FZF ]] && install_fzf
     [[ -n $INSTALL_RUBY ]] && install_ruby
-
 }
 
 main "$@"
