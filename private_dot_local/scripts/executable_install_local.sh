@@ -77,6 +77,7 @@ main() {
     install_cargo_tools
     [[ -n $INSTALL_FZF ]] && install_fzf
     [[ -n $INSTALL_RUBY ]] && install_ruby
+    return 0
 }
 
 main "$@"
