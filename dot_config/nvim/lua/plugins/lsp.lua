@@ -29,7 +29,7 @@ return {
                         },
                     },
                 },
-                {
+                ruby_lsp = {
                     cmd = { "ruby-lsp" },
                     filetypes = { "ruby" },
                     init_options = { formatter = "auto", linters = { "rubocop" } },

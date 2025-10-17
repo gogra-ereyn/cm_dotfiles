@@ -56,6 +56,9 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.vb = true
 
+-- no auto cont comments
+opt.formatoptions:remove({'c','r','o'})
+
 opt.diffopt:append('iwhite')
 opt.diffopt:append('algorithm:histogram')
 opt.diffopt:append('indent-heuristic')
