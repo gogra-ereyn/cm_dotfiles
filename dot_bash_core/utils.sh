@@ -40,3 +40,16 @@ bcs() {
     git branch --sort=-committerdate
 }
 
+plist() {
+    local pat="${1}"
+    local usr=
+    if [[ -z "$pat" ]]; then
+        read -r pat
+    fi
+    usr="${USER?needs USER to be set}"
+    pss aux | rg "$usr" | rg "$pat"
+}
+
+ppkill() {
+    plist "$@" | awk '{print $2}' | xargs kill
+}
