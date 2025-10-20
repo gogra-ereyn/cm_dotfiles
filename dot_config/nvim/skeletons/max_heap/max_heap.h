@@ -19,17 +19,15 @@ static inline void sift_down(int *heap, int n, int i)
 	heap[i] = key;
 }
 
-// assumes INT_MIN reserved
 static inline void sift_up(int *heap, int i)
 {
-	int key, p;
+	int key;
 	key = heap[i];
 	for (;;) {
-		p = i >> 1;
-		if (!(key > heap[p]))
+		if (heap[i >> 1] >= key)
 			break;
-		heap[i] = heap[p]; // demoted
-		i = p;
+		heap[i] = heap[i >> 1];
+		i >>= 1;
 	}
 	heap[i] = key;
 }
