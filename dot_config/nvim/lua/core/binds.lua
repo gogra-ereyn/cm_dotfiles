@@ -50,9 +50,9 @@ set('', 'L', '$')
 
 -- regex escaping ergo
 
-set('n', '?', '?\\v')
-set('n', '/', '/\\v')
-set('c', '%s/', '%sm/')
+--set('n', '?', '?\\v')
+--set('n', '/', '/\\v')
+--set('c', '%s/', '%sm/')
 
 
 set('n', 'j', 'gj')
