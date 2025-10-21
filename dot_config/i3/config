@@ -86,7 +86,7 @@ exec nm-applet
 
 exec_always --no-startup-id ~/.config/polybar/i3_bar.sh
 #exec_always --no-startup-id xrandr --output DP-4 --mode 3840x2160 --rate 240 --left-of DP-0
-exec_always --no-startup-id display
+exec_always --no-startup-id ~/.local/scripts/display
 
 bindsym $mod+d exec --no-startup-id rofi -show drun -disable-history -show-icons
 
