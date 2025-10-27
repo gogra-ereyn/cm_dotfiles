@@ -134,3 +134,61 @@ int int_to_str(int num, char *buf)
 	}
 	return idx;
 }
+
+#include <string.h>
+static const char hx_digit_table_00_99[200] = "00010203040506070809"
+					      "10111213141516171819"
+					      "20212223242526272829"
+					      "30313233343536373839"
+					      "40414243444546474849"
+					      "50515253545556575859"
+					      "60616263646566676869"
+					      "70717273747576777879"
+					      "80818283848586878889"
+					      "90919293949596979899";
+
+static inline size_t hx_u64_to_str(uint64_t v, char *out)
+{
+	size_t len;
+	char tmp[32];
+	char *p;
+	uint64_t q;
+	uint32_t r;
+
+	p = tmp + sizeof(tmp);
+	while (v >= 100) {
+		q = v / 100;
+		r = (uint32_t)(v - q * 100);
+		p -= 2;
+		memcpy(p, hx_digit_table_00_99 + (r << 1), 2);
+		v = q;
+	}
+	if (v < 10) {
+		*--p = (char)('0' + v);
+	} else {
+		p -= 2;
+		memcpy(p, hx_digit_table_00_99 + ((uint32_t)v << 1), 2);
+	}
+	len = (size_t)((tmp + sizeof(tmp)) - p);
+	memcpy(out, p, len);
+	out[len] = '\0';
+	return len;
+}
+
+static inline size_t hx_u32_to_str(uint32_t v, char *out)
+{
+	return hx_u64_to_str((uint64_t)v, out);
+}
+
+static inline size_t hx_i32_to_str(int32_t x, char *out)
+{
+	size_t n;
+	uint32_t ux;
+
+	if (x >= 0)
+		return hx_u32_to_str((uint32_t)x, out);
+	ux = (uint32_t)(-(int64_t)x);
+	out[0] = '-';
+	n = hx_u32_to_str(ux, out + 1);
+	return n + 1;
+}
