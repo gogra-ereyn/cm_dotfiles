@@ -1,6 +1,5 @@
 #!/bin/bash
 
-eval "$(fzf --bash)"
 
 # disable alt c if it ends up conflicting with a zellij bind
 # FZF_ALT_C_COMMAND= eval "$(fzf --bash)"
@@ -27,4 +26,4 @@ _fzf_comprun() {
   esac
 }
 
-
+#eval "$(fzf --bash)"

@@ -71,13 +71,10 @@ install_ruby() {
     eval "$(rbenv init - bash)"
 }
 
-#main() {
-#    install_neovim_centos
-#    install_rustup
-#    install_cargo_tools
-#    [[ -n $INSTALL_FZF ]] && install_fzf
-#    [[ -n $INSTALL_RUBY ]] && install_ruby
-#    return 0
-#}
-#
-#main "$@"
+install_all() {
+    install_neovim_centos
+    install_rustup
+    install_cargo_tools
+    install_fzf
+    return 0
+}
