@@ -1,0 +1,7 @@
+# output=~/Videos/{author}/{time:%Y-%m-%d_%H-%M}_{title}.mp4
+
+output=~/Videos/{author}/{time:%Y-%m-%d_%H-%M}_{title}.mp4
+
+default-stream=best
+
+player=mpv
