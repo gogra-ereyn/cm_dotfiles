@@ -88,6 +88,8 @@ exec_always --no-startup-id ~/.config/polybar/i3_bar.sh
 #exec_always --no-startup-id xrandr --output DP-4 --mode 3840x2160 --rate 240 --left-of DP-0
 exec_always --no-startup-id ~/.local/scripts/display
 
+exec --no-startup-id fcitx5 -d
+
 bindsym $mod+d exec --no-startup-id rofi -show drun -disable-history -show-icons
 
 # window shortcuts idk
@@ -169,6 +171,9 @@ bindsym $mod+0 focus child
 #bindsym $mod+d focus child
 
 bindsym $mod+z exec flameshot gui -c -s -p /apps/flameshot
+
+bindsym F6 exec flameshot gui -c -s -p /apps/flameshot
+
 #bindsym $mod+Shift+t exec flameshot gui
 
 
