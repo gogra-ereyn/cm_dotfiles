@@ -1,5 +1,4 @@
 #define _GNU_SOURCE
-#include <string.h>
 #include <sys/wait.h>
 #include <time.h>
 #include <stdlib.h>
@@ -7,6 +6,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdarg.h>
+
+#include "massert.h"
 
 static void writef(const char *fmt, ...)
 {
@@ -70,9 +71,7 @@ int example_func_to_test(const char s)
 	return 0;
 }
 
-// need dis skele sir
-#include "massert.h"
-int _example_main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	assert_eq(example_func_to_test(""), -1);
 	assert_eq(example_func_to_test(" "), -1);
