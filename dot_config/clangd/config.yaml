@@ -17,6 +17,7 @@ Diagnostics:
     - bugprone-reserved-identifier
     - cert-dcl51-cpp
     - initializer-overrides
+    - hicpp-avoid-c-arrays
 
   ClangTidy:
     Remove:
