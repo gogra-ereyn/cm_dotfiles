@@ -1,0 +1,5 @@
+# show completions on first tab, cycle on subsequent tabs
+set show-all-if-ambiguous on
+set menu-complete-display-prefix on
+TAB: menu-complete
+"\e[Z": menu-complete-backward
