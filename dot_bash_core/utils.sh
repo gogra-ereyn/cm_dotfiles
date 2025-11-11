@@ -36,6 +36,14 @@ delete_zlen() {
     find . -type f -size 0b -delete
 }
 
+find_shuf() {
+    find . -type f -print0 | shuf -z | xargs -0 mpv
+}
+
+find_cpy() {
+    find . -type f -exec cp -n {} "${1?missing target dir}" \;
+}
+
 bcs() {
     git branch --sort=-committerdate
 }
