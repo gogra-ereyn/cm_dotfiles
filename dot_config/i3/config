@@ -82,7 +82,9 @@ bindsym $mod+Return exec alacritty
 ## autostart apps on login
 #exec picom
 exec_always --no-startup-id ~/.config/polybar/i3_bar.sh
-#exec_always --no-startup-id xrandr --output DP-4 --mode 3840x2160 --rate 240 --left-of DP-0
+exec_always --no-startup-id xrandr --output DP-2 --mode 3840x2160 --rate 240 --primary
+exec_always --no-startup-id xrandr --output DP-1 --mode 3840x2160 --rate 240  --right-of DP-2
+
 
 exec --no-startup-id fcitx5 -d
 
