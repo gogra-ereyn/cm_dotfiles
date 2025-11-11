@@ -5,5 +5,4 @@
 --embed-chapters
 --retries 50
 --fragment-retries 50
---download-archive /apps/archive/archive.txt
 --format "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
