@@ -1,12 +1,45 @@
 # show completions on first tab, cycle on subsequent tabs
 
-set show-all-if-ambiguous on
+set show-all-if-ambiguous off
 
 set menu-complete-display-prefix on
 
 TAB: menu-complete
+"\e[Z": menu-complete-backward      # shift-tab
 
-"\e[Z": menu-complete-backward
+"\e[A": history-search-backward      # up
+"\e[B": history-search-forward               # down
+"\e[C": possible-completions        # right
+"\e[D": undo                        # left
+
+# "\e[1;5A": history-search-backward   # ctrl+up - search history backward matching current line
+# "\e[1;5B": history-search-forward    # ctrl+down - search history forward matching current line
+
+"\C-h": backward-char                # ctrl+h - left
+"\C-l": forward-char                 # ctrl+l - right
+"\C-j": next-history                 # ctrl+j - down in history
+"\C-k": previous-history             # ctrl+k - up in history
+
+#  shift + for standard/prev func
+"\e[1;2A": previous-history          # shift+up - up in history
+"\e[1;2B": next-history              # shift+down - down in history
+"\e[1;2C": forward-char              # shift+right - move right
+"\e[1;2D": backward-char             # shift+left - move left
+
+"\C-b": backward-word                # ctrl+b - back word
+"\C-w": forward-word                 # ctrl+w - forward word (note: conflicts with unix-word-rubout)
+
+"\C-0": beginning-of-line            # ctrl+a - start of line
+"\C-e": end-of-line                  # ctrl+e - end of line
+
+"\C-u": unix-line-discard            # ctrl+u - delete to start (already default)
+"\C-k": kill-line                    # ctrl+k - delete to end (already default)
+"\C-d": delete-char                  # ctrl+d - delete char forward (already default, like x)
+
+"\C-_": undo                         # ctrl+/ - undo
+"\C-xu": undo                        # ctrl+x u - explicit undo
+
+
 
 
 set show-all-if-unmodified on

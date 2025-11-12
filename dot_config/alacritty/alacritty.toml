@@ -53,3 +53,13 @@ bindings = [
 { key = "=", mods = "Control", action = "IncreaseFontSize" },
 { key = "-", mods = "Control", action = "DecreaseFontSize" },
 ]
+
+[[mouse.bindings]]
+mouse="Middle"
+mods="None"
+action="Paste"
+
+[[mouse.bindings]]
+mouse = "Middle"
+mods = "Control"
+action = "PasteSelection"
