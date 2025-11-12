@@ -99,26 +99,26 @@ set('n', '<leader>;', function()
     })
 end)
 
-local orig_paste = vim.paste
-vim.g.paste_newline_enabled = true
-
----@diagnostic disable-next-line: duplicate-set-field
-vim.paste = function(lines, phase)
-    if phase == 1 then vim.notify('paste:start') end
-    if phase == 3 then vim.notify('paste:end') end
-    if vim.g.paste_newline_enabled and (phase == -1 or phase == 3) then
-        table.insert(lines, '')
-    end
-    return orig_paste(lines, phase)
-end
-
-vim.keymap.set('n', '<leader>pt', function()
-    vim.g.paste_newline_enabled = not vim.g.paste_newline_enabled
-end, { silent = true, desc = 'toggle newline-after-paste' })
-
-vim.keymap.set({ 'n', 'i' }, '<leader>pp', function()
-    local old = vim.g.paste_newline_enabled
-    vim.g.paste_newline_enabled = false
-    vim.api.nvim_feedkeys(vim.keycode('<C-r>+'), 'i', false)
-    vim.g.paste_newline_enabled = old
-end, { silent = true })
+--local orig_paste = vim.paste
+--vim.g.paste_newline_enabled = true
+--
+-----@diagnostic disable-next-line: duplicate-set-field
+--vim.paste = function(lines, phase)
+--    if phase == 1 then vim.notify('paste:start') end
+--    if phase == 3 then vim.notify('paste:end') end
+--    if vim.g.paste_newline_enabled and (phase == -1 or phase == 3) then
+--        table.insert(lines, '')
+--    end
+--    return orig_paste(lines, phase)
+--end
+--
+--vim.keymap.set('n', '<leader>pt', function()
+--    vim.g.paste_newline_enabled = not vim.g.paste_newline_enabled
+--end, { silent = true, desc = 'toggle newline-after-paste' })
+--
+--vim.keymap.set({ 'n', 'i' }, '<leader>pp', function()
+--    local old = vim.g.paste_newline_enabled
+--    vim.g.paste_newline_enabled = false
+--    vim.api.nvim_feedkeys(vim.keycode('<C-r>+'), 'i', false)
+--    vim.g.paste_newline_enabled = old
+--end, { silent = true })

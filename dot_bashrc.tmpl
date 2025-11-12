@@ -15,18 +15,21 @@ if command -v fcitx5 >/dev/null 2>&1; then
     export INPUT_METHOD=fcitx
 fi
 
-# don't put duplicate lines in the history. See bash(1) for more options
-# ... or force ignoredups and ignorespace
 HISTCONTROL=ignorespace
+HISTSIZE=50000
+HISTFILESIZE=100000
+HISTCONTROL=ignoreboth
+HISTTIMEFORMAT='%F %T  '
 
-# append to the history file, don't overwrite it
+# -a for append las command, -n for reading new entries from hist file
+PROMPT_COMMAND='history -a; history -n'
+
 shopt -s histappend
+# save multiline commands as single entry
+shopt -s cmdhist
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-export HISTSIZE=10000
-export HISTFILESIZE=20000
-export HISTCONTROL=ignoreboth
-#export HISTIGNORE="clear:bg:fg:cd:cd -:cd ..:exit:date:w:* --help:ls:l:ll:lll"
+
+
 export BARTIB_FILE="$HOME/.todos/bartib"
 export CARGO_TARGET_DIR={{ get . "cargo_target_dir" | default "$HOME/cargo_targets" | quote }}
 export CARGO_HOME={{ get . "cargo_home" | default "$HOME/.cargo" | quote }}

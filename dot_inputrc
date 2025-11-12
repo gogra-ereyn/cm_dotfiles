@@ -1,30 +1,25 @@
 # show completions on first tab, cycle on subsequent tabs
 
-set show-all-if-ambiguous off
-
-set menu-complete-display-prefix on
 
 TAB: menu-complete
 "\e[Z": menu-complete-backward      # shift-tab
 
 "\e[A": history-search-backward      # up
-"\e[B": history-search-forward               # down
-"\e[C": possible-completions        # right
-"\e[D": undo                        # left
-
-# "\e[1;5A": history-search-backward   # ctrl+up - search history backward matching current line
-# "\e[1;5B": history-search-forward    # ctrl+down - search history forward matching current line
-
-"\C-h": backward-char                # ctrl+h - left
-"\C-l": forward-char                 # ctrl+l - right
-"\C-j": next-history                 # ctrl+j - down in history
-"\C-k": previous-history             # ctrl+k - up in history
+"\e[B": history-search-forward       # down
+"\e[C": possible-completions         # right
+"\e[D": undo                         # left
 
 #  shift + for standard/prev func
 "\e[1;2A": previous-history          # shift+up - up in history
 "\e[1;2B": next-history              # shift+down - down in history
 "\e[1;2C": forward-char              # shift+right - move right
 "\e[1;2D": backward-char             # shift+left - move left
+
+# eh dont use so much
+"\C-h": backward-char                # ctrl+h - left
+"\C-l": forward-char                 # ctrl+l - right
+"\C-j": next-history                 # ctrl+j - down in history
+"\C-k": previous-history             # ctrl+k - up in history
 
 "\C-b": backward-word                # ctrl+b - back word
 "\C-w": forward-word                 # ctrl+w - forward word (note: conflicts with unix-word-rubout)
@@ -41,14 +36,11 @@ TAB: menu-complete
 
 
 
-
-set show-all-if-unmodified on
+set show-all-if-ambiguous off
+set show-all-if-unmodified off
+set menu-complete-display-prefix off
 
 set colored-stats on
 set colored-completion-prefix on
-
 set bell-style none
-
-# handy for editing existing commands
-# will identify/use existing text after the cursor if it is the same as the tab match
 set skip-completed-text on
