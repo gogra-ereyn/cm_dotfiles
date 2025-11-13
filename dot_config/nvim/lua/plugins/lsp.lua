@@ -34,6 +34,9 @@ return {
                     filetypes = { "ruby" },
                     init_options = { formatter = "auto", linters = { "rubocop" } },
                 },
+                gopls = {
+                    filetypes = { "go" }
+                },
                 yamlls = {
                     settings = {
                         yaml = {
