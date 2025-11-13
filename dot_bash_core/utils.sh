@@ -61,3 +61,7 @@ plist() {
 ppkill() {
     plist "$@" | awk '{print $2}' | xargs kill
 }
+
+uuidv4() {
+    uuidgen | tr -d '\n' | tr '[:upper:]' '[:lower:]'
+}
