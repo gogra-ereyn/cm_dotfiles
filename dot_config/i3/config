@@ -250,6 +250,9 @@ assign [class="steam"] $ws7
 for_window [class="^steam$"] move container to output DP-1
 for_window [class="^steam_app_"] move container to output DP-1
 for_window [class="^steam_app_"] move container to output DP-1
+for_window [class="^steam_app_"] fullscreen disable
+
+
 #for_window [class="^steam_app_"] floating disable
 
 for_window [class="^steam$" title="^Friends$"] floating enable
