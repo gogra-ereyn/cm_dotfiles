@@ -245,6 +245,7 @@ floating_modifier $mod
 # ===== work
 #assign [class="Vmware-view"] $ws3
 #  ======= steam + games
+focus_on_window_activation none
 assign [class="steam"] $ws7
 
 for_window [class="^steam$"] move container to output DP-1
