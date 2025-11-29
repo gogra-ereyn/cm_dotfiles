@@ -65,3 +65,16 @@ ppkill() {
 uuidv4() {
     uuidgen | tr -d '\n' | tr '[:upper:]' '[:lower:]'
 }
+
+extract_frames() {
+    local input="$1"
+    local fps="${2:-0}"
+    local basename="${input%.*}"
+    local output="${basename}_frame_%05d.png"
+    if [ "$fps" = "0" ]; then
+        ffmpeg -i "$input" -c:v png -vsync 0 "$output"
+    else
+        ffmpeg -i "$input" -vf "fps=$fps" -c:v png "$output"
+    fi
+}
+
