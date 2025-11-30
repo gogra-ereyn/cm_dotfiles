@@ -1,13 +1,27 @@
 # show completions on first tab, cycle on subsequent tabs
 
+set show-all-if-ambiguous on
+set show-all-if-unmodified off
+set menu-complete-display-prefix on
+
+set skip-completed-text on
+set completion-display-width 0
+
+set mark-symlinked-directories on
+
+set colored-stats on
+set colored-completion-prefix on
+set visible-stats on
+set bell-style none
 
 TAB: menu-complete
 "\e[Z": menu-complete-backward      # shift-tab
+"\e[C": menu-complete-forward         # right
 
 "\e[A": history-search-backward      # up
 "\e[B": history-search-forward       # down
-"\e[C": possible-completions         # right
-"\e[D": undo                         # left
+#"\e[C": possible-completions         # right
+"\e[D": revert-line
 
 #  shift + for standard/prev func
 "\e[1;2A": previous-history          # shift+up - up in history
@@ -33,14 +47,3 @@ TAB: menu-complete
 
 "\C-_": undo                         # ctrl+/ - undo
 "\C-xu": undo                        # ctrl+x u - explicit undo
-
-
-
-set show-all-if-ambiguous off
-set show-all-if-unmodified off
-set menu-complete-display-prefix off
-
-set colored-stats on
-set colored-completion-prefix on
-set bell-style none
-set skip-completed-text on
