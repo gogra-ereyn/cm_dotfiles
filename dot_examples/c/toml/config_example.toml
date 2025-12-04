@@ -1,0 +1,25 @@
+[app]
+id = 1
+name = "demo-app"
+host_name = "demo-host"
+status = "up"
+labels = ["env:test", "service:demo"]
+
+[alert_defaults]
+level = "warning"
+labels = ["env:test", "service:demo"]
+
+[[alerts]]
+title = "disk 80% used"
+body = "disk almost full on /var"
+level = "warning"
+labels = ["component:disk"]
+count = 3
+period_ms = 1000
+
+[[alerts]]
+title = "CPU overload"
+body = "5m load average > 16"
+level = "Critical"
+labels = ["component:cpu", "priority:high"]
+at_ms = 10000

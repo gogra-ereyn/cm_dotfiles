@@ -1,0 +1,136 @@
+#include <getopt.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+#include <errno.h>
+
+#include "scenario.h"
+
+static int use_color(void)
+{
+	const char *nc;
+	nc = getenv("NO_COLOR");
+	if (nc && *nc)
+		return 0;
+	if (!isatty(2))
+		return 0;
+	return 1;
+}
+
+char *envstr(char *name)
+{
+	char *value;
+	value = getenv(name);
+	return value ? value : "";
+}
+
+static void t_error(int status, int errnum, const char *format, ...)
+{
+	va_list args;
+	va_start(args, format);
+
+	vfprintf(stderr, format, args);
+	if (errnum)
+		fprintf(stderr, ": %s", strerror(errnum));
+	fprintf(stderr, "\n");
+	va_end(args);
+	exit(status);
+}
+
+static int usage(char *name, int rc)
+{
+	fprintf(stderr, "Usage: %s [options]\n", name);
+	fprintf(stderr, "Options:\n");
+
+	fprintf(stderr, "\t-h, --help\n");
+	fprintf(stderr, "\t\tShow this help message\n");
+	fprintf(stderr, "\n");
+
+	fprintf(stderr, "\t-a, --address <ADDRESS>\n");
+	fprintf(stderr, "\t\tInterface address to bind to.\n");
+	fprintf(stderr, "\t\tUse 0.0.0.0 to listen on all interfaces,\n");
+	fprintf(stderr, "\t\tUse 127.0.0.1 to listen only on localhost\n");
+	fprintf(stderr, "\t\t[env: ADDRESS=%s]\n", envstr("ADDRESS"));
+
+	fprintf(stderr, "\t-p, --port PORT\n");
+	fprintf(stderr, "\t\tPort number to listen on.\n");
+	fprintf(stderr, "\t\tIf omitted will bind to any free port\n");
+	fprintf(stderr, "\t\t[env: PORT=%s]\n", envstr("PORT"));
+
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Example:\n");
+	fprintf(stderr, "\t%s -a 127.0.0.1 -p 3000\n", name);
+	fprintf(stderr, "\n");
+
+	return rc;
+}
+
+void invalid_input(const char *format, ...)
+{
+	va_list args;
+	va_start(args, format);
+	vfprintf(stderr, format, args);
+	fprintf(stderr, "\n");
+	va_end(args);
+	usage("main", 1);
+}
+
+static int parse_int(char *input, int *res)
+{
+	char *endp;
+	long out;
+	out = strtol(input, &endp, 0);
+	if (*endp != 0)
+		return 1;
+	*res = (int)out;
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	static struct option long_options[] = { { "help", no_argument, 0, 'h' },
+						{ "address", required_argument, 0, 'a' },
+						{ "port", required_argument, 0, 'p' },
+						{ 0, 0, 0, 0 } };
+
+	int c, rc, option_index = 0, port, sock, ep;
+
+	char *sc_path = 0;
+
+	char *addr = 0, *portstr = 0;
+	port = -1;
+
+	while ((c = getopt_long(argc, argv, "ha:p:", long_options, &option_index)) != -1) {
+		switch (c) {
+		case 'h':
+			usage(*argv, 0);
+			return 0;
+		case 'a':
+			addr = optarg;
+			break;
+		case 'p':
+			portstr = optarg;
+			break;
+		case '?':
+			return 1;
+		default:
+			break;
+		}
+	}
+
+	addr = addr ?: (getenv("ADDRESS") ?: "0.0.0.0");
+	portstr = portstr ?: (getenv("PORT") ?: 0);
+	if (portstr) {
+		if (parse_int(portstr, &port))
+			invalid_input("Invalid port format: '%s'", portstr);
+	} else {
+		port = 0;
+	}
+
+	dprintf(2, "Successfully connected to: '%s:%d'\n", addr, port);
+
+	return 0;
+}
