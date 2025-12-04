@@ -1,0 +1,39 @@
+{
+  "app": {
+    "handle": 1001,
+    "name": "payments-service",
+    "host_name": "node-a1",
+    "status": "Up",
+    "labels": [
+      "env:prod",
+      "service:payments"
+    ]
+  },
+
+  "alert_defaults": {
+    "level": "Warning",
+    "labels": [
+      "env:prod",
+      "service:payments"
+    ]
+  },
+
+  "alerts": [
+    {
+      "title": "disk usage high",
+      "body": "Root volume at 82%",
+      "level": "Warning",
+      "labels": ["component:disk"],
+      "count": 2,
+      "period_ms": 5000
+    },
+    {
+      "title": "payment queue delay",
+      "body": "Queue processing > 2000 ms",
+      "level": "Critical",
+      "labels": ["component:queue", "priority:high"],
+      "at_ms": 15000
+    }
+  ]
+}
+

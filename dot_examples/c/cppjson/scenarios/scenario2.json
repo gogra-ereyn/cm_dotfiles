@@ -1,0 +1,46 @@
+{
+  "app": {
+    "handle": 42,
+    "name": "edge-gateway",
+    "host_name": "gw-03",
+    "status": "Weak",
+    "labels": [
+      "env:staging",
+      "tier:edge",
+      "cluster:gw-west"
+    ]
+  },
+
+  "alerts": [
+    {
+      "title": "CPU soft lockups",
+      "body": "CPU stall detected on core 3",
+      "level": "Fatal",
+      "labels": [
+        "component:cpu",
+        "severity:inline-check",
+        "metric:softlockup",
+        "node:gw-03"
+      ],
+      "count": 3,
+      "period_ms": 1000
+    },
+
+    {
+      "title": "inbound packet drops",
+      "body": "RX drop rate exceeded 1000/s",
+      "level": "Warning",
+      "labels": ["component:nic"],
+      "at_ms": 20000
+    },
+
+    {
+      "title": "service recovery",
+      "body": "edge-gateway recovered to operational state",
+      "level": "Positive",
+      "labels": ["component:healthcheck"],
+      "count": 1
+    }
+  ]
+}
+
