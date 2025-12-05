@@ -8,6 +8,18 @@ struct Snapshot {
 	uint32_t end;
 };
 
+// or cringe?
+struct U64Hasher {
+    std::size_t operator()(uint64_t x) const noexcept {
+        x ^= x >> 33;
+        x *= 0xff51afd7ed558ccdULL;
+        x ^= x >> 33;
+        x *= 0xc4ceb9fe1a85ec53ULL;
+        x ^= x >> 33;
+        return static_cast<std::size_t>(x);
+    }
+};
+
 static inline uint32_t mix32(uint32_t x)
 {
 	x += 0x9e3779b9u;
@@ -157,3 +169,7 @@ struct FrameStore {
 		return idx;
 	}
 };
+
+
+
+
