@@ -49,6 +49,7 @@ static inline uint16_t swap_bytes_u16(uint16_t x)
 	return (x << 8) | (x >> 8);
 }
 
+// clang-format off
 void test_swap_bytes_16()
 {
 	assert(swap_bytes_u16(0x0000) == 0x0000);
@@ -83,6 +84,7 @@ static inline uint64_t swap_bytes_64(uint64_t x)
 	       ((x & 0x000000000000FF00ULL) << 40) |
 	       ((x & 0x00000000000000FFULL) << 56);
 }
+// clang-format on
 
 static inline char toggle_case(char val)
 {
@@ -198,3 +200,82 @@ int remove_lowest_set_bit(int x)
 // comptime, gcc
 #define NEXT_POW2(n) (1U << (32 - __builtin_clz((n) - 1)))
 #define NEXT_POW2_U64(n) (1ULL << (64 - __builtin_clzll((n) - 1)))
+
+// clang-format off
+static const uint64_t pow10_u64[20] = {
+    1ull,
+    10ull,
+    100ull,
+    1000ull,
+    10000ull,
+    100000ull,
+    1000000ull,
+    10000000ull,
+    100000000ull,
+    1000000000ull,
+    10000000000ull,
+    100000000000ull,
+    1000000000000ull,
+    10000000000000ull,
+    100000000000000ull,
+    1000000000000000ull,
+    10000000000000000ull,
+    100000000000000000ull,
+    1000000000000000000ull,
+    10000000000000000000ull
+};
+// clang-format on
+
+void msd_u64(uint64_t n, unsigned *digit, uint64_t *value)
+{
+	int i;
+	uint64_t p;
+
+	for (i = 19; i >= 0; --i) {
+		p = pow10_u64[i];
+		if (n >= p) {
+			*digit = (unsigned)(n / p);
+			*value = p;
+			return;
+		}
+	}
+
+	*digit = 0U;
+	*value = 0ULL;
+}
+
+#include <stdint.h>
+
+// clang-format off
+static const uint32_t pow10_u32[10] = {
+    1u,
+    10u,
+    100u,
+    1000u,
+    10000u,
+    100000u,
+    1000000u,
+    10000000u,
+    100000000u,
+    1000000000u
+};
+// clang-format on
+
+void msd_u32(uint32_t n, unsigned *digit, uint32_t *value)
+{
+	int i;
+	uint32_t p;
+
+	for (i = 9; i >= 0; --i) {
+		p = pow10_u32[i];
+		if (n >= p) {
+			*digit = (unsigned)(n / p);
+			*value = p;
+			return;
+		}
+	}
+
+	*digit = 0u;
+	*value = 0u;
+}
+
