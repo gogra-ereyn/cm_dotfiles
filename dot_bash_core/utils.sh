@@ -50,12 +50,16 @@ bcs() {
 
 plist() {
     local pat="${1}"
-    local usr=
     if [[ -z "$pat" ]]; then
         read -r pat
     fi
-    usr="${USER?needs USER to be set}"
-    pss aux | rg "$usr" | rg "$pat"
+    pss aux | rg "$(whoami)" | rg "$pat"
+}
+
+plistkill() {
+    local pat="${1?missing pattern}"; shift
+    local sig="${1:-10}"
+    pss aux | rg "$(whoami)" | rg "$pat" | awk '{print $2}' | xargs kill "${sig}"
 }
 
 ppkill() {
