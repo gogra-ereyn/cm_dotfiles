@@ -34,26 +34,26 @@ cool='\[\e[1m\e[38;2;158;206;106\]'
 
 [[ -e "$HOME/.dircolors" ]] && eval "$(dircolors -b "$HOME/.dircolors")"
 
-function parse_git_dirty {
-  [[ $(git status --porcelain 2> /dev/null) ]] && echo "*"
-}
+#function parse_git_dirty {
+#  [[ $(git status --porcelain 2> /dev/null) ]] && echo "*"
+#}
+#
+#function parse_git_branch {
+#  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
+#}
+#
+#nontext="$lv"
+#hostuser="$lpk"
+#ppath="$pty"
+#gbranch="$vlv"
 
-function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
-}
-
-nontext="$lv"
-hostuser="$lpk"
-ppath="$pty"
-gbranch="$vlv"
-
-function check_last_exit_code() {
-    local LAST_EXIT_CODE=$?
-    if [[ $LAST_EXIT_CODE == 0 ]]; then
-        echo -e "${nontext}[${hostuser}${LAST_EXIT_CODE}${nontext}]"
-    else
-        echo -e "${nontext}[\e[31m${LAST_EXIT_CODE}${nontext}]"
-    fi
-}
-
-PS1="$nontext┌─$spk\t$nontext─[$hostuser\u$nontext@$hostuser\h$nontext:$ppath\w$nontext]$gbranch\$(parse_git_branch)$nontext \n└─╼ $white"
+#function check_last_exit_code() {
+#    local LAST_EXIT_CODE=$?
+#    if [[ $LAST_EXIT_CODE == 0 ]]; then
+#        echo -e "${nontext}[${hostuser}${LAST_EXIT_CODE}${nontext}]"
+#    else
+#        echo -e "${nontext}[\e[31m${LAST_EXIT_CODE}${nontext}]"
+#    fi
+#}
+##PROMPT_COMMAND="__update_ps1${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+#PS1="$nontext┌─$spk\t$nontext─[$hostuser\u$nontext@$hostuser\h$nontext:$ppath\w$nontext]$gbranch\$(parse_git_branch)$nontext \n└─╼ $white"

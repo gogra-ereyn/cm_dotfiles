@@ -15,14 +15,43 @@ if command -v fcitx5 >/dev/null 2>&1; then
     export INPUT_METHOD=fcitx
 fi
 
+lv='\[\e[38;2;230;230;250m\]'
+vlv='\[\e[38;2;180;160;255m\]' # good
+pty='\[\e[38;2;251;236;193m\]'
+lpk='\[\e[1m\e[38;2;255;207;232m\]'
+
+nontext="$lv"
+hostuser="$lpk"
+ppath="$pty"
+gbranch="$vlv"
+
 HISTCONTROL=ignorespace
 HISTSIZE=50000
 HISTFILESIZE=100000
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT='%F %T  '
 
+function parse_git_dirty {
+  [[ $(git status --porcelain 2> /dev/null) ]] && echo "*"
+}
+
+function parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
+}
+
+__update_ps1() {
+    local rc="$?"
+    local rc_seg=""
+    if [ "$rc" -ne 0 ]; then
+        rc_seg="${nontext}[${rc}] "
+    fi
+    PS1="${nontext}┌─${spk}\t${nontext}─${rc_seg}[${hostuser}\u${nontext}@${hostuser}\h${nontext}:${ppath}\w${nontext}]${gbranch}\$(parse_git_branch)${nontext} \n└─╼ ${white}"
+}
+
+PROMPT_COMMAND='__update_ps1; history -a; history -n'
+
 # -a for append las command, -n for reading new entries from hist file
-PROMPT_COMMAND='history -a; history -n'
+#PROMPT_COMMAND='history -a; history -n'
 
 shopt -s histappend
 # save multiline commands as single entry
