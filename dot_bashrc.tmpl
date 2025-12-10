@@ -15,15 +15,10 @@ if command -v fcitx5 >/dev/null 2>&1; then
     export INPUT_METHOD=fcitx
 fi
 
-lv='\[\e[38;2;230;230;250m\]'
-vlv='\[\e[38;2;180;160;255m\]' # good
-pty='\[\e[38;2;251;236;193m\]'
-lpk='\[\e[1m\e[38;2;255;207;232m\]'
-
-nontext="$lv"
-hostuser="$lpk"
-ppath="$pty"
-gbranch="$vlv"
+nontext='\[\e[38;2;230;230;250m\]'
+gbranch='\[\e[38;2;180;160;255m\]'
+ppath='\[\e[38;2;251;236;193m\]'
+hostuser='\[\e[1m\e[38;2;255;207;232m\]'
 
 HISTCONTROL=ignorespace
 HISTSIZE=50000
@@ -48,10 +43,10 @@ __update_ps1() {
     PS1="${nontext}┌─${spk}\t${nontext}─${rc_seg}[${hostuser}\u${nontext}@${hostuser}\h${nontext}:${ppath}\w${nontext}]${gbranch}\$(parse_git_branch)${nontext} \n└─╼ ${white}"
 }
 
-PROMPT_COMMAND='__update_ps1; history -a; history -n'
+PROMPT_COMMAND='__update_ps1; history -a'
 
-# -a for append las command, -n for reading new entries from hist file
-#PROMPT_COMMAND='history -a; history -n'
+# bundled sync history file + rev history search
+bind '"\C-g": "\C-e\C-uhistory -n\C-m\C-r"'
 
 shopt -s histappend
 # save multiline commands as single entry
