@@ -82,3 +82,7 @@ extract_frames() {
     fi
 }
 
+lh() {
+    ls -liht | head "$@"
+}
+
