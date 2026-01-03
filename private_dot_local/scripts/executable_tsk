@@ -1,9 +1,11 @@
 #!/bin/bash
 
 main() {
-    local project="${1?missing project}"
-    shift ;
-    task add "project:${project}" "$@"
+    if [[ -z "${1:-}" ]]; then
+        task
+    else
+        task add "project:${1}" "$@"
+    fi
 }
 
 
