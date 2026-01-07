@@ -28,14 +28,6 @@ set('n', "<leader>b", ":set invrelativenumber<CR>")
 set('x', "<leader>p", [["_dP]])
 set('n', '<leader>il', ':set invlist<CR>')
 
-
--- middle mouse for no-kb chilling
-set('n', '<MiddleMouse>', 'o<C-r>*<Esc>', { silent = true })
-set('i', '<MiddleMouse>', '<C-r>*<CR>', { silent = true })
-
-set('n', '<C-MiddleMouse>', 'a<C-r>*<Esc>', { silent = true })
-set('i', '<C-MiddleMouse>', '<C-r>*', { silent = true })
-
 set('n', '<leader>te', function()
     local current_expandtab = vim.bo.expandtab
     vim.bo.expandtab = not current_expandtab
@@ -55,20 +47,12 @@ set("n", "<leader><leader>", "<C-^>", { noremap = true, silent = true })
 set('', 'H', '^')
 set('', 'L', '$')
 
-
 -- regex escaping ergo
-
---set('n', '?', '?\\v')
---set('n', '/', '/\\v')
---set('c', '%s/', '%sm/')
-
-
 set('n', 'j', 'gj')
 set('n', 'k', 'gk')
 
 -- same dir as current buf
-set('n', '<leader>o', ':e <C-R>=expand("%:p:h") . "/" <cr>')
-
+set('n', '<leader>po', ':e <C-R>=expand("%:p:h") . "/" <cr>')
 
 -- jon-gj 's proximity sort.
 -- can be installed via `cargo install proximity-sort`
@@ -98,27 +82,3 @@ set('n', '<leader>;', function()
         header = false,
     })
 end)
-
---local orig_paste = vim.paste
---vim.g.paste_newline_enabled = true
---
------@diagnostic disable-next-line: duplicate-set-field
---vim.paste = function(lines, phase)
---    if phase == 1 then vim.notify('paste:start') end
---    if phase == 3 then vim.notify('paste:end') end
---    if vim.g.paste_newline_enabled and (phase == -1 or phase == 3) then
---        table.insert(lines, '')
---    end
---    return orig_paste(lines, phase)
---end
---
---vim.keymap.set('n', '<leader>pt', function()
---    vim.g.paste_newline_enabled = not vim.g.paste_newline_enabled
---end, { silent = true, desc = 'toggle newline-after-paste' })
---
---vim.keymap.set({ 'n', 'i' }, '<leader>pp', function()
---    local old = vim.g.paste_newline_enabled
---    vim.g.paste_newline_enabled = false
---    vim.api.nvim_feedkeys(vim.keycode('<C-r>+'), 'i', false)
---    vim.g.paste_newline_enabled = old
---end, { silent = true })

@@ -48,10 +48,10 @@ return {
                         },
                     },
                 },
-                marksman = {
-                    filetypes = { "markdown", "markdown.mdx" },
-                    root_dir = lspconfig.util.root_pattern(".git", ".marksman.toml"),
-                },
+                --marksman = {
+                --    filetypes = { "markdown", "markdown.mdx" },
+                --    root_dir = lspconfig.util.root_pattern(".git", ".marksman.toml"),
+                --},
                 clangd = {
                     cmd = { "clangd", "--background-index", "--enable-config", "--clang-tidy", "--cross-file-rename", "--completion-style=detailed", "--query-driver=**", "--header-insertion=iwyu" },
                     filetypes = { "c", "cpp" },
