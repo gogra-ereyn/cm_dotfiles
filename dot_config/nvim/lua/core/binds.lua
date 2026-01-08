@@ -20,8 +20,11 @@ set('n', '#', '#zz', { silent = true })
 set('n', 'g*', 'g*zz', { silent = true })
 
 ---- make macro mispresses harder
-set('n', '<leader>q', 'q')
-set('n', 'q', '<Nop>')
+
+vim.keymap.set("n", "<leader>q", function()
+  vim.cmd("normal! q")
+end)
+set("n", "q", "<Nop>", { silent = true })
 set('n', "<leader>b", ":set invrelativenumber<CR>")
 
 -- paste without adding selected to rm reg

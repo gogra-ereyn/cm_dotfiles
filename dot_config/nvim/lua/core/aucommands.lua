@@ -57,3 +57,11 @@ for _, pat in ipairs({ 'text', 'markdown', 'mail', 'gitcommit' }) do
         command = 'setlocal spell tw=72 colorcolumn=73',
     })
 end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.conceallevel = 1
+    vim.opt_local.concealcursor = "nc"
+  end,
+})
