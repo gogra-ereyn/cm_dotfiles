@@ -9,7 +9,7 @@ return {
         workspaces = {
             {
                 name = "personal",
-                path = "/apps/obsidian/myvault",
+                path = "{{ default "/apps/obsidian/myvault" .notes_dir }}",
             }
         },
         daily_notes = {
