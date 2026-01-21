@@ -3,5 +3,7 @@
 configuration {
     modi: "drun";
     show: "drun";
+    sort: true;
+    sorting-method: "fzf";
 }
 
