@@ -3,15 +3,26 @@ return {
         version = "*",
         ft = "markdown",
         ---@module 'obsidian'
-            ---@type obsidian.config
-            dependencies= {
-                {
-                    "MeanderingProgrammer/render-markdown.nvim",
-                    ft = "markdown",
-                    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
-                    opts = {},
+        ---@type obsidian.config
+        dependencies = {
+            {
+                "MeanderingProgrammer/render-markdown.nvim",
+                ft = "markdown",
+                dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
+                opts = {
+                    heading = {
+                        backgrounds = {
+                            "RenderMarkdownH1Bg",
+                            "RenderMarkdownH5Bg",
+                            "RenderMarkdownH3Bg",
+                            "RenderMarkdownH4Bg",
+                            "RenderMarkdownH5Bg",
+                            "RenderMarkdownH6Bg",
+                        }
+                    }
                 },
             },
+        },
         opts = {
             legacy_commands = false,
             workspaces = {
