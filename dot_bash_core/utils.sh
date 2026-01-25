@@ -86,3 +86,40 @@ lh() {
     ls -liht | head "$@"
 }
 
+millis() {
+    local millis=$1;
+    if [[ -z $millis ]]; then read -r millis; fi
+    local -i secs=$((millis/1000))
+    local -i sub=$((millis % 1000))
+    local dp=
+    dp=$(date -d "@$secs" '+%Y-%m-%d %H:%M:%S')
+    echo "$dp.$(printf '%03d' $sub)"
+}
+
+secs() {
+    local secs=$1; if [[ -z "$secs" ]]; then read -r secs; fi
+    if [[ -z $secs ]]; then
+        echo "Usage: $0 <seconds>" >&2
+        return 1
+    else
+        date -d@"$secs"
+    fi
+}
+
+nanos() {
+    local nanos=$1; if [[ -z "$nanos" ]]; then read -r nanos; fi
+    [[ -z $nanos ]] && { echo "Usage: $0 <nanos>" >&2; return 1 ; } ;
+    date -d@$(( nanos / (1000 * 1000 * 1000) )).$(( nanos % (1000 * 1000 * 1000) ))
+}
+
+now() {
+    date +%s
+}
+
+nowms() {
+    date +%s%3N
+}
+
+nowns() {
+    date +%s%N
+}
