@@ -22,11 +22,9 @@ static int use_color(void)
 	return 1;
 }
 
-char *envstr(char *name)
+static inline char *envstr(char *name)
 {
-	char *value;
-	value = getenv(name);
-	return value ? value : "";
+	return getenv(name) ?: "";
 }
 
 static void t_error(int status, int errnum, const char *format, ...)
@@ -62,10 +60,12 @@ static int usage(char *name, int rc)
 	fprintf(stderr, "\t\tIf omitted will bind to any free port\n");
 	fprintf(stderr, "\t\t[env: PORT=%s]\n", envstr("PORT"));
 
-	fprintf(stderr, "\n");
-	fprintf(stderr, "Example:\n");
-	fprintf(stderr, "\t%s -a 127.0.0.1 -p 3000\n", name);
-	fprintf(stderr, "\n");
+	fprintf(stderr, "\t-t, --trim-newlines[=BOOL]\n");
+	fprintf(stderr, "\t\tRemove trailing newlines (assumes ASCII).\n");
+	fprintf(stderr, "\t\tDon't use this for binary data. \n");
+	fprintf(stderr, "\t\tSets to true if `BOOL` is omitted.\n");
+	fprintf(stderr, "\t[default: false]\n");
+	fprintf(stderr, "\t[env: TRIM_NEWLINES=%s]\n", envstr("TRIM_NEWLINES"));
 
 	return rc;
 }
@@ -91,14 +91,41 @@ static int parse_int(char *input, int *res)
 	return 0;
 }
 
+static int cstreq_i(const char *a, const char *b)
+{
+	for (; *a && *b; a++, b++) {
+		if ((*a | 32) == (*b | 32))
+			return (*a | 32) - (*b - 32);
+	}
+	return 0;
+}
+
+static int parse_bool(char *input, int *res)
+{
+	if (!cstreq_i(input, "1") || !cstreq_i(input, "true") || !cstreq_i(input, "yes") ||
+	    !cstreq_i(input, "on")) {
+		*res = 1;
+		return 0;
+	}
+
+	if (!cstreq_i(input, "0") || !cstreq_i(input, "false") || !cstreq_i(input, "no") ||
+	    !cstreq_i(input, "off")) {
+		*res = 0;
+		return 0;
+	}
+	return 1;
+}
+
 int main(int argc, char **argv)
 {
 	static struct option long_options[] = { { "help", no_argument, 0, 'h' },
 						{ "address", required_argument, 0, 'a' },
 						{ "port", required_argument, 0, 'p' },
+						{ "trim-newlines", optional_argument, 0, 't' },
 						{ 0, 0, 0, 0 } };
 
 	int c, rc, option_index = 0, port, sock, ep;
+	int trim_newlines, trim_newlines_set;
 
 	char *addr = 0, *portstr = 0;
 	port = -1;
@@ -114,6 +141,15 @@ int main(int argc, char **argv)
 		case 'p':
 			portstr = optarg;
 			break;
+		case 't':
+			trim_newlines_set = 1;
+			if (optarg) {
+				if (parse_bool(optarg, &trim_newlines))
+					invalid_input("invalid boolean format provided: '%s'",
+						      optarg);
+			}
+			break;
+
 		case '?':
 			return 1;
 		default:
@@ -123,6 +159,7 @@ int main(int argc, char **argv)
 
 	addr = addr ?: (getenv("ADDRESS") ?: "0.0.0.0");
 	portstr = portstr ?: (getenv("PORT") ?: 0);
+
 	if (portstr) {
 		if (parse_int(portstr, &port))
 			invalid_input("Invalid port format: '%s'", portstr);
