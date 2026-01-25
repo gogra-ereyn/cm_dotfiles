@@ -35,8 +35,7 @@ static inline uint64_t __be64_to_le(uint64_t val)
 	c7 = (val >> 8) & 0xff;
 	c8 = val & 0xff;
 
-	return c1 | c2 << 8 | c3 << 16 | c4 << 24 | c5 << 32 | c6 << 40 |
-	       c7 << 48 | c8 << 56;
+	return c1 | c2 << 8 | c3 << 16 | c4 << 24 | c5 << 32 | c6 << 40 | c7 << 48 | c8 << 56;
 }
 
 static inline uint16_t swap_bytes_u16v2(uint16_t value)
@@ -47,6 +46,34 @@ static inline uint16_t swap_bytes_u16v2(uint16_t value)
 static inline uint16_t swap_bytes_u16(uint16_t x)
 {
 	return (x << 8) | (x >> 8);
+}
+
+/*
+ * safty: both must be of at least 'n' length.
+ *  returns 0 if equal.
+ *  specific to asci. duh.
+ * */
+static int streq_i(const char *a, const char *b, int len)
+{
+	for (; len--; a++, b++) {
+		if ((*a | 32) == (*b | 32))
+			return (*a | 32) - (*b | 32);
+	}
+	return 0;
+}
+
+/*
+ * safty: both must be null terminated.
+ *  returns 0 if equal.
+ *  specific to asci. duh.
+ * */
+static int cstreq_i(const char *a, const char *b)
+{
+	for (; *a && *b; a++, b++) {
+		if ((*a | 32) == (*b | 32))
+			return (*a | 32) - (*b - 32);
+	}
+	return 0;
 }
 
 // clang-format off
@@ -86,6 +113,7 @@ static inline uint64_t swap_bytes_64(uint64_t x)
 }
 // clang-format on
 
+/* useful for case-insensitive comparisons */
 static inline char toggle_case(char val)
 {
 	return val ^ 32;
@@ -94,6 +122,7 @@ static inline char to_upper(char val)
 {
 	return val & ~32;
 }
+/* ('c' | 32) == 'c' ; ('C' | 32) == 'c' */
 static inline char to_lower(char val)
 {
 	return val | 32;
@@ -134,8 +163,7 @@ static inline void swap_ints(int *a, int *b)
 }
 
 #define did_add_wrap(a, b, result_ptr) \
-	(*(result_ptr) = (a) + (b),    \
-	 (((a) ^ *(result_ptr)) & ((b) ^ *(result_ptr))) > 0)
+	(*(result_ptr) = (a) + (b), (((a) ^ *(result_ptr)) & ((b) ^ *(result_ptr))) > 0)
 
 // runtime
 uint32_t next_pow2_gt(uint32_t n)
@@ -190,7 +218,6 @@ int example_toggle_xor()
 	cur ^= a ^ b;
 	return cur;
 }
-
 
 int remove_lowest_set_bit(int x)
 {
@@ -278,4 +305,3 @@ void msd_u32(uint32_t n, unsigned *digit, uint32_t *value)
 	*digit = 0u;
 	*value = 0u;
 }
-
