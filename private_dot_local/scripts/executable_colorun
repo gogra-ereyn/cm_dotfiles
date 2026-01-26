@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+main() {
+    local -i outc="${COLORIO_OUTC:-32}"
+    local -i errc="${COLORIO_ERRC:-31}"
+    local out_label="${COLORIO_OUT_LABEL}"
+    local err_label="${COLORIO_ERR_LABEL}"
+    if [[ "${1:-}" == "--" ]]; then shift; fi
+    exec "$@" \
+      > >(stdbuf -oL sed $'s/^/\e[0m\e['"$outc"$'m['"$out_label"$']\e[0m /' >&1) \
+      2> >(stdbuf -oL sed $'s/^/\e[0m\e['"$errc"$'m['"$err_label"$']\e[0m /' >&2)
+}
+
+main "$@"
