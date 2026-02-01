@@ -253,3 +253,359 @@ class KafkaConsumer : public std::enable_shared_from_this<KafkaConsumer> {
 		schedule_poll();
 	}
 };
+
+#include <boost/asio.hpp>
+#include <librdkafka/rdkafka.h>
+
+{
+#include <chrono>
+#include <cstdint>
+#include <cstdio>
+#include <deque>
+#include <functional>
+#include <memory>
+#include <string>
+#include <utility>
+#include <variant>
+
+	struct KafkaDelivered {
+		std::uint64_t token;
+		std::int32_t partition;
+		std::int64_t offset;
+		std::int64_t timestamp_ms;
+	};
+
+	struct KafkaFailed {
+		std::uint64_t token;
+		int err;
+		std::string msg;
+		bool retriable;
+	};
+
+	using KafkaProduceEvent = std::variant<KafkaDelivered, KafkaFailed>;
+	using KafkaProduceSink = std::function<void(KafkaProduceEvent &&)>;
+
+	class KafkaProducer : public std::enable_shared_from_this<KafkaProducer> {
+	    public:
+		struct Config {
+			std::string brokers;
+			std::string topic;
+			std::int32_t partition;
+			std::string client_id;
+			std::chrono::milliseconds poll_interval{ 50 };
+			std::size_t max_pending_msgs{ 16384 };
+			std::size_t max_pending_bytes{ 16u * 1024u * 1024u };
+			bool enable_idempotence{ false };
+		};
+
+		struct Msg {
+			std::uint64_t token;
+			std::string payload;
+		};
+
+		KafkaProducer(boost::asio::io_service &ios, Config cfg, KafkaProduceSink sink)
+			: m_strand(ios)
+			, m_timerg(ios)
+			, m_cfg(std::move(cfg))
+			, m_sink(std::move(sink))
+		{
+		}
+
+		~KafkaProducer()
+		{
+			stop();
+		}
+
+		bool start(std::string &err)
+		{
+			bool ok;
+
+			err.clear();
+			ok = init_producer(err);
+			if (!ok)
+				return false;
+
+			running_ = true;
+			schedule_tick();
+			return true;
+		}
+
+		void stop()
+		{
+			auto wk = weak_from_this();
+			m_strand.post([wk]() {
+				if (auto self = wk.lock())
+					self->do_stop();
+			});
+		}
+
+		void send(Msg &&m)
+		{
+			auto wk = weak_from_this();
+			m_strand.post([wk, m = std::move(m)]() mutable {
+				if (auto self = wk.lock())
+					self->send_on_strand(std::move(m));
+			});
+		}
+
+	    private:
+		boost::asio::io_service::strand m_strand;
+		boost::asio::steady_timer m_timerg;
+		Config m_cfg;
+		KafkaProduceSink m_sink;
+
+		bool running_ = false;
+
+		rd_kafka_t *rk_ = nullptr;
+
+		std::deque<Msg> pending_;
+		std::size_t pending_bytes_ = 0;
+
+		static_assert(sizeof(void *) >= 8,
+			      "requires 64-bit pointers for token opaque packing");
+
+		static void *opaque_from_token(std::uint64_t token)
+		{
+			return reinterpret_cast<void *>(static_cast<std::uintptr_t>(token));
+		}
+
+		static std::uint64_t token_from_opaque(void *p)
+		{
+			return static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(p));
+		}
+
+		static void dr_msg_cb(rd_kafka_t *rk, const rd_kafka_message_t *rkmsg, void *opaque)
+		{
+			KafkaProducer *self;
+			std::uint64_t token;
+			std::int64_t ts;
+			rd_kafka_timestamp_type_t tst;
+			int err;
+			bool retriable;
+			char buf[256];
+
+			(void)rk;
+
+			self = static_cast<KafkaProducer *>(opaque);
+			if (!self)
+				return;
+
+			token = token_from_opaque(rd_kafka_message_opaque(rkmsg));
+			ts = rd_kafka_message_timestamp(rkmsg, &tst);
+			if (ts < 0)
+				ts = 0;
+
+			err = rkmsg->err;
+			if (err == 0) {
+				self->m_sink(KafkaProduceEvent{ KafkaDelivered{
+					token, rkmsg->partition, rkmsg->offset, ts } });
+				return;
+			}
+
+			retriable = false;
+			{
+				rd_kafka_error_t *e = rd_kafka_message_error(rkmsg);
+				if (e)
+					retriable = rd_kafka_error_is_retriable(e) ? true : false;
+			}
+
+			std::snprintf(buf, sizeof(buf), "%s",
+				      rd_kafka_err2str(static_cast<rd_kafka_resp_err_t>(err)));
+
+			self->m_sink(KafkaProduceEvent{
+				KafkaFailed{ token, err, std::string(buf), retriable } });
+		}
+
+		bool init_producer(std::string &err)
+		{
+			rd_kafka_conf_t *conf;
+			char errbuf[512];
+			int rc;
+
+			if (rk_) {
+				err.clear();
+				return true;
+			}
+
+			conf = rd_kafka_conf_new();
+
+			rd_kafka_conf_set_dr_msg_cb(conf, &KafkaProducer::dr_msg_cb);
+			rd_kafka_conf_set_opaque(conf, this);
+
+			rc = rd_kafka_conf_set(conf, "bootstrap.servers", m_cfg.brokers.c_str(),
+					       errbuf, sizeof(errbuf));
+			if (rc != RD_KAFKA_CONF_OK) {
+				err = errbuf;
+				rd_kafka_conf_destroy(conf);
+				return false;
+			}
+
+			if (!m_cfg.client_id.empty()) {
+				rc = rd_kafka_conf_set(conf, "client.id", m_cfg.client_id.c_str(),
+						       errbuf, sizeof(errbuf));
+				if (rc != RD_KAFKA_CONF_OK) {
+					err = errbuf;
+					rd_kafka_conf_destroy(conf);
+					return false;
+				}
+			}
+
+			if (m_cfg.enable_idempotence) {
+				rc = rd_kafka_conf_set(conf, "enable.idempotence", "true", errbuf,
+						       sizeof(errbuf));
+				if (rc != RD_KAFKA_CONF_OK) {
+					err = errbuf;
+					rd_kafka_conf_destroy(conf);
+					return false;
+				}
+			}
+
+			rk_ = rd_kafka_new(RD_KAFKA_PRODUCER, conf, errbuf, sizeof(errbuf));
+			if (!rk_) {
+				err = errbuf;
+				rd_kafka_conf_destroy(conf);
+				return false;
+			}
+
+			err.clear();
+			return true;
+		}
+
+		void do_stop()
+		{
+			std::size_t i;
+			Msg m;
+
+			if (!running_ && !rk_)
+				return;
+
+			running_ = false;
+
+			{
+				boost::system::error_code ignored;
+				m_timerg.cancel(ignored);
+			}
+
+			for (i = 0; i < pending_.size(); ++i) {
+				m = std::move(pending_[i]);
+				m_sink(KafkaProduceEvent{ KafkaFailed{
+					m.token, static_cast<int>(RD_KAFKA_RESP_ERR__DESTROY),
+					std::string("producer stopped"), false } });
+			}
+			pending_.clear();
+			pending_bytes_ = 0;
+
+			if (rk_) {
+				rd_kafka_destroy(rk_);
+				rk_ = nullptr;
+			}
+		}
+
+		void schedule_tick()
+		{
+			if (!running_)
+				return;
+
+			m_timerg.expires_from_now(m_cfg.poll_interval);
+			m_timerg.async_wait(m_strand.wrap(
+				[self = shared_from_this()](const boost::system::error_code &ec) {
+					if (ec || !self->running_)
+						return;
+					self->on_tick();
+				}));
+		}
+
+		void on_tick()
+		{
+			std::size_t drained;
+			drained = 0;
+
+			if (rk_)
+				rd_kafka_poll(rk_, 0);
+
+			while (!pending_.empty()) {
+				if (!try_produce_now(pending_.front())) {
+					break;
+				}
+				pending_bytes_ -= pending_.front().payload.size();
+				pending_.pop_front();
+				drained++;
+				if (drained >= 1024)
+					break;
+			}
+
+			if (rk_)
+				rd_kafka_poll(rk_, 0);
+
+			schedule_tick();
+		}
+
+		void send_on_strand(Msg &&m)
+		{
+			bool ok;
+			std::size_t sz;
+
+			if (!running_ || !rk_) {
+				m_sink(KafkaProduceEvent{ KafkaFailed{
+					m.token, static_cast<int>(RD_KAFKA_RESP_ERR__STATE),
+					std::string("producer not running"), false } });
+				return;
+			}
+
+			ok = try_produce_now(m);
+			if (ok)
+				return;
+
+			sz = m.payload.size();
+
+			if (pending_.size() >= m_cfg.max_pending_msgs ||
+			    (pending_bytes_ + sz) > m_cfg.max_pending_bytes) {
+				m_sink(KafkaProduceEvent{ KafkaFailed{
+					m.token, static_cast<int>(RD_KAFKA_RESP_ERR__QUEUE_FULL),
+					std::string("local pending queue overflow"), true } });
+				return;
+			}
+
+			pending_bytes_ += sz;
+			pending_.push_back(std::move(m));
+		}
+
+		bool try_produce_now(Msg &m)
+		{
+			int r;
+			rd_kafka_resp_err_t err;
+			bool retriable;
+
+			r = rd_kafka_producev(rk_, RD_KAFKA_V_TOPIC(m_cfg.topic.c_str()),
+					      RD_KAFKA_V_PARTITION(m_cfg.partition),
+					      RD_KAFKA_V_MSGFLAGS(RD_KAFKA_MSG_F_COPY),
+					      RD_KAFKA_V_VALUE(const_cast<char *>(m.payload.data()),
+							       m.payload.size()),
+					      RD_KAFKA_V_OPAQUE(opaque_from_token(m.token)),
+					      RD_KAFKA_V_END);
+
+			if (r == 0)
+				return true;
+
+			err = rd_kafka_last_error();
+
+			if (err == RD_KAFKA_RESP_ERR__QUEUE_FULL)
+				return false;
+
+			retriable = false;
+			{
+				rd_kafka_error_t *e = rd_kafka_error_new(err);
+				if (e) {
+					retriable = rd_kafka_error_is_retriable(e) ? true : false;
+					rd_kafka_error_destroy(e);
+				}
+			}
+
+			m_sink(KafkaProduceEvent{ KafkaFailed{ m.token, static_cast<int>(err),
+							       std::string(rd_kafka_err2str(err)),
+							       retriable } });
+
+			return true;
+		}
+	};
+}
