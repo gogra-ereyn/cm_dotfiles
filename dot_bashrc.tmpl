@@ -15,44 +15,12 @@ if command -v fcitx5 >/dev/null 2>&1; then
     export INPUT_METHOD=fcitx
 fi
 
-nontext='\[\e[38;2;230;230;250m\]'
-gbranch='\[\e[38;2;180;160;255m\]'
-ppath='\[\e[38;2;251;236;193m\]'
-hostuser='\[\e[1m\e[38;2;255;207;232m\]'
-
-HISTCONTROL=ignorespace
-HISTSIZE=50000
-HISTFILESIZE=100000
-HISTCONTROL=ignoreboth
-HISTTIMEFORMAT='%F %T  '
-
-function parse_git_dirty {
-  [[ $(git status --porcelain 2> /dev/null) ]] && echo "*"
-}
-
-function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
-}
-
-__update_ps1() {
-    local rc="$?"
-    local rc_seg=""
-    if [ "$rc" -ne 0 ]; then
-        rc_seg="${nontext}[${rc}] "
-    fi
-    PS1="${nontext}┌─${spk}\t${nontext}─${rc_seg}[${hostuser}\u${nontext}@${hostuser}\h${nontext}:${ppath}\w${nontext}]${gbranch}\$(parse_git_branch)${nontext} \n└─╼ ${white}"
-}
-
-PROMPT_COMMAND='__update_ps1; history -a'
-
 # bundled sync history file + rev history search
 bind '"\C-g": "\C-e\C-uhistory -n\C-m\C-r"'
 
 shopt -s histappend
 # save multiline commands as single entry
 shopt -s cmdhist
-
-
 
 export BARTIB_FILE="$HOME/.todos/bartib"
 export CARGO_TARGET_DIR={{ get . "cargo_target_dir" | default "$HOME/cargo_targets" | quote }}
@@ -64,9 +32,6 @@ export PATH="$HOME/.local/bin:$HOME/.local/scripts:$CARGO_HOME/bin:$HOME/local/b
 export SYSTEMD_PAGER=
 export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
-
-
 if [[ -f /usr/share/bash-completion/bash_completion ]]; then
     . /usr/share/bash-completion/bash_completion
 elif [[ -f /usr/share/bash-completion/compat/bash_completion ]]; then
@@ -76,15 +41,10 @@ elif [[ -f /etc/profile.d/bash_completion.sh ]]; then
 fi
 
 if [[ ! -f ~/git-completion.bash ]]; then
-    curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > ~/git-completion.bash
+    curl -s https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > ~/git-completion.bash
 fi
 
-source ~/git-completion.bash
-
-plike() {
-	[[ -z "$1" ]] && { echo "didnt pass an arg bro"; return 1; }
-	ps -aux | rg -i "$(whoami)" | rg "$@"
-}
+[[ -f ~/git-completion.bash ]] && . ~/git-completion.bash
 
 ignore_untracked() {
     local exclude_file
