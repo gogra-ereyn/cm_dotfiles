@@ -23,12 +23,10 @@ set('n', 'g*', 'g*zz', { silent = true })
 
 vim.keymap.set("n", "<leader>q", function()
   vim.cmd("normal! q")
-end)
+end, { silent = true })
 set("n", "q", "<Nop>", { silent = true })
 set('n', "<leader>b", ":set invrelativenumber<CR>")
 
--- paste without adding selected to rm reg
-set('x', "<leader>p", [["_dP]])
 set('n', '<leader>il', ':set invlist<CR>')
 
 set('n', '<leader>te', function()
@@ -55,7 +53,7 @@ set('n', 'j', 'gj')
 set('n', 'k', 'gk')
 
 -- same dir as current buf
-set('n', '<leader>po', ':e <C-R>=expand("%:p:h") . "/" <cr>')
+set('n', '<leader>p', ':e <C-R>=expand("%:p:h") . "/" <cr>')
 
 -- jon-gj 's proximity sort.
 -- can be installed via `cargo install proximity-sort`
@@ -72,16 +70,4 @@ set('', '<C-p>', function()
         ["--layout"]   = "default",
     }
     require 'fzf-lua'.files(opts)
-end)
-
-set('n', '<leader>;', function()
-    require 'fzf-lua'.buffers({
-        fzf_opts = {
-            ["--with-nth"]     = "{-3..-2}",
-            ["--nth"]          = "-1",
-            ["--delimiter"]    = "[:\u{2002}]",
-            ["--header-lines"] = "false",
-        },
-        header = false,
-    })
 end)

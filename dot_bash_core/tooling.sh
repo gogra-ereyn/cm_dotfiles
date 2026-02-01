@@ -45,7 +45,7 @@ install_cargo_tools() {
         install_rustup
     fi
 
-    cargo install ripgrep fd-find bat zellij
+    cargo install ripgrep fd-find bat zellij proximity-sort
 }
 
 install_fzf() {
