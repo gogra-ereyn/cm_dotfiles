@@ -123,3 +123,24 @@ nowms() {
 nowns() {
     date +%s%N
 }
+
+ignore_untracked() {
+    local exclude_file
+    local repo_root
+
+    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        echo "not in a git repository"
+        return 1
+    fi
+
+    repo_root=$(git rev-parse --show-toplevel)
+    exclude_file="$repo_root/.git/info/exclude"
+    (
+        cd "$repo_root" || exit 1
+        git status --porcelain | grep '^??' | sed 's/^?? //' | while read -r file; do
+            echo "${file}" >> "$exclude_file"
+        done
+
+    )
+    echo "added untracked files to $exclude_file" >&2
+}
