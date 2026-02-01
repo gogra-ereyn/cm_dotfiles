@@ -26,4 +26,4 @@ _fzf_comprun() {
   esac
 }
 
-#eval "$(fzf --bash)"
+eval "$(fzf --bash 2>/dev/null)"
