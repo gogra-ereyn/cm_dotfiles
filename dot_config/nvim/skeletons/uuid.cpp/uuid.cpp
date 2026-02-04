@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <unordered_map>
 
 namespace struct_based
 {
@@ -42,26 +43,45 @@ struct uuid_t {
 		memcpy(&result.lo, bytes + 8, 8);
 		return result;
 	}
+
+	struct uuid_hash {
+		size_t operator()(const uuid_t &uuid) const noexcept
+		{
+			return static_cast<size_t>(uuid.lo);
+		}
+	};
+
+	void usage()
+	{
+		char payload[1024];
+		size_t offset = 0;
+		uuid_t uuid{ 127334, 4455340 };
+		offset += sprintf(payload, "{\"id\":\"");
+		offset += uuid.write_string(payload + offset);
+		offset += sprintf(payload + offset, "\",\"type\":%d}", 4);
+		// or for unordered map
+		// std::unordered_map<uuid_t, uint64_t, uuid_hash> mymap;
+	}
 };
 
+}
+
+// EXAMPLE specialising std hash
+namespace std
+{
+template <> struct hash<struct_based::uuid_t> {
+	size_t operator()(const struct_based::uuid_t &uuid) const noexcept
+	{
+		return static_cast<size_t>(uuid.lo);
+	}
+};
 struct uuid_hash {
-	size_t operator()(const uuid_t &uuid) const noexcept
+	size_t operator()(const struct_based::uuid_t &uuid) const noexcept
 	{
 		return static_cast<size_t>(uuid.lo);
 	}
 };
 
-void usage()
-{
-	char payload[1024];
-	size_t offset = 0;
-	uuid_t uuid{ 127334, 4455340 };
-	offset += sprintf(payload, "{\"id\":\"");
-	offset += uuid.write_string(payload + offset);
-	offset += sprintf(payload + offset, "\",\"type\":%d}", 4);
-    // or for unordered map
-    // std::unordered_map<uuid_t, uint64_t, uuid_hash> mymap;
-}
 };
 
 namespace table_based
