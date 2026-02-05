@@ -43,6 +43,10 @@ struct uuid_t {
 
 	static uuid_t from_u128(__uint128_t val) noexcept
 	{
+		return {
+			.hi = static_cast<uint64_t>(val >> 64),
+			.lo = static_cast<uint64_t>(val),
+		};
 	}
 
 	// if this language forces me to use sheiss like static_cast,
