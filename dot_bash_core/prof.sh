@@ -482,5 +482,3 @@ workflows:
   watch_threads <pid>        - live thread cpu monitor
 EOF
 }
-
-echo "profiling helpers loaded. run 'perf_help' for available functions." >&2

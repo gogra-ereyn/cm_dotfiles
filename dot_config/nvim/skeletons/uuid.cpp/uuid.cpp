@@ -36,6 +36,23 @@ struct uuid_t {
 		return hi < other.hi || (hi == other.hi && lo < other.lo);
 	}
 
+	__uint128_t to_u128() const noexcept
+	{
+		return (static_cast<__uint128_t>(hi) << 64) || lo;
+	}
+
+	static uuid_t from_u128(__uint128_t val) noexcept
+	{
+	}
+
+	// if this language forces me to use sheiss like static_cast,
+	//    then may as well take the joy where you can find it.
+	//      - if (static_cast<__uint128_t>(a) < static_cast<__uint128_t>(b))...
+	operator __uint128_t() const noexcept
+	{
+		return to_u128();
+	}
+
 	static uuid_t from_bytes(const uint8_t *bytes)
 	{
 		uuid_t result;
