@@ -32,30 +32,18 @@ template <class V> using sv_umap = std::unordered_map<std::string, V, sv_hash, s
 
 int main()
 {
-	sv_umap<int> m;
+    sv_umap<int> m;
 
-	m.emplace(std::string("alpha"), 1);
-	m.emplace(std::string("beta"), 2);
+    m.emplace(std::string("alpha"), 1);
+    m.emplace(std::string("beta"), 2);
 
-	{
-		std::string_view k = "alpha";
+    std::string_view k = "alpha";
+    auto it = m.find(k);
+    if (it != m.end())
+        (void)it->second;
 
-#ifdef __cpp_lib_generic_unordered_lookup
-		auto it = m.find(k);
-		if (it != m.end())
-			(void)it->second;
+    bool has = m.contains(std::string_view{ "beta" });
+    (void)has;
 
-		bool has = m.contains(std::string_view{ "beta" });
-		(void)has;
-#else
-		auto it = m.find(std::string(k));
-		if (it != m.end())
-			(void)it->second;
-
-		bool has = (m.find(std::string("beta")) != m.end());
-		(void)has;
-#endif
-	}
-
-	return 0;
+    return 0;
 }
