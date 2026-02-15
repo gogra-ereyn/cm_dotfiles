@@ -7,10 +7,6 @@
 #include <string.h>
 #include <errno.h>
 
-// listen.c for these
-int setup_listening_socket(int port);
-int setup_listening_socket_randport(int *port);
-
 static int use_color(void)
 {
 	const char *nc;
@@ -167,13 +163,7 @@ int main(int argc, char **argv)
 		port = 0;
 	}
 
-	if (port)
-		sock = setup_listening_socket(port);
-	else
-		sock = setup_listening_socket_randport(&port);
-
-	if (sock == -1)
-		t_error(1, errno, "Failed to bind to port '%d'", port);
+	// setup socks
 
 	dprintf(2, "Listening on: '%s:%d'\n", addr, port);
 	return 0;
