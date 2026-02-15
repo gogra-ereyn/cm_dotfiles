@@ -44,5 +44,11 @@ Diagnostics:
       - cppcoreguidelines-*
       - google-*
       - llvm-*
+      - altera-*
+      - fuchsia-*
+      - hicpp-*
+      - cert-*
       - readability-magic-numbers
       - readability-isolate-declaration
+      - readability-identifier-naming
+      - readability-function-cognitive-complexity
