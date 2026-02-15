@@ -37,17 +37,17 @@ return {
                 gopls = {
                     filetypes = { "go" }
                 },
-                yamlls = {
-                    settings = {
-                        yaml = {
-                            schemaStore = {
-                                enable = false,
-                                url = "",
-                            },
-                            schemas = require("schemastore").yaml.schemas(),
-                        },
-                    },
-                },
+                --yamlls = {
+                --    settings = {
+                --        yaml = {
+                --            schemaStore = {
+                --                enable = false,
+                --                url = "",
+                --            },
+                --            schemas = require("schemastore").yaml.schemas(),
+                --        },
+                --    },
+                --},
                 --marksman = {
                 --    filetypes = { "markdown", "markdown.mdx" },
                 --    root_dir = lspconfig.util.root_pattern(".git", ".marksman.toml"),

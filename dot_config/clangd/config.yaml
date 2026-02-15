@@ -9,15 +9,31 @@ Diagnostics:
     - cert-err33-c
     - llvmlibc-restrict-system-libc-headers
     - concurrency-mt-unsafe
-    - altera-unroll-loops
+    - altera-*
     - bugprone-assignment-in-if-condition
     - hicpp-signed-bitwise
     - bugprone-narrowing-conversions
-    - -Wc99-designator
+    - c99-designator
     - bugprone-reserved-identifier
     - cert-dcl51-cpp
     - initializer-overrides
     - hicpp-avoid-c-arrays
+    - sign-compare
+    - sign-conversion
+    - implicit-int-conversion
+    - shorten-64-to-32
+    - incompatible-pointer-types-discards-qualifiers
+    - pointer-sign
+    - cast-align
+    - cast-qual
+    - old-style-cast
+    - zero-as-null-pointer-constant
+    - unused-parameter
+    - padded
+    - switch-enum
+    - covered-switch-default
+    - declaration-after-statement
+    - readability-function-cognitive-complexity
 
   ClangTidy:
     Remove:
