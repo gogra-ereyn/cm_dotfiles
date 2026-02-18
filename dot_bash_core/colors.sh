@@ -62,4 +62,4 @@ __update_ps1() {
     PS1="${nontext}┌─${spk}\t${nontext}─${rc_seg}[${hostuser}\u${nontext}@${hostuser}\h${nontext}:${ppath}\w${nontext}]${gbranch}\$(parse_git_branch)${nontext} \n└─╼ ${white}"
 }
 
-PROMPT_COMMAND='__update_ps1'
+PROMPT_COMMAND='__update_ps1; history -a'

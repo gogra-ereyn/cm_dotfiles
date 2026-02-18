@@ -6,8 +6,6 @@ if [[ -d ~/.bash_core ]]; then
     done
 fi
 
-[[ -f ~/.bashrc.local ]] && source ~/.bashrc.local
-
 if command -v fcitx5 >/dev/null 2>&1; then
     export GTK_IM_MODULE=fcitx
     export QT_IM_MODULE=fcitx
@@ -44,3 +42,5 @@ fi
 avr_dg() {
     sudo pacman -U /var/cache/pacman/pkg/avr-gcc-8.3.0-1-x86_64.pkg.tar.xz
 }
+
+[[ -f ~/.bashrc.local ]] && source ~/.bashrc.local
