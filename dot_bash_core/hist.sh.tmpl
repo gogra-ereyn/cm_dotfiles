@@ -1,98 +1,90 @@
-#!/bin/bash
 
-[[ $- == *i* ]] || return 0
-
-export BASH_HIST_ROOT="${BASH_HIST_ROOT:-{{ get . "bash_hist_root" | default "${XDG_STATE_HOME:-$HOME/.local/state}" | quote }}}/bash"
-
-__hist_session_flush() {
-    builtin history -a
-}
-
-__hist_dir_file() {
-    local root key name
-    root="${BASH_HIST_ROOT}/dirhist"
-    mkdir -p -- "$root"
-    key="$(printf '%s' "$PWD" | sha1sum | awk '{print $1}')"
-    name="$(basename -- "$PWD" | tr -cd '[:alnum:]_.-')"
-    printf '%s/%s.%s' "$root" "$name" "$key"
-}
-
-__hist_global_push() {
-    local old
-    old="$HISTFILE"
-    HISTFILE="$__HIST_GLOBAL"
-    builtin history -a
-    HISTFILE="$old"
-}
-
-__hist_global_pull() {
-    local old
-    old="$HISTFILE"
-    HISTFILE="$__HIST_GLOBAL"
-    builtin history -n
-    HISTFILE="$old"
-}
-
-__hist_global_sync() {
-    __hist_global_push
-    __hist_global_pull
-}
-
-__hist_dir_push() {
-    local old
-    old="$HISTFILE"
-    HISTFILE="$(__hist_dir_file)"
-    builtin history -a
-    HISTFILE="$old"
-}
-
-__hist_dir_pull() {
-    local old
-    old="$HISTFILE"
-    HISTFILE="$(__hist_dir_file)"
-    builtin history -n
-    HISTFILE="$old"
-}
-
-__hist_dir_sync() {
-    __hist_dir_push
-    __hist_dir_pull
-}
-
-__hist_init() {
-    local root host base sess tty_s
-
-    root="$BASH_HIST_ROOT"
-    mkdir -p -- "$root"
-
-    if [[ -r /proc/sys/kernel/hostname ]]; then
-        IFS= read -r host < /proc/sys/kernel/hostname
-    elif [[ -r /etc/hostname ]]; then
-        IFS= read -r host < /etc/hostname
-    elif command -v uname >/dev/null 2>&1; then
-        host="$(uname -n 2>/dev/null)"
-    else
-        host="unknown"
-    fi
-
-    __HIST_GLOBAL="$root/history.${host}"
-
-    base="${ZELLIJ_SESSION_NAME:-${TMUX:-shell}}"
-    tty_s="$(tty 2>/dev/null | tr '/ ' '__' )"
-    sess="${base}.${tty_s}"
-    __HIST_SESSION="$root/session.${host}.${sess}"
-
-    HISTFILE="$__HIST_SESSION"
-    HISTSIZE=200000
-    HISTFILESIZE=500000
-    shopt -s histappend
-    shopt -s cmdhist
-
-    trap '__hist_session_flush' EXIT
-
-    bind '"\C-g": "\C-e\C-u__hist_global_sync\C-m\C-r"'
-    bind '"\C-x\C-d": "\C-e\C-u__hist_dir_sync\C-m\C-r"'
-}
-
-__hist_init
-
+#
+#{{- $hf := get . "histfile" -}}
+#{{- if $hf }}
+#export HISTFILE={{ $hf | quote }}
+#mkdir -p -- "$(dirname -- "$HISTFILE")"
+#{{- end }}
+#
+#export BASH_HIST_ROOT="${BASH_HIST_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}}/bash"
+#mkdir -p -- "$BASH_HIST_ROOT"
+#
+#__hist_session_flush() {
+#    builtin history -a
+#}
+#
+#__hist_dir_file() {
+#    local root key name
+#    root="${BASH_HIST_ROOT}/dirhist"
+#    mkdir -p -- "$root"
+#    key="$(printf '%s' "$PWD" | sha1sum | awk '{print $1}')"
+#    name="$(basename -- "$PWD" | tr -cd '[:alnum:]_.-')"
+#    printf '%s/%s.%s' "$root" "$name" "$key"
+#}
+#
+#__hist_global_append_last() {
+#    local cmd
+#    cmd="$(builtin fc -ln -1)"
+#    printf '%s\n' "$cmd" >> "$__HIST_GLOBAL"
+#}
+#
+#__hist_load_global() {
+#    builtin history -a
+#    builtin history -c
+#    builtin history -r "$__HIST_GLOBAL"
+#}
+#
+#__hist_load_session() {
+#    builtin history -a
+#    builtin history -c
+#    builtin history -r "$__HIST_SESSION"
+#}
+#
+#__hist_dir_push() {
+#    local old
+#    old="$HISTFILE"
+#    HISTFILE="$(__hist_dir_file)"
+#    builtin history -a
+#    HISTFILE="$old"
+#}
+#
+#__hist_dir_pull() {
+#    local old
+#    old="$HISTFILE"
+#    HISTFILE="$(__hist_dir_file)"
+#    builtin history -n
+#    builtin history -a
+#    HISTFILE="$old"
+#}
+#
+#__hist_dir_sync() {
+#    __hist_dir_push
+#    __hist_dir_pull
+#}
+#
+#__hist_init() {
+#    local base sess tty_s
+#
+#    __HIST_GLOBAL="${BASH_HIST_ROOT}/history.global"
+#
+#    base="${ZELLIJ_SESSION_NAME:-${TMUX:-shell}}"
+#    tty_s="$(tty 2>/dev/null | tr '/ ' '__' )"
+#    sess="${base}.${tty_s}"
+#    __HIST_SESSION="${BASH_HIST_ROOT}/session.${sess}"
+#
+#    HISTFILE="$__HIST_SESSION"
+#    HISTSIZE=200000
+#    HISTFILESIZE=500000
+#    shopt -s histappend
+#    shopt -s cmdhist
+#    export HISTCONTROL=ignorespace
+#
+#    trap '__hist_session_flush' EXIT
+#
+#    bind '"\C-g": "\C-e\C-u __hist_load_global\C-m\C-r"'
+#    bind '"\C-x\C-s": "\C-e\C-u __hist_load_session\C-m\C-r"'
+#    bind '"\C-x\C-d": "\C-e\C-u __hist_dir_sync\C-m\C-r"'
+#}
+#
+#__hist_init
+#
