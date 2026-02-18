@@ -35,7 +35,7 @@ cool='\[\e[1m\e[38;2;158;206;106\]'
 [[ -e "$HOME/.dircolors" ]] && eval "$(dircolors -b "$HOME/.dircolors")"
 
 function parse_git_dirty {
-  [[ $(git status --porcelain 2> /dev/null) ]] && echo "*"
+  [[ $(git status --porcelain -uno 2> /dev/null) ]] && echo "*"
 }
 
 function parse_git_branch {
