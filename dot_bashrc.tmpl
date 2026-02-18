@@ -15,9 +15,9 @@ fi
 
 HISTSIZE=200000
 HISTFILESIZE=500000
-export HISTCONTROL=ignorespace
+export HISTCONTROL=ignoreboth
 # bundled sync history file + rev history search
-bind '"\C-g": "\C-e\C-uhistory -n\C-m\C-r"'
+bind '"\C-g": "\C-e\C-u history -n\C-m\C-r"'
 shopt -s histappend
 shopt -s cmdhist
 
