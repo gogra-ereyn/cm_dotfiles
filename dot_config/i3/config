@@ -160,25 +160,20 @@ bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
+# mark the current container as a "group target"
+bindsym $mod+g mark --add tabgroup
+# ...then bind a key to move the focused window to that group
+bindsym $mod+Shift+g move container to mark tabgroup
+
 bindsym $mod+Shift+e focus mode_toggle
 bindsym $mod+space floating toggle
 
 bindsym $mod+y focus parent
 bindsym $mod+0 focus child
 
-# toggle tiling / floating
-
-# change focus between tiling / floating windows
-
-#bindsym $mod+d focus child
-
 bindsym $mod+z exec flameshot gui -c -s -p /apps/flameshot
 
 bindsym F6 exec flameshot gui -c -s -p /apps/flameshot
-
-#bindsym $mod+Shift+t exec flameshot gui
-
-
 
 
 # Focus firefox
@@ -186,8 +181,7 @@ bindsym F6 exec flameshot gui -c -s -p /apps/flameshot
 #
 ## Focus the workspace where firefox is, without necessarily focusing firefox
 ## itself.
-#bindsym $mod+x [class="Firefox"] focus workspace
-#
+bindsym $mod+x [class="Firefox"] focus workspace
 #
 ## Focus parent container
 #bindsym $mod+u focus parent
