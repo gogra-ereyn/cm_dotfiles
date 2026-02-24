@@ -38,6 +38,10 @@ font pango:monospace 8
 exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id ~/.local/scripts/display
 
+# for when developers make the 0iq decision
+# of having their applications decide to fullscreen
+exec --no-startup-id python3 ~/.local/bin/i3-no-fullscreen.py
+
 # probably the silliest issue I have ever encountered:
 #   adjusting my headphones' position (on my head)
 #   would force quit nvim.
