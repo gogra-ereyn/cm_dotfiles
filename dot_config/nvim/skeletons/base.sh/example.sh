@@ -1,5 +1,9 @@
 #!/bin/bash
 
+log() {
+    printf '%s:%s:%d: %s\n' "${BASH_SOURCE[1]##*/}" "${FUNCNAME[1]}" "${BASH_LINENO[0]}" "$*" >&2;
+}
+
 usage_str() {
 cat << EOF
 Usage: $0 [OPTIONS]
