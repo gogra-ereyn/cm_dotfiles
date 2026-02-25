@@ -230,3 +230,74 @@ ignore_untracked() {
     )
     echo "added untracked files to $exclude_file" >&2
 }
+
+utils::urlencode() {
+    local LC_ALL=C
+    for (( i = 0; i < ${#1}; i++ )); do
+        : "${1:i:1}"
+        case "$_" in
+            [a-zA-Z0-9.~_-])
+                printf '%s' "$_"
+            ;;
+
+            *)
+                printf '%%%02X' "'$_"
+            ;;
+        esac
+    done
+    printf '\n'
+}
+
+utils::strip_first() {
+    printf '%s\n' "${1/$2}"
+}
+
+utils::strip_all() {
+    printf '%s\n' "${1//$2}"
+}
+
+utils::trim_quotes() {
+    : "${1//\'}"
+    printf '%s\n' "${_//\"}"
+}
+
+utils::upper() {
+     printf '%s\n' "${1^^}"
+}
+
+utils::lower() {
+    printf '%s\n' "${1,,}"
+}
+
+utils::split() {
+   IFS=$'\n' read -d "" -ra arr <<< "${1//$2/$'\n'}"
+   printf '%s\n' "${arr[@]}"
+}
+
+utils::trim() {
+    : "${1#"${1%%[![:space:]]*}"}"
+    : "${_%"${_##*[![:space:]]}"}"
+    printf '%s\n' "$_"
+}
+
+utils::v4() {
+    C="89ab"
+
+    for ((N=0;N<16;++N)); do
+        B="$((RANDOM%256))"
+
+        case "$N" in
+            6)  printf '4%x' "$((B%16))" ;;
+            8)  printf '%c%x' "${C:$RANDOM%${#C}:1}" "$((B%16))" ;;
+
+            3|5|7|9)
+                printf '%02x-' "$B"
+            ;;
+
+            *)
+                printf '%02x' "$B"
+            ;;
+        esac
+    done
+    printf '\n'
+}
