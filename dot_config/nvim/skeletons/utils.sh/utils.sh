@@ -1,6 +1,6 @@
 #!/bin/bash
 
-wait_tcp() {
+utils::wait_tcp() {
     local host="${1?missing 1/host}"
     local -i port=${2?missing 2/port}
     local timeout=${3:-30}
@@ -51,26 +51,32 @@ utils::assert_eq() {
 
 
 utils::log() {
-    local message="$1"
-    local level="${2:-INFO}"
-    local timestamp=
-    timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-    echo "[$timestamp] [$level] $message" >&2
+    (($#<2)) && { echo "usage: log LEVEL message..." >&2; return 1; }
+    local level="$1"
+    shift
+    printf '[%s] [%s] %s:%s:%d: %s\n' \
+        "$(date +"%Y-%m-%d %H:%M:%S")" \
+        "$level" \
+        "${BASH_SOURCE[1]##*/}" \
+        "${FUNCNAME[1]}" \
+        "${BASH_LINENO[0]}" \
+        "$*" >&2
 }
 
-log() {
-    printf '%s:%s:%d: %s\n' "${BASH_SOURCE[1]##*/}" "${FUNCNAME[1]}" "${BASH_LINENO[0]}" "$*" >&2;
+utils::hex_to_rgb() {
+    : "${1/\#}"
+    ((r=16#${_:0:2},g=16#${_:2:2},b=16#${_:4:2}))
+    printf '%s\n' "$r $g $b"
 }
-
 
 utils::info() {
-   log "$1" info
+   utils::log info "$1"
 }
 
 utils::abort() {
    local msg="$1"
-   local -i ec="${2-1}"
-   log "$msg" fatal
+   local -i ec=${2-1}
+   utils::log fatal "$msg"
    exit $ec
 }
 
