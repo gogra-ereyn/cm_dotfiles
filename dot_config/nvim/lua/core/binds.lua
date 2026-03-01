@@ -13,6 +13,8 @@ set('n', '<C-l>', '<C-w>l', { noremap = true })
 -- keep cursor centered
 set('n', '<C-d>', '<C-d>zz')
 set('n', '<C-u>', '<C-u>zz')
+set('n', '<C-i>', '<C-i>zz')
+set('n', '<C-o>', '<C-o>zz')
 set('n', 'n', 'nzz', { silent = true })
 set('n', 'N', 'Nzz', { silent = true })
 set('n', '*', '*zz', { silent = true })
