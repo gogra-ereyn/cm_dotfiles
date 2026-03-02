@@ -53,6 +53,5 @@ TAB: menu-complete
 
 set keymap vi-command
 "u": undo
-"\C-r": redo
 
 set keymap vi-insert
