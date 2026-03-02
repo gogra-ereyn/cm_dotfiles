@@ -1,5 +1,8 @@
 # show completions on first tab, cycle on subsequent tabs
 
+set editing-mode vi
+set show-mode-in-prompt on
+
 set show-all-if-ambiguous on
 set show-all-if-unmodified off
 set menu-complete-display-prefix on
@@ -47,3 +50,9 @@ TAB: menu-complete
 
 "\C-_": undo                         # ctrl+/ - undo
 "\C-xu": undo                        # ctrl+x u - explicit undo
+
+set keymap vi-command
+"u": undo
+"\C-r": redo
+
+set keymap vi-insert
