@@ -38,30 +38,30 @@ static void t_error(int status, int errnum, const char *format, ...)
 
 static int usage(char *name, int rc)
 {
-	fprintf(stderr, "Usage: %s [options]\n", name);
-	fprintf(stderr, "Options:\n");
+	dprintf(2, "Usage: %s [options]\n", name);
+	dprintf(2, "Options:\n");
 
-	fprintf(stderr, "\t-h, --help\n");
-	fprintf(stderr, "\t\tShow this help message\n");
-	fprintf(stderr, "\n");
+	dprintf(2, "\t-h, --help\n");
+	dprintf(2, "\t\tShow this help message\n");
+	dprintf(2, "\n");
 
-	fprintf(stderr, "\t-a, --address <ADDRESS>\n");
-	fprintf(stderr, "\t\tInterface address to bind to.\n");
-	fprintf(stderr, "\t\tUse 0.0.0.0 to listen on all interfaces,\n");
-	fprintf(stderr, "\t\tUse 127.0.0.1 to listen only on localhost\n");
-	fprintf(stderr, "\t\t[env: ADDRESS=%s]\n", envstr("ADDRESS"));
+	dprintf(2, "\t-a, --address <ADDRESS>\n");
+	dprintf(2, "\t\tInterface address to bind to.\n");
+	dprintf(2, "\t\tUse 0.0.0.0 to listen on all interfaces,\n");
+	dprintf(2, "\t\tUse 127.0.0.1 to listen only on localhost\n");
+	dprintf(2, "\t\t[env: ADDRESS=%s]\n", envstr("ADDRESS"));
 
-	fprintf(stderr, "\t-p, --port PORT\n");
-	fprintf(stderr, "\t\tPort number to listen on.\n");
-	fprintf(stderr, "\t\tIf omitted will bind to any free port\n");
-	fprintf(stderr, "\t\t[env: PORT=%s]\n", envstr("PORT"));
+	dprintf(2, "\t-p, --port PORT\n");
+	dprintf(2, "\t\tPort number to listen on.\n");
+	dprintf(2, "\t\tIf omitted will bind to any free port\n");
+	dprintf(2, "\t\t[env: PORT=%s]\n", envstr("PORT"));
 
-	fprintf(stderr, "\t-t, --trim-newlines[=BOOL]\n");
-	fprintf(stderr, "\t\tRemove trailing newlines (assumes ASCII).\n");
-	fprintf(stderr, "\t\tDon't use this for binary data. \n");
-	fprintf(stderr, "\t\tSets to true if `BOOL` is omitted.\n");
-	fprintf(stderr, "\t[default: false]\n");
-	fprintf(stderr, "\t[env: TRIM_NEWLINES=%s]\n", envstr("TRIM_NEWLINES"));
+	dprintf(2, "\t-t, --trim-newlines[=BOOL]\n");
+	dprintf(2, "\t\tRemove trailing newlines (assumes ASCII).\n");
+	dprintf(2, "\t\tDon't use this for binary data. \n");
+	dprintf(2, "\t\tSets to true if `BOOL` is omitted.\n");
+	dprintf(2, "\t[default: false]\n");
+	dprintf(2, "\t[env: TRIM_NEWLINES=%s]\n", envstr("TRIM_NEWLINES"));
 
 	return rc;
 }
@@ -70,8 +70,8 @@ void invalid_input(const char *format, ...)
 {
 	va_list args;
 	va_start(args, format);
-	vfprintf(stderr, format, args);
-	fprintf(stderr, "\n");
+	vdprintf(2, format, args);
+	dprintf(2, "\n");
 	va_end(args);
 	usage("main", 1);
 }
