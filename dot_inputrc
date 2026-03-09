@@ -1,6 +1,11 @@
 # show completions on first tab, cycle on subsequent tabs
 
 set editing-mode vi
+
+$if GDB
+set editing-mode emacs
+$endif
+
 set show-mode-in-prompt on
 
 set show-all-if-ambiguous on
