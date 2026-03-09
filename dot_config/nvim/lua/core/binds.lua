@@ -56,20 +56,3 @@ set('n', 'k', 'gk')
 
 -- same dir as current buf
 set('n', '<leader>p', ':e <C-R>=expand("%:p:h") . "/" <cr>')
-
--- jon-gj 's proximity sort.
--- can be installed via `cargo install proximity-sort`
-set('', '<C-p>', function()
-    opts = {}
-    opts.cmd = 'fd --color=never --hidden --type f --type l --exclude .git'
-    local base = vim.fn.fnamemodify(vim.fn.expand('%'), ':h:.:S')
-    if base ~= '.' then
-        opts.cmd = opts.cmd .. (" | proximity-sort %s"):format(vim.fn.shellescape(vim.fn.expand('%')))
-    end
-    opts.fzf_opts = {
-        ['--scheme']   = 'path',
-        ['--tiebreak'] = 'index',
-        ["--layout"]   = "default",
-    }
-    require 'fzf-lua'.files(opts)
-end)
