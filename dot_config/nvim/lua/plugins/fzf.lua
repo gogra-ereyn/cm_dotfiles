@@ -27,8 +27,10 @@ return {
                 },
             }
 
+            -- jon-gj 's proximity sort.
+            -- can be installed via `cargo install proximity-sort`
             vim.keymap.set('', '<C-p>', function()
-                opts = {}
+                local opts = {}
                 opts.cmd = 'fd --color=never --hidden --type f --type l --exclude .git'
                 local base = vim.fn.fnamemodify(vim.fn.expand('%'), ':h:.:S')
                 if base ~= '.' then
@@ -40,9 +42,9 @@ return {
                     ["--layout"]   = "default",
                 }
                 require 'fzf-lua'.files(opts)
-            end)
+            end, { silent = true, desc = 'fzf proximity sort' })
 
-            vim.keymap.set('n', '<leader>;', function()
+            vim.keymap.set('n', '<C-b>', function()
                 require 'fzf-lua'.buffers({
                     fzf_opts = {
                         ["--with-nth"]     = "{-3..-2}",
@@ -50,9 +52,9 @@ return {
                         ["--delimiter"]    = "[:\u{2002}]",
                         ["--header-lines"] = "false",
                     },
-                    header = false,
+                    header = "",
                 })
-            end)
+            end, { silent = true, desc = 'fzf buffers' })
         end
     },
 }
