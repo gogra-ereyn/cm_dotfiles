@@ -46,6 +46,7 @@ return {
 
             vim.keymap.set('n', '<C-b>', function()
                 require 'fzf-lua'.buffers({
+                    ignore_current_buffer = true,
                     fzf_opts = {
                         ["--with-nth"]     = "{-3..-2}",
                         ["--nth"]          = "-1",
