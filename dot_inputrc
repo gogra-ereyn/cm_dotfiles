@@ -24,7 +24,7 @@ set bell-style none
 
 TAB: menu-complete
 "\e[Z": menu-complete-backward      # shift-tab
-"\e[C": menu-complete-forward         # right
+#"\e[C": menu-complete-forward         # right
 
 "\e[A": history-search-backward      # up
 "\e[B": history-search-forward       # down

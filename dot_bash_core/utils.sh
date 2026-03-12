@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # ndjson shenanigans
-#
+
+utils::list_to_csv() {
+     paste -sd,
+}
+
 utils::njson_prefix_first() {
     local prefix="${1?missing prefix}"; shift
     jq -r --arg p "$prefix" '[.[] | select(startswith($p))] | first // empty' "$@" | sort -u
