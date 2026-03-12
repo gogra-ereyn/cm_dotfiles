@@ -229,8 +229,7 @@ bindsym $mod+9 exec polybar-msg cmd toggle
 
 
 # =============== borders & gaps
-default_border pixel 1
-#for_window [class="^.*"] border none
+for_window [class="^.*"] border none
 gaps inner 0
 gaps outer 0
 floating_modifier $mod
