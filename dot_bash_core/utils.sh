@@ -1,5 +1,32 @@
 #!/bin/bash
 
+# ndjson shenanigans
+#
+utils::njson_prefix_first() {
+    local prefix="${1?missing prefix}"; shift
+    jq -r --arg p "$prefix" '[.[] | select(startswith($p))] | first // empty' "$@" | sort -u
+}
+
+utils::ndjson_prefix_all() {
+    local prefix="${1?missing prefix}"; shift
+        jq -r --arg p "$prefix" '.[] | select(startswith($p))' "$@" | sort -u
+}
+
+ndjson_prefix_first() {
+    local prefix="$1"; shift
+    jq -r --arg p "$prefix" '
+      [.[] | select(startswith($p))] | first // empty | ltrimstr($p)
+    ' "$@" | sort -u
+}
+
+utils::expand_csv() {
+    tr ',' '\n' < "${1:-/dev/stdin}"
+}
+
+utils::expand_csv_trimmed() {
+    tr ',' '\n' < "${1:-/dev/stdin}" | sed 's/^ *//;s/ *$//'
+}
+
 
 utils::wait_tcp() {
     local host="${1?missing 1/host}"
