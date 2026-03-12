@@ -1,0 +1,31 @@
+#!/bin/bash
+# cutils ref={{ dig "cutils" "ref" "master" . }}
+set -euo pipefail
+
+main() {
+    local cache_dir="${HOME}/.cache/cutils-src"
+    local local="{{ dig "cutils" "local" "" . }}"
+    local remote="{{ dig "cutils" "remote" "https://github.com/gogra-ereyn/cutils.git" . }}"
+    local ref="{{ dig "cutils" "ref" "master" . }}"
+    local src=
+
+    if [[ -n "$local" && -d "$local" ]]; then
+        src="$local"
+    else
+        src="$cache_dir"
+        if [[ -d "$src/.git" ]]; then
+            git -C "$src" fetch origin
+        else
+            git clone "$remote" "$src"
+        fi
+        git -C "$src" checkout "$ref"
+        git -C "$src" merge --ff-only "origin/$ref" 2>/dev/null || true
+    fi
+
+    cmake -B "$src/build" -S "$src" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=OFF
+    cmake --build "$src/build"
+    cmake --install "$src/build"
+}
+
+main "$@"
+
