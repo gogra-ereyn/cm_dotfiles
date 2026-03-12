@@ -56,10 +56,5 @@ bindings = [
 
 [[mouse.bindings]]
 mouse="Middle"
-mods="None"
-action="Paste"
-
-[[mouse.bindings]]
-mouse = "Middle"
 mods = "Control"
 action = "PasteSelection"
