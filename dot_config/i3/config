@@ -136,20 +136,9 @@ bindsym button5 nop
 # focus_wrapping yes|no|force|workspace
 bindsym $mod+t move position mouse
 # bindsym $mod+c move absolute position center
-#bindsym $mod+x move workspace to output next
-
-# Move the current workspace to the next output
-# (effectively toggles when you only have two outputs)
-#bindsym $mod+x move workspace to output next
-
-# Cycle this workspace between outputs VGA1 and LVDS1 but not DVI0
-#bindsym $mod+x move workspace to output VGA1 LVDS1
-
-# Put this window on the presentation output.
-#bindsym $mod+x move container to output VGA1
-
-# Put this window on the primary output.
-#bindsym $mod+x move container to output primary
+# move window/workspace to other output
+bindsym $mod+o move container to output next
+bindsym $mod+Shift+o move workspace to output next
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -297,7 +286,7 @@ mode "resize" {
 
 
 # wrap focused window with a new tab-layout container
-bindsym $mod+Shift+t split h, layout tabbed, border normal
+bindsym $mod+Shift+t split h, layout tabbed
 bindsym $mod+Shift+v layout toggle split
 bindsym $mod+b border toggle
 bindsym $mod+Shift+b border border none
