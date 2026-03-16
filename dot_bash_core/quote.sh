@@ -6,13 +6,21 @@ quote_inner_word() {
     local start=$pos end=$pos
     local len=${#line}
 
+    # if not on a word char, skip forward to next word
+    if ! [[ "${line:pos:1}" =~ [[:alnum:]_] ]]; then
+        while (( pos < len )) && ! [[ "${line:pos:1}" =~ [[:alnum:]_] ]]; do
+            (( pos++ ))
+        done
+        (( pos == len )) && return
+        start=$pos end=$pos
+    fi
+
     while (( start > 0 )) && [[ "${line:start-1:1}" =~ [[:alnum:]_] ]]; do
         (( start-- ))
     done
     while (( end < len )) && [[ "${line:end:1}" =~ [[:alnum:]_] ]]; do
         (( end++ ))
     done
-    (( start == end )) && return
 
     local quoted
     quoted=$(printf '%s' "${line:start:end-start}" | qw)
@@ -28,13 +36,21 @@ quote_inner_WORD() {
     local start=$pos end=$pos
     local len=${#line}
 
+    # if on whitespace, skip forward to next WORD
+    if [[ "${line:pos:1}" =~ [[:space:]] || -z "${line:pos:1}" ]]; then
+        while (( pos < len )) && [[ "${line:pos:1}" =~ [[:space:]] ]]; do
+            (( pos++ ))
+        done
+        (( pos == len )) && return
+        start=$pos end=$pos
+    fi
+
     while (( start > 0 )) && [[ "${line:start-1:1}" != [[:space:]] ]]; do
         (( start-- ))
     done
     while (( end < len )) && [[ "${line:end:1}" != [[:space:]] ]]; do
         (( end++ ))
     done
-    (( start == end )) && return
 
     local quoted
     quoted=$(printf '%s' "${line:start:end-start}" | qw)
@@ -43,5 +59,5 @@ quote_inner_WORD() {
     READLINE_POINT=$(( start + ${#quoted} ))
 }
 
-bind -m vi-command -x '"qiw": quote_inner_word'
-bind -m vi-command -x '"qIw": quote_inner_WORD'
+bind -m vi-command -x '"qw": quote_inner_word'
+bind -m vi-command -x '"qW": quote_inner_WORD'
