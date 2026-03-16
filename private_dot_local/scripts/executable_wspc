@@ -4,5 +4,5 @@ i3-msg -t get_tree | jq -r '
   recurse(.nodes[]) | select(.type == "output" and .name != "__i3") as $out |
   $out | recurse(.nodes[]) | select(.type == "workspace") as $w |
   $w | recurse(.nodes[]) | select(.type == "con" and .window_properties != null) |
-  "\($out.name) \($w.num): \(.window_properties.class) - \(.name)"
+  "[\($out.name)] [\($w.num)]: \(.window_properties.class) - \(.name)"
 '
