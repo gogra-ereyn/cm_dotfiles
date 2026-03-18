@@ -1,6 +1,16 @@
 #!/bin/bash
 set -euo pipefail
 
+# for debugging:
+# check ssh:
+#   ssh -G github.com-cutils-ro | grep -Ei '^(user|hostname|identityfile|identitiesonly) '
+# to override:
+#   ssh -o IdentitiesOnly=yes -i ~/.ssh/github-cutils-deploy -T git@github.com
+# so in ordr:
+# ssh -G github.com-cutils-ro | grep -Ei '^(user|hostname|identityfile|identitiesonly) '
+# ssh -Tv git@github.com-cutils-ro
+# ssh -o IdentitiesOnly=yes -i ~/.ssh/github-cutils-deploy -T git@github.com
+
 main() {
     local cache_dir="${HOME}/.cache/cutils-src"
     local local="{{ dig "cutils" "local" "" . }}"
