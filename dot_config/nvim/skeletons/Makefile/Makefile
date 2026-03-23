@@ -2,10 +2,16 @@ BUILD_DIR ?= build
 CONFIG    ?= RelWithDebugInfo
 JOBS      ?= 4
 ARGS      ?=
+FILTER    ?=
 CMAKE     ?= cmake
 CTEST     ?= ctest
 
-.PHONY: all build debug release test clean rebuild run run-%
+CTEST_FLAGS := --output-on-failure --test-dir $(BUILD_DIR)
+ifneq ($(FILTER),)
+CTEST_FLAGS += -R $(FILTER)
+endif
+
+.PHONY: all build debug release test list-tests clean rebuild run run-%
 
 all: build
 
@@ -21,7 +27,10 @@ release:
 	$(MAKE) build CONFIG=Release
 
 test: debug
-	$(CTEST) --output-on-failure --test-dir $(BUILD_DIR)
+	$(CTEST) $(CTEST_FLAGS)
+
+list-tests: debug
+	@$(CTEST) $(CTEST_FLAGS) -N
 
 clean:
 	@echo "Removing $(BUILD_DIR)/"
