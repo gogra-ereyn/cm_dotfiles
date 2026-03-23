@@ -236,6 +236,37 @@ extern int _massert_checks;
 		}                                                                                  \
 	} while (0)
 
+#define assert_eq_f64(left, right, ...)                                             \
+	do {                                                                       \
+		double _left_val = (left);                                         \
+		double _right_val = (right);                                       \
+		if (_left_val != _right_val) {                                     \
+			fprintf(stderr, "Assertion failed: %s == %s\n",            \
+				#left, #right);                                    \
+			fprintf(stderr, "  Left:  %.17g\n", _left_val);           \
+			fprintf(stderr, "  Right: %.17g\n", _right_val);          \
+			_massert_location();                                       \
+			_massert_message(__VA_ARGS__);                             \
+			abort();                                                   \
+		}                                                                  \
+	} while (0)
+
+#define check_eq_f64(left, right, ...)                                             \
+	do {                                                                       \
+		double _left_val = (left);                                         \
+		double _right_val = (right);                                       \
+		_massert_checks++;                                                 \
+		if (_left_val != _right_val) {                                     \
+			fprintf(stderr, "Check failed: %s == %s\n",                \
+				#left, #right);                                    \
+			fprintf(stderr, "  Left:  %.17g\n", _left_val);           \
+			fprintf(stderr, "  Right: %.17g\n", _right_val);          \
+			_massert_location();                                       \
+			_massert_message(__VA_ARGS__);                             \
+			_check_fail();                                             \
+		}                                                                  \
+	} while (0)
+
 #define check_memeq(left, right, len, ...)                                                    \
 	do {                                                                                  \
 		const unsigned char *_lp = (const unsigned char *)(left);                     \
@@ -300,18 +331,19 @@ extern int _massert_checks;
 
 /*
  * TEST_MAIN: generates main(). follow with a braced block of RUN_TEST() calls.
+ * report and exit code are automatic.
  */
-#define TEST_MAIN                          \
-	static int _massert_passed;        \
-	static int _massert_test_failures; \
-	int main(void)
-
-#define TEST_REPORT()                                                                  \
-	do {                                                                           \
+#define TEST_MAIN                                                                      \
+	static int _massert_passed;                                                    \
+	static int _massert_test_failures;                                             \
+	static void _run_tests(void);                                                  \
+	int main(void) {                                                               \
+		_run_tests();                                                          \
 		fprintf(stderr, "\n──────────────────────────────\n");                 \
 		fprintf(stderr, "%d passed, %d failed (%d checks)\n", _massert_passed, \
 			_massert_test_failures, _massert_checks);                      \
 		return _massert_test_failures ? 1 : 0;                                 \
-	} while (0)
+	}                                                                              \
+	static void _run_tests(void)
 
 #endif /* MASSERT_H */
