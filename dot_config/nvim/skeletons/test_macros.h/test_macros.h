@@ -267,6 +267,153 @@ extern int _massert_checks;
 		}                                                                  \
 	} while (0)
 
+#define assert_arreq_i64(left, right, len, ...)                                            \
+	do {                                                                                  \
+		const long long *_lp;                                                         \
+		const long long *_rp;                                                         \
+		int _len = (len);                                                             \
+		int _i, _mismatches = 0;                                                      \
+		long long _lbuf[_len], _rbuf[_len];                                           \
+		for (_i = 0; _i < _len; _i++) { _lbuf[_i] = (left)[_i]; _rbuf[_i] = (right)[_i]; } \
+		_lp = _lbuf; _rp = _rbuf;                                                    \
+		for (_i = 0; _i < _len; _i++)                                                 \
+			if (_lp[_i] != _rp[_i]) _mismatches++;                                \
+		if (_mismatches) {                                                             \
+			fprintf(stderr, "Assertion failed: %s == %s (%d elems)\n",             \
+				#left, #right, _len);                                          \
+			fprintf(stderr, "  idx  got              expected\n");                 \
+			for (_i = 0; _i < _len; _i++)                                          \
+				fprintf(stderr, "  [%d]  %-16lld%-16lld%s\n",                  \
+					_i, _lp[_i], _rp[_i],                                 \
+					_lp[_i] != _rp[_i] ? "  *" : "");                     \
+			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
+			_massert_location();                                                   \
+			_massert_message(__VA_ARGS__);                                         \
+			abort();                                                               \
+		}                                                                              \
+	} while (0)
+
+#define assert_arreq_u64(left, right, len, ...)                                                \
+	do {                                                                                  \
+		int _len = (len);                                                             \
+		int _i, _mismatches = 0;                                                      \
+		unsigned long long _lbuf[_len], _rbuf[_len];                                  \
+		for (_i = 0; _i < _len; _i++) { _lbuf[_i] = (left)[_i]; _rbuf[_i] = (right)[_i]; } \
+		for (_i = 0; _i < _len; _i++)                                                 \
+			if (_lbuf[_i] != _rbuf[_i]) _mismatches++;                            \
+		if (_mismatches) {                                                             \
+			fprintf(stderr, "Assertion failed: %s == %s (%d elems)\n",             \
+				#left, #right, _len);                                          \
+			fprintf(stderr, "  idx  got              expected\n");                 \
+			for (_i = 0; _i < _len; _i++)                                          \
+				fprintf(stderr, "  [%d]  %-16llu%-16llu%s\n",                  \
+					_i, _lbuf[_i], _rbuf[_i],                             \
+					_lbuf[_i] != _rbuf[_i] ? "  *" : "");                 \
+			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
+			_massert_location();                                                   \
+			_massert_message(__VA_ARGS__);                                         \
+			abort();                                                               \
+		}                                                                              \
+	} while (0)
+
+#define assert_arreq_f64(left, right, len, ...)                                        \
+	do {                                                                           \
+		const double *_lp = (const double *)(left);                            \
+		const double *_rp = (const double *)(right);                           \
+		int _len = (len);                                                      \
+		int _i, _mismatches = 0;                                               \
+		for (_i = 0; _i < _len; _i++)                                          \
+			if (_lp[_i] != _rp[_i]) _mismatches++;                         \
+		if (_mismatches) {                                                      \
+			fprintf(stderr, "Assertion failed: %s == %s (%d elems)\n",      \
+				#left, #right, _len);                                   \
+			fprintf(stderr, "  idx  got              expected\n");          \
+			for (_i = 0; _i < _len; _i++)                                   \
+				fprintf(stderr, "  [%d]  %-16g%-16g%s\n",               \
+					_i, _lp[_i], _rp[_i],                          \
+					_lp[_i] != _rp[_i] ? "  *" : "");              \
+			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);     \
+			_massert_location();                                            \
+			_massert_message(__VA_ARGS__);                                  \
+			abort();                                                        \
+		}                                                                       \
+	} while (0)
+
+#define check_arreq_i64(left, right, len, ...)                                                \
+	do {                                                                                  \
+		const long long *_lp;                                                         \
+		const long long *_rp;                                                         \
+		int _len = (len);                                                             \
+		int _i, _mismatches = 0;                                                      \
+		long long _lbuf[_len], _rbuf[_len];                                           \
+		for (_i = 0; _i < _len; _i++) { _lbuf[_i] = (left)[_i]; _rbuf[_i] = (right)[_i]; } \
+		_lp = _lbuf; _rp = _rbuf;                                                    \
+		_massert_checks++;                                                            \
+		for (_i = 0; _i < _len; _i++)                                                 \
+			if (_lp[_i] != _rp[_i]) _mismatches++;                                \
+		if (_mismatches) {                                                             \
+			fprintf(stderr, "Check failed: %s == %s (%d elems)\n",                \
+				#left, #right, _len);                                          \
+			fprintf(stderr, "  idx  got              expected\n");                 \
+			for (_i = 0; _i < _len; _i++)                                          \
+				fprintf(stderr, "  [%d]  %-16lld%-16lld%s\n",                  \
+					_i, _lp[_i], _rp[_i],                                 \
+					_lp[_i] != _rp[_i] ? "  *" : "");                     \
+			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
+			_massert_location();                                                   \
+			_massert_message(__VA_ARGS__);                                         \
+			_check_fail();                                                         \
+		}                                                                              \
+	} while (0)
+
+#define check_arreq_u64(left, right, len, ...)                                                 \
+	do {                                                                                  \
+		int _len = (len);                                                             \
+		int _i, _mismatches = 0;                                                      \
+		unsigned long long _lbuf[_len], _rbuf[_len];                                  \
+		for (_i = 0; _i < _len; _i++) { _lbuf[_i] = (left)[_i]; _rbuf[_i] = (right)[_i]; } \
+		_massert_checks++;                                                            \
+		for (_i = 0; _i < _len; _i++)                                                 \
+			if (_lbuf[_i] != _rbuf[_i]) _mismatches++;                            \
+		if (_mismatches) {                                                             \
+			fprintf(stderr, "Check failed: %s == %s (%d elems)\n",                \
+				#left, #right, _len);                                          \
+			fprintf(stderr, "  idx  got              expected\n");                 \
+			for (_i = 0; _i < _len; _i++)                                          \
+				fprintf(stderr, "  [%d]  %-16llu%-16llu%s\n",                  \
+					_i, _lbuf[_i], _rbuf[_i],                             \
+					_lbuf[_i] != _rbuf[_i] ? "  *" : "");                 \
+			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
+			_massert_location();                                                   \
+			_massert_message(__VA_ARGS__);                                         \
+			_check_fail();                                                         \
+		}                                                                              \
+	} while (0)
+
+#define check_arreq_f64(left, right, len, ...)                                         \
+	do {                                                                           \
+		const double *_lp = (const double *)(left);                            \
+		const double *_rp = (const double *)(right);                           \
+		int _len = (len);                                                      \
+		int _i, _mismatches = 0;                                               \
+		_massert_checks++;                                                     \
+		for (_i = 0; _i < _len; _i++)                                          \
+			if (_lp[_i] != _rp[_i]) _mismatches++;                         \
+		if (_mismatches) {                                                      \
+			fprintf(stderr, "Check failed: %s == %s (%d elems)\n",         \
+				#left, #right, _len);                                   \
+			fprintf(stderr, "  idx  got              expected\n");          \
+			for (_i = 0; _i < _len; _i++)                                   \
+				fprintf(stderr, "  [%d]  %-16g%-16g%s\n",               \
+					_i, _lp[_i], _rp[_i],                          \
+					_lp[_i] != _rp[_i] ? "  *" : "");              \
+			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);     \
+			_massert_location();                                            \
+			_massert_message(__VA_ARGS__);                                  \
+			_check_fail();                                                  \
+		}                                                                       \
+	} while (0)
+
 #define check_memeq(left, right, len, ...)                                                    \
 	do {                                                                                  \
 		const unsigned char *_lp = (const unsigned char *)(left);                     \
