@@ -73,3 +73,10 @@ autosquash = true
 
 [protocol]
   version = 2
+
+[url "git@github.com:gogra-ereyn/cutils.git"]
+    insteadOf = https://github.com/gogra-ereyn/cutils.git
+[url "git@github.com:gogra-ereyn/cutils"]
+    insteadOf = https://github.com/gogra-ereyn/cutils
+[core]
+    sshCommand = ssh -i ~/.ssh/github-cutils-deploy -o IdentitiesOnly=yes

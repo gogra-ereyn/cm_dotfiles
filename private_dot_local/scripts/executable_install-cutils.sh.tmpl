@@ -1,31 +1,25 @@
 #!/bin/bash
 set -euo pipefail
 
-# for debugging:
-# check ssh:
-#   ssh -G github.com-cutils-ro | grep -Ei '^(user|hostname|identityfile|identitiesonly) '
-# to override:
-#   ssh -o IdentitiesOnly=yes -i ~/.ssh/github-cutils-deploy -T git@github.com
-# so in ordr:
-# ssh -G github.com-cutils-ro | grep -Ei '^(user|hostname|identityfile|identitiesonly) '
-# ssh -Tv git@github.com-cutils-ro
-# ssh -o IdentitiesOnly=yes -i ~/.ssh/github-cutils-deploy -T git@github.com
-
 main() {
     local cache_dir="${HOME}/.cache/cutils-src"
     local local="{{ dig "cutils" "local" "" . }}"
-    local remote="{{ dig "cutils" "remote" "git@github.com-cutils-ro:gogra-ereyn/cutils.git" . }}"
+    local remote="{{ dig "cutils" "remote" "git@github.com:gogra-ereyn/cutils.git" . }}"
     local ref="{{ dig "cutils" "ref" "master" . }}"
+    local ssh_cmd=
     local src=
+
+    ssh_cmd="ssh -i ${HOME}/.ssh/github-cutils-readonly -o IdentitiesOnly=yes"
 
     if [[ -n "$local" && -d "$local" ]]; then
         src="$local"
     else
         src="$cache_dir"
         if [[ -d "$src/.git" ]]; then
-            git -C "$src" fetch origin
+            git -C "$src" remote set-url origin "$remote"
+            GIT_SSH_COMMAND="$ssh_cmd" git -C "$src" fetch origin
         else
-            git clone "$remote" "$src"
+            GIT_SSH_COMMAND="$ssh_cmd" git clone "$remote" "$src"
         fi
         git -C "$src" checkout "$ref"
         git -C "$src" merge --ff-only "origin/$ref" 2>/dev/null || true
