@@ -1,10 +1,11 @@
 BUILD_DIR ?= build
-CONFIG    ?= RelWithDebugInfo
-JOBS      ?= 4
+CONFIG    ?= RelWithDebInfo
+JOBS      ?= $(shell echo $$(( $$(nproc) / 2 > 0 ? $$(nproc) / 2 : 1 )))
 ARGS      ?=
 FILTER    ?=
 CMAKE     ?= cmake
 CTEST     ?= ctest
+BIN_PATH   = $(BUILD_DIR)/$(BIN)
 
 CTEST_FLAGS := --output-on-failure --test-dir $(BUILD_DIR)
 ifneq ($(FILTER),)
