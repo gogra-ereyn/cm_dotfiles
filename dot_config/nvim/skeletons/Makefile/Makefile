@@ -17,7 +17,7 @@ endif
 all: build
 
 build:
-	$(CMAKE) -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(CONFIG) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON $(ARGS)
+	$(CMAKE) -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(CONFIG) $(ARGS)
 	$(CMAKE) --build $(BUILD_DIR) -- -j $(JOBS)
 	@ln -sf $(BUILD_DIR)/compile_commands.json .
 
