@@ -283,9 +283,9 @@ extern int _massert_checks;
 				#left, #right, _len);                                          \
 			fprintf(stderr, "  idx  got              expected\n");                 \
 			for (_i = 0; _i < _len; _i++)                                          \
-				fprintf(stderr, "  [%d]  %-16lld%-16lld%s\n",                  \
-					_i, _lp[_i], _rp[_i],                                 \
-					_lp[_i] != _rp[_i] ? "  *" : "");                     \
+				if (_lp[_i] != _rp[_i])                                        \
+					fprintf(stderr, "  [%d]  %-16lld%lld\n",               \
+						_i, _lp[_i], _rp[_i]);                        \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
 			_massert_location();                                                   \
 			_massert_message(__VA_ARGS__);                                         \
@@ -306,9 +306,9 @@ extern int _massert_checks;
 				#left, #right, _len);                                          \
 			fprintf(stderr, "  idx  got              expected\n");                 \
 			for (_i = 0; _i < _len; _i++)                                          \
-				fprintf(stderr, "  [%d]  %-16llu%-16llu%s\n",                  \
-					_i, _lbuf[_i], _rbuf[_i],                             \
-					_lbuf[_i] != _rbuf[_i] ? "  *" : "");                 \
+				if (_lbuf[_i] != _rbuf[_i])                                    \
+					fprintf(stderr, "  [%d]  %-16llu%llu\n",               \
+						_i, _lbuf[_i], _rbuf[_i]);                    \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
 			_massert_location();                                                   \
 			_massert_message(__VA_ARGS__);                                         \
@@ -329,9 +329,9 @@ extern int _massert_checks;
 				#left, #right, _len);                                   \
 			fprintf(stderr, "  idx  got              expected\n");          \
 			for (_i = 0; _i < _len; _i++)                                   \
-				fprintf(stderr, "  [%d]  %-16g%-16g%s\n",               \
-					_i, _lp[_i], _rp[_i],                          \
-					_lp[_i] != _rp[_i] ? "  *" : "");              \
+				if (_lp[_i] != _rp[_i])                                 \
+					fprintf(stderr, "  [%d]  %-16g%g\n",            \
+						_i, _lp[_i], _rp[_i]);                 \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);     \
 			_massert_location();                                            \
 			_massert_message(__VA_ARGS__);                                  \
@@ -356,9 +356,9 @@ extern int _massert_checks;
 				#left, #right, _len);                                          \
 			fprintf(stderr, "  idx  got              expected\n");                 \
 			for (_i = 0; _i < _len; _i++)                                          \
-				fprintf(stderr, "  [%d]  %-16lld%-16lld%s\n",                  \
-					_i, _lp[_i], _rp[_i],                                 \
-					_lp[_i] != _rp[_i] ? "  *" : "");                     \
+				if (_lp[_i] != _rp[_i])                                        \
+					fprintf(stderr, "  [%d]  %-16lld%lld\n",               \
+						_i, _lp[_i], _rp[_i]);                        \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
 			_massert_location();                                                   \
 			_massert_message(__VA_ARGS__);                                         \
@@ -380,9 +380,9 @@ extern int _massert_checks;
 				#left, #right, _len);                                          \
 			fprintf(stderr, "  idx  got              expected\n");                 \
 			for (_i = 0; _i < _len; _i++)                                          \
-				fprintf(stderr, "  [%d]  %-16llu%-16llu%s\n",                  \
-					_i, _lbuf[_i], _rbuf[_i],                             \
-					_lbuf[_i] != _rbuf[_i] ? "  *" : "");                 \
+				if (_lbuf[_i] != _rbuf[_i])                                    \
+					fprintf(stderr, "  [%d]  %-16llu%llu\n",               \
+						_i, _lbuf[_i], _rbuf[_i]);                    \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
 			_massert_location();                                                   \
 			_massert_message(__VA_ARGS__);                                         \
@@ -404,9 +404,9 @@ extern int _massert_checks;
 				#left, #right, _len);                                   \
 			fprintf(stderr, "  idx  got              expected\n");          \
 			for (_i = 0; _i < _len; _i++)                                   \
-				fprintf(stderr, "  [%d]  %-16g%-16g%s\n",               \
-					_i, _lp[_i], _rp[_i],                          \
-					_lp[_i] != _rp[_i] ? "  *" : "");              \
+				if (_lp[_i] != _rp[_i])                                 \
+					fprintf(stderr, "  [%d]  %-16g%g\n",            \
+						_i, _lp[_i], _rp[_i]);                 \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);     \
 			_massert_location();                                            \
 			_massert_message(__VA_ARGS__);                                  \
