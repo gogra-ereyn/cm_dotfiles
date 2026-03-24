@@ -3,30 +3,32 @@ set -euo pipefail
 
 main() {
     local cache_dir="${HOME}/.cache/cutils-src"
-    local local="{{ dig "cutils" "local" "" . }}"
+    local local_dir="{{ dig "cutils" "local" "" . }}"
     local remote="{{ dig "cutils" "remote" "git@github.com:gogra-ereyn/cutils.git" . }}"
     local ref="{{ dig "cutils" "ref" "master" . }}"
-    local ssh_cmd=
+    local ssh_key="{{ dig "cutils" "ssh_key" "" . }}"
     local src=
+    local git_cmd=(git)
 
-    ssh_cmd="ssh -i ${HOME}/.ssh/github-cutils-readonly -o IdentitiesOnly=yes"
+    if [[ -n "$ssh_key" ]]; then
+        git_cmd=(env "GIT_SSH_COMMAND=ssh -i $ssh_key -o IdentitiesOnly=yes" git)
+    fi
 
-    if [[ -n "$local" && -d "$local" ]]; then
-        src="$local"
+    if [[ -n "$local_dir" && -d "$local_dir" ]]; then
+        src="$local_dir"
     else
         src="$cache_dir"
         if [[ -d "$src/.git" ]]; then
-            git -C "$src" remote set-url origin "$remote"
-            GIT_SSH_COMMAND="$ssh_cmd" git -C "$src" fetch origin
+            "${git_cmd[@]}" -C "$src" fetch origin
         else
-            GIT_SSH_COMMAND="$ssh_cmd" git clone "$remote" "$src"
+            "${git_cmd[@]}" clone "$remote" "$src"
         fi
         git -C "$src" checkout "$ref"
         git -C "$src" merge --ff-only "origin/$ref" 2>/dev/null || true
     fi
 
     cmake -B "$src/build" -S "$src" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=OFF
-    cmake --build "$src/build"
+    cmake --build "$src/build" -j"$(nproc)"
     cmake --install "$src/build"
 }
 

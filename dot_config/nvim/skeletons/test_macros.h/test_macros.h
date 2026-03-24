@@ -22,6 +22,10 @@ extern int _massert_failures;
 extern int _massert_checks;
 #endif
 
+#ifndef MASSERT_ARR_MAX_PRINT
+#define MASSERT_ARR_MAX_PRINT 16
+#endif
+
 #define _massert_location() fprintf(stderr, "  File: %s, Line: %d\n", __FILE__, __LINE__)
 
 #define _massert_message(...)                                       \
@@ -267,6 +271,60 @@ extern int _massert_checks;
 		}                                                                  \
 	} while (0)
 
+#define _MASSERT_ARR_PRINT_I64(lp, rp, len, mismatches)                                 \
+	do {                                                                               \
+		int _p = 0;                                                                \
+		fprintf(stderr, "  idx  got              expected\n");                      \
+		for (_i = 0; _i < len; _i++) {                                             \
+			if ((lp)[_i] != (rp)[_i]) {                                        \
+				if (MASSERT_ARR_MAX_PRINT && _p >= MASSERT_ARR_MAX_PRINT) { \
+					fprintf(stderr, "  ... and %d more\n",             \
+						mismatches - _p);                          \
+					break;                                             \
+				}                                                          \
+				fprintf(stderr, "  [%d]  %-16lld%lld\n",                   \
+					_i, (lp)[_i], (rp)[_i]);                          \
+				_p++;                                                      \
+			}                                                                  \
+		}                                                                          \
+	} while (0)
+
+#define _MASSERT_ARR_PRINT_U64(lp, rp, len, mismatches)                                \
+	do {                                                                               \
+		int _p = 0;                                                                \
+		fprintf(stderr, "  idx  got              expected\n");                      \
+		for (_i = 0; _i < len; _i++) {                                             \
+			if ((lp)[_i] != (rp)[_i]) {                                        \
+				if (MASSERT_ARR_MAX_PRINT && _p >= MASSERT_ARR_MAX_PRINT) { \
+					fprintf(stderr, "  ... and %d more\n",             \
+						mismatches - _p);                          \
+					break;                                             \
+				}                                                          \
+				fprintf(stderr, "  [%d]  %-16llu%llu\n",                   \
+					_i, (lp)[_i], (rp)[_i]);                          \
+				_p++;                                                      \
+			}                                                                  \
+		}                                                                          \
+	} while (0)
+
+#define _MASSERT_ARR_PRINT_F64(lp, rp, len, mismatches)                                \
+	do {                                                                               \
+		int _p = 0;                                                                \
+		fprintf(stderr, "  idx  got              expected\n");                      \
+		for (_i = 0; _i < len; _i++) {                                             \
+			if ((lp)[_i] != (rp)[_i]) {                                        \
+				if (MASSERT_ARR_MAX_PRINT && _p >= MASSERT_ARR_MAX_PRINT) { \
+					fprintf(stderr, "  ... and %d more\n",             \
+						mismatches - _p);                          \
+					break;                                             \
+				}                                                          \
+				fprintf(stderr, "  [%d]  %-16g%g\n",                       \
+					_i, (lp)[_i], (rp)[_i]);                          \
+				_p++;                                                      \
+			}                                                                  \
+		}                                                                          \
+	} while (0)
+
 #define assert_arreq_i64(left, right, len, ...)                                            \
 	do {                                                                                  \
 		const long long *_lp;                                                         \
@@ -281,11 +339,7 @@ extern int _massert_checks;
 		if (_mismatches) {                                                             \
 			fprintf(stderr, "Assertion failed: %s == %s (%d elems)\n",             \
 				#left, #right, _len);                                          \
-			fprintf(stderr, "  idx  got              expected\n");                 \
-			for (_i = 0; _i < _len; _i++)                                          \
-				if (_lp[_i] != _rp[_i])                                        \
-					fprintf(stderr, "  [%d]  %-16lld%lld\n",               \
-						_i, _lp[_i], _rp[_i]);                        \
+			_MASSERT_ARR_PRINT_I64(_lp, _rp, _len, _mismatches);                  \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
 			_massert_location();                                                   \
 			_massert_message(__VA_ARGS__);                                         \
@@ -304,11 +358,7 @@ extern int _massert_checks;
 		if (_mismatches) {                                                             \
 			fprintf(stderr, "Assertion failed: %s == %s (%d elems)\n",             \
 				#left, #right, _len);                                          \
-			fprintf(stderr, "  idx  got              expected\n");                 \
-			for (_i = 0; _i < _len; _i++)                                          \
-				if (_lbuf[_i] != _rbuf[_i])                                    \
-					fprintf(stderr, "  [%d]  %-16llu%llu\n",               \
-						_i, _lbuf[_i], _rbuf[_i]);                    \
+			_MASSERT_ARR_PRINT_U64(_lbuf, _rbuf, _len, _mismatches);              \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
 			_massert_location();                                                   \
 			_massert_message(__VA_ARGS__);                                         \
@@ -327,11 +377,7 @@ extern int _massert_checks;
 		if (_mismatches) {                                                      \
 			fprintf(stderr, "Assertion failed: %s == %s (%d elems)\n",      \
 				#left, #right, _len);                                   \
-			fprintf(stderr, "  idx  got              expected\n");          \
-			for (_i = 0; _i < _len; _i++)                                   \
-				if (_lp[_i] != _rp[_i])                                 \
-					fprintf(stderr, "  [%d]  %-16g%g\n",            \
-						_i, _lp[_i], _rp[_i]);                 \
+			_MASSERT_ARR_PRINT_F64(_lp, _rp, _len, _mismatches);           \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);     \
 			_massert_location();                                            \
 			_massert_message(__VA_ARGS__);                                  \
@@ -354,11 +400,7 @@ extern int _massert_checks;
 		if (_mismatches) {                                                             \
 			fprintf(stderr, "Check failed: %s == %s (%d elems)\n",                \
 				#left, #right, _len);                                          \
-			fprintf(stderr, "  idx  got              expected\n");                 \
-			for (_i = 0; _i < _len; _i++)                                          \
-				if (_lp[_i] != _rp[_i])                                        \
-					fprintf(stderr, "  [%d]  %-16lld%lld\n",               \
-						_i, _lp[_i], _rp[_i]);                        \
+			_MASSERT_ARR_PRINT_I64(_lp, _rp, _len, _mismatches);                  \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
 			_massert_location();                                                   \
 			_massert_message(__VA_ARGS__);                                         \
@@ -378,11 +420,7 @@ extern int _massert_checks;
 		if (_mismatches) {                                                             \
 			fprintf(stderr, "Check failed: %s == %s (%d elems)\n",                \
 				#left, #right, _len);                                          \
-			fprintf(stderr, "  idx  got              expected\n");                 \
-			for (_i = 0; _i < _len; _i++)                                          \
-				if (_lbuf[_i] != _rbuf[_i])                                    \
-					fprintf(stderr, "  [%d]  %-16llu%llu\n",               \
-						_i, _lbuf[_i], _rbuf[_i]);                    \
+			_MASSERT_ARR_PRINT_U64(_lbuf, _rbuf, _len, _mismatches);              \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);            \
 			_massert_location();                                                   \
 			_massert_message(__VA_ARGS__);                                         \
@@ -402,11 +440,7 @@ extern int _massert_checks;
 		if (_mismatches) {                                                      \
 			fprintf(stderr, "Check failed: %s == %s (%d elems)\n",         \
 				#left, #right, _len);                                   \
-			fprintf(stderr, "  idx  got              expected\n");          \
-			for (_i = 0; _i < _len; _i++)                                   \
-				if (_lp[_i] != _rp[_i])                                 \
-					fprintf(stderr, "  [%d]  %-16g%g\n",            \
-						_i, _lp[_i], _rp[_i]);                 \
+			_MASSERT_ARR_PRINT_F64(_lp, _rp, _len, _mismatches);           \
 			fprintf(stderr, "  %d/%d mismatches\n", _mismatches, _len);     \
 			_massert_location();                                            \
 			_massert_message(__VA_ARGS__);                                  \

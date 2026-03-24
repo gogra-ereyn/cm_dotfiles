@@ -1,4 +1,3 @@
-
 CompileFlags:
   Add:
     - -Wno-char-subscripts
@@ -52,3 +51,4 @@ Diagnostics:
       - readability-isolate-declaration
       - readability-identifier-naming
       - readability-function-cognitive-complexity
+      - readability-uppercase-literal-suffix
