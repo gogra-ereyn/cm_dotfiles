@@ -1,5 +1,4 @@
-// If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
-keybinds {
+keybinds clear-defaults=true {
     normal {
     bind "Alt z" { Copy; }
 	bind "Alt 1" { GoToTab  1; }
@@ -56,7 +55,6 @@ keybinds {
         bind "h" "Left" "k" { GoToPreviousTab; }
         bind "l" "Right" "j" { GoToNextTab; }
         bind "n" { NewTab; SwitchToMode "Normal"; }
-        unbind "s"
         bind "x" { CloseTab; SwitchToMode "Normal"; }
         bind "b" { BreakPane; SwitchToMode "Normal"; }
         bind "]" { BreakPaneRight; SwitchToMode "Normal"; }
@@ -73,27 +71,23 @@ keybinds {
         bind "Tab" { ToggleTab; }
     }
     scroll {
-        bind "Ctrl s" { SwitchToMode "Normal"; }
         bind "Alt s" { SwitchToMode "Normal"; }
         bind "e" { EditScrollback; SwitchToMode "Normal"; }
-        bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
-        bind "Ctrl c" { ScrollToBottom; SwitchToMode "Normal"; }
+        bind "/" "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
+        bind "G" { ScrollToBottom; SwitchToMode "Normal"; }
+        bind "g" { ScrollToTop; }
         bind "j" "Down" { ScrollDown; }
         bind "k" "Up" { ScrollUp; }
-        bind "Ctrl u" "PageDown" "Right" "l" { PageScrollDown; }
-        bind "Ctrl d" "PageUp" "Left" "h" { PageScrollUp; }
         bind "d" { HalfPageScrollDown; }
         bind "u" { HalfPageScrollUp; }
-        // uncomment this and adjust key if using copy_on_select=false
-        // bind "Alt c" { Copy; }
     }
     search {
-        bind "Alt G" { ScrollToBottom; SwitchToMode "Normal"; }
-        bind "Alt g" { ScrollToBottom; SwitchToMode "Normal"; }
+        bind "G" { ScrollToBottom; SwitchToMode "Normal"; }
+        bind "g" { ScrollToTop; }
         bind "j" "Down" { ScrollDown; }
         bind "k" "Up" { ScrollUp; }
-        bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
-        bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+        bind "l" "PageDown" { PageScrollDown; }
+        bind "h" "PageUp" { PageScrollUp; }
         bind "d" { HalfPageScrollDown; }
         bind "u" { HalfPageScrollUp; }
         bind "n" { Search "down"; }
@@ -102,15 +96,13 @@ keybinds {
         bind "w" { SearchToggleOption "Wrap"; }
     }
     entersearch {
-        bind "Ctrl c" "Esc" { SwitchToMode "Scroll"; }
+        bind "Esc" { SwitchToMode "Scroll"; }
         bind "Enter" { SwitchToMode "Search"; }
     }
     renametab {
-        bind "Ctrl c" { SwitchToMode "Normal"; }
         bind "Esc" { UndoRenameTab; SwitchToMode "Tab"; }
     }
     renamepane {
-        bind "Ctrl c" { SwitchToMode "Normal"; }
         bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
     }
     session {
@@ -124,21 +116,6 @@ keybinds {
         }
     }
     shared_except "locked" {
-        unbind "Ctrl g"
-        unbind "Ctrl G"
-        unbind "Ctrl q"
-        unbind "Ctrl h"
-        unbind "Ctrl H"
-        unbind "Ctrl o"
-        unbind "Ctrl O"
-        unbind "Ctrl t"
-        unbind "Ctrl T"
-        unbind "Ctrl p"
-        unbind "Ctrl P"
-        unbind "Ctrl b"
-        unbind "Ctrl o"
-        unbind "Ctrl O"
-
         bind "Alt n" { NewPane "Right"; }
         bind "Alt N" { NewPane "Down"; }
 
@@ -156,6 +133,7 @@ keybinds {
         bind "Alt ]" { NextSwapLayout; }
 
         bind "Alt w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
+        bind "Alt F" { NewFloatingPane; }
 
         bind "Alt R" { MovePaneBackwards; }
 
