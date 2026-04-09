@@ -43,6 +43,7 @@ exec --no-startup-id sleep 3 && thunderbird
 exec --no-startup-id python3 ~/.local/bin/i3-no-fullscreen.py
 
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
 
 # probably the silliest issue I have ever encountered:
 #   adjusting my headphones' position (on my head)
@@ -79,6 +80,10 @@ exec_always --no-startup-id ~/.config/polybar/i3_bar.sh
 exec --no-startup-id fcitx5 -d
 
 bindsym $mod+d exec --no-startup-id rofi -show drun -disable-history -show-icons
+
+bindsym $mod+Shift+p exec --no-startup-id picom-trans -c -o -10
+bindsym $mod+Shift+u exec --no-startup-id picom-trans -c -o +10
+bindsym $mod+Shift+0 exec --no-startup-id picom-trans -c -d
 
 # window shortcuts idk
 # kill focused window
@@ -263,6 +268,8 @@ mode "resize" {
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
+
+
 
 
 # wrap focused window with a new tab-layout container
