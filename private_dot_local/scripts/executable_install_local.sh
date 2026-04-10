@@ -71,6 +71,15 @@ install_ruby() {
     eval "$(rbenv init - bash)"
 }
 
+install_shfmt() {
+    local destdir="${1:-$HOME/.local/bin}"
+    curl -Lo "${destdir}/shfmt"
+    https://github.com/mvdan/sh/releases/latest/download/shfmt_v3.11.0_linux_amd64
+    chmod +x "${destdir}/shfmt"
+}
+
+
+
 #main() {
 #    install_neovim_centos
 #    install_rustup
