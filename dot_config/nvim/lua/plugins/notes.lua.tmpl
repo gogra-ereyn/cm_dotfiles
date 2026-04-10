@@ -41,6 +41,19 @@ return {
         config = function(_, opts)
             require("obsidian").setup(opts)
 
+            local function open_adjacent_daily(direction)
+                local cur = vim.fn.expand("%:t")
+                local dir = "{{ default "/apps/obsidian/myvault" .notes_dir }}" .. "/" .. opts.daily_notes.folder
+                local files = vim.fn.glob(dir .. "/*.md", false, true)
+                table.sort(files)
+                for i, f in ipairs(files) do
+                    if vim.fn.fnamemodify(f, ":t") == cur then
+                        local target = files[i + direction]
+                        if target then vim.cmd.edit(target) end
+                        return
+                    end
+                end
+            end
 
         vim.keymap.set("n", "<leader>od", "<cmd>Obsidian today<cr>", { silent = true })
         vim.keymap.set("n", "<leader>oy", "<cmd>Obsidian yesterday<cr>", { silent = true })
@@ -51,5 +64,7 @@ return {
         vim.keymap.set("n", "<leader>ob", "<cmd>Obsidian backlinks<cr>", { silent = true })
         vim.keymap.set("n", "<leader>on", "<cmd>Obsidian create<cr>", { silent = true })
         vim.keymap.set("v", "<leader>ol", "<cmd>Obsidian link<cr>", { silent = true })
+        vim.keymap.set("n", "<leader>nn", function() open_adjacent_daily(1) end, { silent = true })
+        vim.keymap.set("n", "<leader>np", function() open_adjacent_daily(-1) end, { silent = true })
     end,
 }
