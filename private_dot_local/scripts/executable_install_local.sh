@@ -73,20 +73,6 @@ install_ruby() {
 
 install_shfmt() {
     local destdir="${1:-$HOME/.local/bin}"
-    curl -Lo "${destdir}/shfmt"
-    https://github.com/mvdan/sh/releases/latest/download/shfmt_v3.11.0_linux_amd64
+    curl -Lo "${destdir}/shfmt" https://github.com/mvdan/sh/releases/latest/download/shfmt_v3.11.0_linux_amd64
     chmod +x "${destdir}/shfmt"
 }
-
-
-
-#main() {
-#    install_neovim_centos
-#    install_rustup
-#    install_cargo_tools
-#    [[ -n $INSTALL_FZF ]] && install_fzf
-#    [[ -n $INSTALL_RUBY ]] && install_ruby
-#    return 0
-#}
-#
-#main "$@"

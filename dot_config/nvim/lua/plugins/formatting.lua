@@ -8,6 +8,8 @@ return {
                     cpp = { "clang-format" },
                     c = { "clang-format" },
                     ruby = { "rubocop" },
+                    sh = { "shfmt" },
+                    bash = { "shfmt" },
                 },
                 formatters = {
                     clang_format = {
