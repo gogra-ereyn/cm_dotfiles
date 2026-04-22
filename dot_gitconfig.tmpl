@@ -57,9 +57,15 @@
   HEAD = 114 # bright green
 
 [core]
+    pager=delta
     excludesFile = ~/.gitignore
     autocrlf = input
     safecrlf = true
+
+[delta]
+    navigate=true
+    side-by-side=true
+    line-numbers=true
 
 [merge]
   tool = nvim -d

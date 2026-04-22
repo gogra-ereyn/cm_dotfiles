@@ -1,0 +1,7 @@
+[manager]
+mouse_events = []
+[mgr]
+ratio = [1, 2, 6]
+[preview]
+max_width = 5000
+max_height = 5000
