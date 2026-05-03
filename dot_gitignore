@@ -4,4 +4,4 @@ compile_commands.json
 tags
 *.sw[a-p]
 *.sv[w-z]
-**/.claude/.*
+**/.claude/*

@@ -305,3 +305,20 @@ void msd_u32(uint32_t n, unsigned *digit, uint32_t *value)
 	*digit = 0u;
 	*value = 0u;
 }
+
+// usage for e.g. height of perfect binary tree
+static inline int log2_floor(int n)
+{
+	int height;
+	for (height = 0; n >> (height + 1); ++height)
+		;
+	return height;
+}
+
+static inline int log2_ceil(int n)
+{
+	int height;
+	for (height = 0; (1 << height) < n; ++height)
+		;
+	return height;
+}
