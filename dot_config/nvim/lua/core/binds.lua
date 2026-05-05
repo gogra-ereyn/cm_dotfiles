@@ -56,3 +56,10 @@ set('n', 'k', 'gk')
 
 -- same dir as current buf
 set('n', '<leader>p', ':e <C-R>=expand("%:p:h") . "/" <cr>')
+
+-- arrows for the lazy. mostly for annotating
+-- code in markdown/cmts
+set("i", "<C-Left>",  "└─", { noremap = true })
+set("i", "<C-Up>",    "│",  { noremap = true })
+set("i", "<C-Right>", "├─", { noremap = true })
+set("i", "<C-Down>",  "─",  { noremap = true })
