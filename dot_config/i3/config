@@ -217,11 +217,10 @@ floating_modifier $mod
 for_window [class=".*"] fullscreen disable
 
 focus_on_window_activation none
-
-for_window [class="^steam$"] move container to output DP-2
-for_window [class="^steam_app_"] move container to output DP-2
-for_window [class="^steam_app_"] move container to output DP-2
-for_window [class="^steam_app_"] fullscreen disable
+#for_window [class="^steam$"] move container to output DP-2
+#for_window [class="^steam_app_"] move container to output DP-2
+#for_window [class="^steam_app_"] move container to output DP-2
+#for_window [class="^steam_app_"] fullscreen disable
 
 for_window [class="^steam$" title="^Friends$"] floating enable
 for_window [class="^steam$" title="Steam - News"] floating enable
