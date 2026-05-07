@@ -27,6 +27,8 @@ return {
                 },
             }
 
+            require 'fzf-lua'.register_ui_select()
+
             -- jon-gj 's proximity sort.
             -- can be installed via `cargo install proximity-sort`
             vim.keymap.set('', '<C-p>', function()
