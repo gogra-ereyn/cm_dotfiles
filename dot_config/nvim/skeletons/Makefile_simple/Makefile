@@ -1,13 +1,12 @@
-compile = gcc -std=c99 -O2 -g -march=native
+cc = gcc
+cflags = -std=c99 -O3 -march=native -Wall -Wextra -MMD
 
-%: %.c Makefile
-	$(compile) $< -o $@
+objs = main.o foo.o bar.o
 
-%.s: %.c Makefile
-	$(compile) -S -masm=intel -fverbose-asm $< -o $@
+prog: $(objs)
+	$(cc) $(objs) -o $@
 
-%.run: %
-	@./$<
+%.o: %.c
+	$(cc) $(cflags) -c $< -o $@
 
-.PHONY: %.run
-
+-include $(objs:.o=.d)

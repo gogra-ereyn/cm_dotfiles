@@ -232,6 +232,9 @@ for_window [class="^steam$" title="^Steam - Self Updater$"] floating enable
 for_window [class="^steam$" title="^Screenshot Uploader$"] floating enable
 for_window [class="^steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
 
+for_window [class="solanum"] floating enable
+for_window [class="solanum"] resize set 260 120
+
 for_window [class="mpv"] floating enable
 for_window [class="mpvk"] floating enable
 
