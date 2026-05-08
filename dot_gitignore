@@ -5,3 +5,5 @@ tags
 *.sw[a-p]
 *.sv[w-z]
 **/.claude/*
+**/cachegrind.out*
+**/perf.data*
