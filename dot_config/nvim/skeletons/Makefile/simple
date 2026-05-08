@@ -1,0 +1,25 @@
+cc = gcc
+cflags = -std=c99 -O3 -march=native -Wall -Wextra -MMD -MP
+
+progs = $(basename $(wildcard *.c))
+
+all: $(progs)
+
+%: %.c
+	$(cc) $(cflags) $< -o $@
+
+%.s: %.c
+	$(cc) $(cflags) -S -fverbose-asm $< -o $@
+
+%.run: %
+	@./$<
+
+%.perf: %
+	perf stat ./$<
+
+clean:
+	rm -f $(progs) *.d *.s
+
+.PHONY: all clean $(progs:%=%.run) $(progs:%=%.perf)
+
+-include $(progs:=.d)

@@ -1,0 +1,25 @@
+cxx = g++
+cxxflags = -std=c++20 -O3 -march=native -Wall -Wextra -MMD -MP
+
+progs = $(basename $(wildcard *.cpp))
+
+all: $(progs)
+
+%: %.cpp
+	$(cxx) $(cxxflags) $< -o $@
+
+%.s: %.cpp
+	$(cxx) $(cxxflags) -S -fverbose-asm $< -o $@
+
+%.run: %
+	@./$<
+
+%.perf: %
+	perf stat ./$<
+
+clean:
+	rm -f $(progs) *.d *.s
+
+.PHONY: all clean $(progs:%=%.run) $(progs:%=%.perf)
+
+-include $(progs:=.d)
