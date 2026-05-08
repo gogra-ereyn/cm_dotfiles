@@ -65,8 +65,10 @@ opt.diffopt:append('indent-heuristic')
 
 opt.colorcolumn = '100'
 
-opt.shortmess = "A"
+opt.cmdheight=2
+opt.shortmess = "AWIs"
 opt.listchars = {
+
     tab = '^ ',
     trail = '•',
     extends = '»',
