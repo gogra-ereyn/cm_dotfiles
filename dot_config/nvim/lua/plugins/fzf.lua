@@ -51,7 +51,7 @@ return {
                         ["--with-nth"]     = "{-3..-2}",
                         ["--nth"]          = "-1",
                         ["--delimiter"]    = "[:\u{2002}]",
-                        ["--header-lines"] = "false",
+                        ["--header-lines"] = "0",
                     },
                     header = "",
                 })

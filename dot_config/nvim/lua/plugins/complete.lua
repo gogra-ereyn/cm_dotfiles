@@ -27,8 +27,8 @@ return {
 					ghost_text=true,
 				},
 				mapping = {
-					["<Down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-					["<Up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+					["<Down>"] = cmp.mapping(cmp.mapping.select_next_item ({ behavior = cmp.SelectBehavior.Insert }), {"i","s"}),
+					["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item ({ behavior = cmp.SelectBehavior.Insert }), {"i","s"}),
 					["<CR>"] = cmp.mapping(
 					cmp.mapping.confirm {
 						--behavior = cmp.ConfirmBehavior.Insert,
