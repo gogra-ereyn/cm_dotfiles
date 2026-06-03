@@ -1,6 +1,7 @@
 CompileFlags:
   Add:
     - -Wno-char-subscripts
+    - -Wno-parentheses
 
 Diagnostics:
   Suppress:
