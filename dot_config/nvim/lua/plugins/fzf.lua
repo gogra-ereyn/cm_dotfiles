@@ -31,7 +31,10 @@ return {
             -- can be installed via `cargo install proximity-sort`
             vim.keymap.set('', '<C-p>', function()
                 local opts = {}
+                local current = vim.fn.expand('%:.')
                 opts.cmd = 'fd --color=never --hidden --type f --type l --exclude .git'
+                    .. (" | grep -vxF %s"):format(vim.fn.shellescape(current))
+
                 local base = vim.fn.fnamemodify(vim.fn.expand('%'), ':h:.:S')
                 if base ~= '.' then
                     opts.cmd = opts.cmd .. (" | proximity-sort %s"):format(vim.fn.shellescape(vim.fn.expand('%')))

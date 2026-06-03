@@ -15,6 +15,8 @@ set('n', 'N', 'Nzz', { silent = true })
 set('n', '*', '*zz', { silent = true })
 set('n', '#', '#zz', { silent = true })
 set('n', 'g*', 'g*zz', { silent = true })
+set('n', 'g;', 'g;zz', { silent = true })
+set('n', 'g,', 'g,zz', { silent = true })
 
 ---- make macro mispresses harder
 
@@ -80,5 +82,7 @@ end
 local same = function(b, c) return (b == c) end
 local diff = function(b, c) return (b ~= c) end
 
+set("n", "<leader>o", function() jumpywumpy(diff, -1) end)
+set("n", "<leader>i", function() jumpywumpy(diff, 1) end)
 set("n", "<leader>o", function() jumpywumpy(diff, -1) end)
 set("n", "<leader>i", function() jumpywumpy(diff, 1) end)
