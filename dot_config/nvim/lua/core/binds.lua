@@ -1,10 +1,5 @@
 local set = vim.keymap.set
 
-set('n', '<C-Up>', ':resize +2<CR>', { silent = true })
-set('n', '<C-Down>', ':resize -2<CR>', { silent = true })
-set('n', '<C-Left>', ':vertical resize -2<CR>', { silent = true })
-set('n', '<C-Right>', ':vertical resize +2<CR>', { silent = true })
-
 set('n', '<C-h>', '<C-w>h', { noremap = true })
 set('n', '<C-j>', '<C-w>j', { noremap = true })
 set('n', '<C-k>', '<C-w>k', { noremap = true })
@@ -24,7 +19,7 @@ set('n', 'g*', 'g*zz', { silent = true })
 ---- make macro mispresses harder
 
 vim.keymap.set("n", "<leader>q", function()
-  vim.cmd("normal! q")
+    vim.cmd("normal! q")
 end, { silent = true })
 set("n", "q", "<Nop>", { silent = true })
 set('n', "<leader>b", ":set invrelativenumber<CR>")
@@ -59,7 +54,31 @@ set('n', '<leader>p', ':e <C-R>=expand("%:p:h") . "/" <cr>')
 
 -- arrows for the lazy. mostly for annotating
 -- code in markdown/cmts
-set("i", "<C-Left>",  "└─", { noremap = true })
-set("i", "<C-Up>",    "│",  { noremap = true })
+set("i", "<C-Left>", "└─", { noremap = true })
+set("i", "<C-Up>", "│", { noremap = true })
 set("i", "<C-Right>", "├─", { noremap = true })
-set("i", "<C-Down>",  "─",  { noremap = true })
+set("i", "<C-Down>", "─", { noremap = true })
+
+
+local function jumpywumpy(filter, dir)
+    local jumps, pos = unpack(vim.fn.getjumplist())
+    local cur = vim.api.nvim_get_current_buf()
+    local i = pos + 1 + dir
+    while i >= 1 and i <= #jumps do
+        local b = jumps[i].bufnr
+        if filter(b, cur) and vim.api.nvim_buf_is_valid(b) then
+            local delta = i - (pos + 1)
+            local key = delta < 0 and "<C-o>" or "<C-i>"
+            vim.cmd("normal! " .. math.abs(delta)
+                .. vim.api.nvim_replace_termcodes(key, true, false, true))
+            return
+        end
+        i = i + dir
+    end
+end
+
+local same = function(b, c) return (b == c) end
+local diff = function(b, c) return (b ~= c) end
+
+set("n", "<leader>o", function() jumpywumpy(diff, -1) end)
+set("n", "<leader>i", function() jumpywumpy(diff, 1) end)
