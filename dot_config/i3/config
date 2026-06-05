@@ -80,6 +80,7 @@ exec_always --no-startup-id ~/.config/polybar/i3_bar.sh
 exec --no-startup-id fcitx5 -d
 
 bindsym $mod+d exec --no-startup-id rofi -show drun -disable-history -show-icons
+bindsym $mod+a exec --no-startup-id ~/.local/scripts/rofi-bash
 
 bindsym $mod+Shift+p exec --no-startup-id picom-trans -c -o -10
 bindsym $mod+Shift+u exec --no-startup-id picom-trans -c -o +10

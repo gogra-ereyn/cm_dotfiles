@@ -1,0 +1,22 @@
+#!/bin/bash
+
+LOG="/tmp/rofi-bash.log"
+export PATH="$HOME/.local/bin:$HOME/.local/scripts:$HOME/.cargo/bin:$HOME/local/bin:$HOME/go/bin:$PATH"
+
+main() {
+    local cmd
+    cmd="$(rofi -dmenu -p 'bash' -theme-str 'listview { enabled: false; }')" || return
+    [[ -z "$cmd" ]] && return
+
+    echo "$(date): cmd='$cmd'" >> "$LOG"
+
+    # source bash_core for shell functions (connect, disconnect, etc)
+    for script in ~/.bash_core/*; do
+        [[ -r "$script" ]] && source "$script"
+    done
+
+    eval "$cmd" >> "$LOG" 2>&1
+    echo "$(date): exit=$?" >> "$LOG"
+}
+
+main "$@"
