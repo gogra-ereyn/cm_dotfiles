@@ -20,6 +20,15 @@ collect_img() {
     find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.webp" \) -exec cp {} "${1-/apps/collect/}" \;
 }
 
+find_images() {
+    find . -type f \( \
+        -iname '*.jpg'  -o \
+        -iname '*.png'  -o \
+        -iname '*.jpeg' -o \
+        -iname '*.webp'  -o \
+        -iname '*.3gp' \
+        \)
+}
 
 find_videos() {
     find . -type f \( \

@@ -1,14 +1,13 @@
 return {
     "obsidian-nvim/obsidian.nvim",
         version = "*",
-        ft = "markdown",
         ---@module 'obsidian'
         ---@type obsidian.config
         dependencies = {
             {
                 "MeanderingProgrammer/render-markdown.nvim",
-                ft = "markdown",
                 dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
+                ft = "markdown",
                 opts = {
                     heading = {
                         backgrounds = {
@@ -55,6 +54,7 @@ return {
                 end
             end
 
+        vim.keymap.set("n", "<C-n>", "<cmd>Obsidian today<cr>", { silent = true })
         vim.keymap.set("n", "<leader>od", "<cmd>Obsidian today<cr>", { silent = true })
         vim.keymap.set("n", "<leader>oy", "<cmd>Obsidian yesterday<cr>", { silent = true })
         vim.keymap.set("n", "<leader>ot", "<cmd>Obsidian tomorrow<cr>", { silent = true })
