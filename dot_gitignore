@@ -7,3 +7,11 @@ tags
 **/.claude/*
 **/cachegrind.out*
 **/perf.data*
+*.o
+*.obj
+*.elf
+*.lib
+*.a
+*.dll
+*.so
+*.pdb
