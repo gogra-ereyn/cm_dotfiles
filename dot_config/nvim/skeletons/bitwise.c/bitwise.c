@@ -48,16 +48,18 @@ static inline uint16_t swap_bytes_u16(uint16_t x)
 	return (x << 8) | (x >> 8);
 }
 
+#define lower(c) ((c) - 'A' < 26u ? ((c) | 32) : (c))
+
 /*
  * safty: both must be of at least 'n' length.
  *  returns 0 if equal.
- *  specific to asci. duh.
+ *  specific to ascii.
  * */
 static int streq_i(const char *a, const char *b, int len)
 {
 	for (; len--; a++, b++) {
-		if ((*a | 32) != (*b | 32))
-			return (*a | 32) - (*b | 32);
+		if (lower(*a) != lower(*b))
+			return lower(*a) - lower(*b);
 	}
 	return 0;
 }
@@ -65,13 +67,13 @@ static int streq_i(const char *a, const char *b, int len)
 /*
  * safty: both must be null terminated.
  *  returns 0 if equal.
- *  specific to asci. duh.
+ *  specific to ascii.
  * */
 static int cstreq_i(const char *a, const char *b)
 {
 	for (; *a && *b; a++, b++) {
-		if ((*a | 32) != (*b | 32))
-			return (*a | 32) - (*b | 32);
+		if (lower(*a) != lower(*b))
+			return lower(*a) - lower(*b);
 	}
 	return 0;
 }
