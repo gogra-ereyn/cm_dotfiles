@@ -56,7 +56,7 @@ static inline uint16_t swap_bytes_u16(uint16_t x)
 static int streq_i(const char *a, const char *b, int len)
 {
 	for (; len--; a++, b++) {
-		if ((*a | 32) == (*b | 32))
+		if ((*a | 32) != (*b | 32))
 			return (*a | 32) - (*b | 32);
 	}
 	return 0;
@@ -70,8 +70,8 @@ static int streq_i(const char *a, const char *b, int len)
 static int cstreq_i(const char *a, const char *b)
 {
 	for (; *a && *b; a++, b++) {
-		if ((*a | 32) == (*b | 32))
-			return (*a | 32) - (*b - 32);
+		if ((*a | 32) != (*b | 32))
+			return (*a | 32) - (*b | 32);
 	}
 	return 0;
 }
