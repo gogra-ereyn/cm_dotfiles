@@ -5,6 +5,7 @@ tags
 *.sw[a-p]
 *.sv[w-z]
 **/.claude/*
+**/CLAUDE.md
 **/cachegrind.out*
 **/perf.data*
 *.o

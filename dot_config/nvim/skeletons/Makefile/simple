@@ -1,26 +1,31 @@
 cc = gcc
 cflags = -std=c99 -D_GNU_SOURCE -O3 -march=native -Wall -Wextra -MMD -MP
 
-progs = $(basename $(wildcard *.c))
+BUILD = build
+srcs = $(wildcard *.c)
+progs = $(addprefix $(BUILD)/, $(basename $(srcs)))
 
 all: $(progs)
 
-%: %.c
-	$(cc) $(cflags) $< -o $@
+$(BUILD)/%: %.c | $(BUILD)
+	$(cc) $(cflags) $< -o $@ -MF $@.d
 
-%.s: %.c
+$(BUILD)/%.s: %.c | $(BUILD)
 	$(cc) $(cflags) -S -fverbose-asm $< -o $@
 
-%.run: % FORCE
+%.run: $(BUILD)/% FORCE
 	@./$<
 
-%.perf: % FORCE
+%.perf: $(BUILD)/% FORCE
 	perf stat ./$<
 
 FORCE:
 
+$(BUILD):
+	mkdir -p $@
+
 clean:
-	rm -f $(progs) *.d *.s
+	rm -rf $(BUILD)
 
 .PHONY: all clean FORCE
 
