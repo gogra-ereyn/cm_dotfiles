@@ -88,10 +88,22 @@ set("n", "<leader>o", function() jumpywumpy(diff, -1) end)
 set("n", "<leader>i", function() jumpywumpy(diff, 1) end)
 
 -- checkbox binds
-set("n", "<C-m>", "o- [ ] ", {
+
+local function insert_checkbox()
+    local line = vim.api.nvim_get_current_line()
+
+    if line:match("^%s*$") then
+        return "- [ ] "
+    end
+
+    return "<CR>- [ ] "
+end
+
+set("i", "<C-m>", insert_checkbox, {
+    expr = true,
     desc = "new checkbox",
 })
 
-set("i", "<C-m>", "<CR>- [ ] ", {
+set("n", "<C-m>", "o- [ ] ", {
     desc = "new checkbox",
 })
