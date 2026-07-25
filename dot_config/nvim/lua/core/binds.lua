@@ -86,3 +86,12 @@ set("n", "<leader>o", function() jumpywumpy(diff, -1) end)
 set("n", "<leader>i", function() jumpywumpy(diff, 1) end)
 set("n", "<leader>o", function() jumpywumpy(diff, -1) end)
 set("n", "<leader>i", function() jumpywumpy(diff, 1) end)
+
+-- checkbox binds
+set("n", "<C-m>", "o- [ ] ", {
+    desc = "new checkbox",
+})
+
+set("i", "<C-m>", "<CR>- [ ] ", {
+    desc = "new checkbox",
+})
