@@ -1,0 +1,99 @@
+#!/bin/bash
+
+cutask() {
+    local project=""
+    local -a tags=()
+    local -a desc=()
+    local dry_run=0
+    local no_tw=0
+    local no_obs=0
+    local vault="${CUTASK_VAULT:-/apps/obsidian/myvault}"
+
+    local opts
+    opts=$(getopt -o v:n -l vault:,dry-run,no-tw,no-obs -- "$@") || return 1
+    eval set -- "$opts"
+
+    while true; do
+        case "$1" in
+        -v | --vault)
+            vault="$2"
+            shift 2
+            ;;
+        -n | --dry-run)
+            dry_run=1
+            shift
+            ;;
+        --no-tw)
+            no_tw=1
+            shift
+            ;;
+        --no-obs)
+            no_obs=1
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        esac
+    done
+
+    [[ $# -eq 0 ]] && return 0
+
+    project="$1"
+    shift
+
+    for arg in "$@"; do
+        if [[ "$arg" == +* ]]; then
+            tags+=("${arg#+}")
+        else
+            desc+=("$arg")
+        fi
+    done
+
+    if [[ ${#desc[@]} -eq 0 ]]; then
+        echo "cutask: no description provided" >&2
+        return 1
+    fi
+
+    local description="${desc[*]}"
+
+    if [[ $no_tw -eq 0 ]]; then
+        local -a tw_args=("add" "project:${project}")
+        for t in "${tags[@]}"; do
+            tw_args+=("+${t}")
+        done
+        tw_args+=("$description")
+
+        if [[ $dry_run -eq 1 ]]; then
+            echo "[dry-run] task ${tw_args[*]}"
+        else
+            task "${tw_args[@]}"
+        fi
+    fi
+
+    if [[ $no_obs -eq 0 ]]; then
+        local today
+        today=$(date +%Y-%m-%d)
+        local note_path="${vault}/todos/${today}.md"
+
+        local line="- [ ] ${description} #proj/${project}"
+        for t in "${tags[@]}"; do
+            line+=" #${t}"
+        done
+        line+=" #from_cutask"
+
+        if [[ $dry_run -eq 1 ]]; then
+            echo "[dry-run] append to ${note_path}:"
+            echo "  ${line}"
+        else
+            echo "$line" >>"$note_path"
+        fi
+    fi
+}
+
+main() {
+    cutask "$@"
+}
+
+main "$@"
