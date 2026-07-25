@@ -29,6 +29,7 @@ export QMK_HOME="${HOME}/git/qmk_parent/qmk"
 export PATH="$HOME/.local/bin:$HOME/.local/scripts:$CARGO_HOME/bin:$HOME/local/bin:$HOME/go/bin:$PATH"
 export SYSTEMD_PAGER=
 export CMAKE_EXPORT_COMPILE_COMMANDS=ON
+export NOTES_DIR={{ get . "notes_dir" | default "/apps/obsidian/myvault" | quote }}
 
 if [[ -z "$ZELLIJ" ]] && [[ -z "$SSH_CONNECTION" ]]; then
     if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
