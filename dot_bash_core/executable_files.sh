@@ -2,7 +2,7 @@
 
 lst() {
     local index=${1:-1}
-    ls -t1 | tail -n "+$((index+1))" | head -n 1
+    ls -t1 | tail -n "+$((index + 1))" | head -n 1
 }
 
 latest() {
@@ -21,27 +21,27 @@ collect_img() {
 }
 
 find_images() {
-    find . -type f \( \
-        -iname '*.jpg'  -o \
-        -iname '*.png'  -o \
+    find "${1:-.}" -type f \( \
+        -iname '*.jpg' -o \
+        -iname '*.png' -o \
         -iname '*.jpeg' -o \
-        -iname '*.webp'  -o \
+        -iname '*.webp' -o \
         -iname '*.3gp' \
         \)
 }
 
 find_videos() {
-    find . -type f \( \
-        -iname '*.mp4'  -o \
-        -iname '*.mkv'  -o \
+    find "${1:-.}" -type f \( \
+        -iname '*.mp4' -o \
+        -iname '*.mkv' -o \
         -iname '*.webm' -o \
-        -iname '*.mov'  -o \
-        -iname '*.avi'  -o \
-        -iname '*.m4v'  -o \
-        -iname '*.wmv'  -o \
-        -iname '*.flv'  -o \
+        -iname '*.mov' -o \
+        -iname '*.avi' -o \
+        -iname '*.m4v' -o \
+        -iname '*.wmv' -o \
+        -iname '*.flv' -o \
         -iname '*.mpeg' -o \
-        -iname '*.mpg'  -o \
+        -iname '*.mpg' -o \
         -iname '*.3gp' \
         \)
 }
