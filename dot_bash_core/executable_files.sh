@@ -45,3 +45,7 @@ find_videos() {
         -iname '*.3gp' \
         \)
 }
+
+shuf_play_vids() {
+    find_videos "$@" | sort -u | shuf | mpv --playlist=-
+}

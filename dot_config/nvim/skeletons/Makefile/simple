@@ -1,5 +1,5 @@
 cc = gcc
-cflags = -std=c99 -D_GNU_SOURCE -O3 -march=native -Wall -Wextra -MMD -MP
+cflags = -std=c99 -g -D_GNU_SOURCE -O3 -march=native -Wall -Wextra -MMD -MP
 
 BUILD = build
 srcs = $(wildcard *.c)
