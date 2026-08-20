@@ -1,6 +1,5 @@
 keybinds clear-defaults=true {
     normal {
-    bind "Alt z" { Copy; }
 	bind "Alt 1" { GoToTab  1; }
 	bind "Alt 2" { GoToTab  2; }
 	bind "Alt 3" { GoToTab  3; }
@@ -139,6 +138,7 @@ keybinds clear-defaults=true {
         bind "Alt Right" { GoToNextTab; }
         bind "Alt Down" { MoveTab "Left"; }
         bind "Alt Up" { MoveTab "Right"; }
+        bind "Alt a" { BreakPaneRight; }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }

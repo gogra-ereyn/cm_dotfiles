@@ -2,11 +2,16 @@
 
 main() {
     local pfx="${1?missing prefix}"
-    local b="${2:-origin/master}"
+    local base="${2:-origin/master}"
 
-    export REBASE_PFX="${pfx}"
+    case "$base" in
+    *[!0-9]*) ;;
+    *) base="HEAD~${base}" ;;
+    esac
 
-    git rebase "${b}" --exec \
+    export REBASE_PFX="$pfx"
+
+    git rebase "$base" --exec \
         'msg=$(git log -1 --format=%B); git commit --amend -m "[$REBASE_PFX] $msg"'
 }
 

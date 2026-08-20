@@ -267,20 +267,6 @@ git_dir() {
     git rev-parse --git-dir
 }
 
-ignore_untracked() {
-    local exclude_file
-    local git_dir
-    git_dir="$(git rev-parse --git-dir)"
-    exclude_file="${git_dir}/info/exclude"
-    (
-        cd "$repo_root" || exit 1
-        git status --porcelain | grep '^??' | sed 's/^?? //' | while read -r file; do
-            echo "${file}" >>"$exclude_file"
-        done
-
-    )
-    echo "added untracked files to $exclude_file" >&2
-}
 
 utils::urlencode() {
     local LC_ALL=C
@@ -331,7 +317,7 @@ utils::trim() {
     printf '%s\n' "$_"
 }
 
-utils::v4() {
+v4() {
     C="89ab"
 
     for ((N = 0; N < 16; ++N)); do
@@ -351,4 +337,25 @@ utils::v4() {
         esac
     done
     printf '\n'
+}
+
+
+
+
+ignore_untracked() {
+    local repo_root
+    local exclude_file
+
+    repo_root="$(git rev-parse --show-toplevel)" || return
+    exclude_file="$(realpath "$(git rev-parse --git-path info/exclude)")" || return
+
+    (
+        cd "$repo_root" || exit 1
+        git ls-files --others --exclude-standard |
+            while read -r file; do
+                printf '%s\n' "$file" >>"$exclude_file"
+            done
+    ) || return
+
+    echo "added untracked files to $exclude_file" >&2
 }
