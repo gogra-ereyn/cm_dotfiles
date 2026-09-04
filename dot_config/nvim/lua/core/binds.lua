@@ -43,7 +43,6 @@ set('i', '<Tab>', '<Tab>', { noremap = true })
 set("n", "<leader>e", ":e " .. vim.fn.expand("%:p:h") .. "/", { noremap = true, silent = false })
 set("n", "<leader><leader>", "<C-^>", { noremap = true, silent = true })
 
-
 set('', 'H', '^')
 set('', 'L', '$')
 
@@ -111,3 +110,11 @@ set("n", "<C-m>", "o- [ ] ", {
 
 set("n", "<C-/>", "i/**/<Left><Left>", { noremap = true, silent = true })
 set("i", "<C-/>", "/**/<Left><Left>", { noremap = true, silent = true })
+
+
+set("n", "<C-S-9>", "<<", { noremap = true, silent = true })
+set("n", "<C-S-0>", ">>", { noremap = true, silent = true })
+set("i", "<C-S-9>", "<C-d>", { noremap = true, silent = true })
+set("i", "<C-S-0>", "<C-t>", { noremap = true, silent = true })
+set("x", "<C-S-9>", "<gv", { noremap = true, silent = true })
+set("x", "<C-S-0>", ">gv", { noremap = true, silent = true })
