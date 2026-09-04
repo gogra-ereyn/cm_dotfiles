@@ -107,3 +107,7 @@ set("i", "<C-m>", insert_checkbox, {
 set("n", "<C-m>", "o- [ ] ", {
     desc = "new checkbox",
 })
+
+
+set("n", "<C-/>", "i/**/<Left><Left>", { noremap = true, silent = true })
+set("i", "<C-/>", "/**/<Left><Left>", { noremap = true, silent = true })
