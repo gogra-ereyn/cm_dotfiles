@@ -1,0 +1,59 @@
+#!/bin/bash
+
+daily_note_path() {
+    local notes_dir="$1"
+    local today
+    today=$(date +%Y-%m-%d)
+    echo "${notes_dir}/todos/${today}.md"
+}
+
+cmd_append() {
+    local notes_dir="$1"
+    shift
+
+    local dry_run=0
+    local opts
+    opts=$(getopt -o n -l dry-run -- "$@") || return 1
+    eval set -- "$opts"
+
+    while true; do
+        case "$1" in
+            -n|--dry-run) dry_run=1; shift ;;
+            --)           shift; break ;;
+        esac
+    done
+
+    if [[ $# -eq 0 ]]; then
+        echo "cunote append: no text provided" >&2
+        return 1
+    fi
+
+    local note_path
+    note_path=$(daily_note_path "$notes_dir")
+    local line="$*"
+
+    if [[ $dry_run -eq 1 ]]; then
+        echo "[dry-run] append to ${note_path}:"
+        echo "  ${line}"
+    else
+        echo "$line" >> "$note_path"
+    fi
+}
+
+main() {
+    local notes_dir="${NOTES_DIR?NOTES_DIR env var not set}"
+
+    local cmd="${1:-}"
+    [[ -z "$cmd" ]] && return 0
+    shift
+
+    case "$cmd" in
+        append) cmd_append "$notes_dir" "$@" ;;
+        *)
+            echo "cunote: unknown command '${cmd}'" >&2
+            return 1
+            ;;
+    esac
+}
+
+main "$@"
