@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+    printf 'usage: %s [--no-pull]\n' "${0##*/}"
+}
+
+main() {
+    local pull=1 dest line x y rel abs choice
+    local -a status_lines conflicts=() rest=() rest_abs=() skipped=()
+
+    while (($#)); do
+        case $1 in
+        --no-pull) pull=0 ;;
+        -h|--help) usage; return 0 ;;
+        *)         usage >&2; return 2 ;;
+        esac
+        shift
+    done
+
+    if ((pull)) && ! chezmoi git -- pull --autostash --rebase; then
+        printf 'git pull failed; resolve in: %s\n' "$(chezmoi source-path)" >&2
+        return 1
+    fi
+
+    dest=$(chezmoi execute-template '{{ .chezmoi.destDir }}')
+    mapfile -t status_lines < <(chezmoi status)
+
+    # status: col 1 = actual vs last state chezmoi wrote (i.e. local edit)
+    #         col 2 = actual vs target state (what apply would change)
+    for line in "${status_lines[@]}"; do
+        x=${line:0:1} y=${line:1:1} rel=${line:3}
+        if [[ $x == M && $y == M ]]; then
+            conflicts+=("$rel")
+        else
+            rest+=("$rel")
+        fi
+    done
+
+    for rel in "${conflicts[@]}"; do
+        abs=$dest/$rel
+        while :; do
+            printf '%s has local changes: [m]erge [o]verwrite [s]kip [d]iff [r]e-add [q]uit? ' "$rel"
+            read -rn1 choice </dev/tty
+            echo
+            case $choice in
+            m)
+                chezmoi merge "$abs"
+                if [[ -z $(chezmoi status "$abs") ]]; then
+                    break
+                fi
+                echo "still differs from target after merge:"
+                chezmoi diff --no-pager "$abs" || true
+                ;;
+            o)
+                chezmoi apply --force "$abs"
+                break
+                ;;
+            s)
+                skipped+=("$rel")
+                break
+                ;;
+            d)
+                chezmoi diff "$abs" || true
+                ;;
+            r)
+                chezmoi re-add "$abs"
+                if [[ -z $(chezmoi status "$abs") ]]; then
+                    break
+                fi
+                echo "re-add did not resolve it (template?); try merge"
+                ;;
+            q)
+                echo "quitting; merges so far are in the source repo, uncommitted"
+                return 1
+                ;;
+            *)
+                ;;
+            esac
+        done
+    done
+
+    # Everything unconflicted (or resolved) can now apply without prompting.
+    if ((${#skipped[@]} == 0)); then
+        chezmoi apply
+    elif ((${#rest[@]})); then
+        for rel in "${rest[@]}"; do
+            rest_abs+=("$dest/$rel")
+        done
+        chezmoi apply -- "${rest_abs[@]}"
+    fi
+
+    if ((${#skipped[@]})); then
+        printf 'skipped (still drifted):\n'
+        printf '  %s\n' "${skipped[@]}"
+    fi
+
+    if [[ -n $(chezmoi git -- status --porcelain) ]]; then
+        echo "source repo has uncommitted changes:"
+        chezmoi git -- status --short
+    fi
+}
+
+main "$@"
