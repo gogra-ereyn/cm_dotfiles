@@ -1,0 +1,43 @@
+
+font-family = JetBrainsMono NFM
+font-style = Regular
+font-style-bold = Bold
+font-style-italic = Italic
+font-style-bold-italic = Bold Italic
+font-size = 8
+
+background = #251a34
+foreground = #FAF0E6
+cursor-color = #fdfdaf
+cursor-text = #251a34
+
+palette = 0=#000000
+palette = 1=#db4b4b
+palette = 2=#9ece6a
+palette = 3=#ffdd00
+palette = 4=#7aa2f7
+palette = 5=#bb9af7
+palette = 6=#7dcfff
+palette = 7=#a9b1d6
+
+palette = 8=#565f89
+palette = 9=#f7768e
+palette = 10=#73daca
+palette = 11=#ffee00
+palette = 12=#7aa2f7
+palette = 13=#bb9af7
+palette = 14=#7dcfff
+palette = 15=#c0caf5
+
+copy-on-select = clipboard
+clipboard-write = allow
+clipboard-read = ask
+
+keybind = ctrl+shift+plus=increase_font_size:1
+keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+
+window-decoration = none
+
+app-notifications = false
+confirm-close-surface = false

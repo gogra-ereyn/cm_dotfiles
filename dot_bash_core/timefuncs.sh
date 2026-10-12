@@ -5,10 +5,20 @@ millis() {
     local secs=$((ts / 1000))
     local ms=$((ts % 1000))
     local dp=
-    dp="$(date -d "@$secs" '+%Y-%m-%d %H:%M:%S')"
+    dp="$(date -d "@$secs" '+%Y-%m-%dT%H:%M:%S')"
     echo "$dp.$(printf '%03d' $ms)"
 }
 
 today() {
     date +%Y-%m-%d
+}
+
+
+lle() {
+    ls -lihtr --color=always "$@" | epochfmt
+}
+
+
+lse() {
+    ls --color=always "$@" | epochfmt
 }
