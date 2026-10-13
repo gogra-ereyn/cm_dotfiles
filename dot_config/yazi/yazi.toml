@@ -11,3 +11,13 @@ ratio = [1, 2, 6]
 [preview]
 max_width = 5000
 max_height = 5000
+
+[opener]
+mpv = [
+    { run = 'mpv %s1', orphan = true, desc = "Play with mpv", for = "unix" }
+]
+
+[open]
+prepend_rules = [
+    { mime = "video/*", use = ["mpv", "open"] }
+]

@@ -49,3 +49,30 @@ find_videos() {
 shuf_play_vids() {
     find_videos "$@" | sort -u | shuf | mpv --playlist=-
 }
+
+# via timg
+imgs() {
+    local dir="${1:-.}"
+    local files=()
+
+    shopt -s nullglob nocaseglob
+    files=("$dir"/*.{jpg,jpeg,png,webp,gif,avif})
+    shopt -u nullglob nocaseglob
+
+    ((${#files[@]})) || return 1
+
+    timg -pk --grid=4 --title='%b' --frames=1 "${files[@]}"
+}
+
+# examples img for pdf/mp4/gif
+pdftimg() {
+    timg -pk --frames=1 document.pdf
+}
+
+mp4timg() {
+    timg -pk video.mp4
+}
+
+giftimg() {
+    timg -pk --frames=1 animation.gif
+}

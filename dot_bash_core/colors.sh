@@ -35,11 +35,11 @@ cool='\[\e[1m\e[38;2;158;206;106\]'
 [[ -e "$HOME/.dircolors" ]] && eval "$(dircolors -b "$HOME/.dircolors")"
 
 function parse_git_dirty {
-  [[ $(git status --porcelain -uno 2> /dev/null) ]] && echo "*"
+    [[ $(git status --porcelain -uno 2>/dev/null) ]] && echo "*"
 }
 
 function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
+    git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
 }
 
 nontext="$lv"
@@ -59,7 +59,20 @@ function check_last_exit_code() {
 __update_ps1() {
     local -i rc="$?"
     local rc_seg="${nontext}[${rc}] "
+
+    if [[ -n ${ZELLIJ:-} ]]; then
+        printf '\e]133;D;%d\a\e]133;A\a' "$rc"
+    fi
+
     PS1="${nontext}┌─${spk}\t${nontext}─${rc_seg}[${hostuser}\u${nontext}@${hostuser}\h${nontext}:${ppath}\w${nontext}]${gbranch}\$(parse_git_branch)${nontext} \n└─╼ ${white}"
+
+    if [[ -n ${ZELLIJ:-} ]]; then
+        PS1+='\[\e]133;B\a\]'
+    fi
 }
 
 PROMPT_COMMAND='__update_ps1; history -a'
+
+if [[ -n ${ZELLIJ:-} ]]; then
+    PS0='\[\e]133;C\a\]'
+fi

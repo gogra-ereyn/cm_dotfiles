@@ -79,6 +79,8 @@ keybinds clear-defaults=true {
         bind "k" "Up" { ScrollUp; }
         bind "d" { HalfPageScrollDown; }
         bind "u" { HalfPageScrollUp; }
+        bind "[" { ScrollToPreviousPrompt; }
+        bind "]" { ScrollToNextPrompt; }
     }
     search {
         bind "G" { ScrollToBottom; SwitchToMode "Normal"; }
@@ -128,8 +130,8 @@ keybinds clear-defaults=true {
 
         bind "Alt =" "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
-        bind "Alt [" { PreviousSwapLayout; }
-        bind "Alt ]" { NextSwapLayout; }
+        bind "Alt [" { ScrollToNextPrompt; }
+        bind "Alt ]" { ScrollToPreviousPrompt; }
 
         bind "Alt w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
         bind "Alt R" { MovePaneBackwards; }
@@ -139,6 +141,11 @@ keybinds clear-defaults=true {
         bind "Alt Down" { MoveTab "Left"; }
         bind "Alt Up" { MoveTab "Right"; }
         bind "Alt a" { BreakPaneRight; }
+        bind "Alt y" { CopyLastCommandOutput; }
+        bind "Alt z" { Copy; }
+        bind "Alt u" { ScrollToPreviousPrompt; }
+        bind "Alt d" { ScrollToNextPrompt; }
+        bind "Alt v" { SelectCommandAtScrollPosition; }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
@@ -190,7 +197,8 @@ themes {
 }
 
 theme "ereneyic"
-mouse_mode false
+mouse_mode true
+scroll_mode_sync true
 pane_frames false
 scroll_buffer_size 20000
 scrollback_editor {{ get . "editorpath" | default "nvim" | quote }}
