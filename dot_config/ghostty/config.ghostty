@@ -4,7 +4,8 @@ font-style = Regular
 font-style-bold = Bold
 font-style-italic = Italic
 font-style-bold-italic = Bold Italic
-font-size = 8
+window-inherit-font-size = false
+font-size = 16
 
 background = #251a34
 foreground = #FAF0E6
@@ -41,5 +42,3 @@ window-decoration = none
 
 app-notifications = false
 confirm-close-surface = false
-
-font-size = 16
