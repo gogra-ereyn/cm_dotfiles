@@ -41,3 +41,5 @@ window-decoration = none
 
 app-notifications = false
 confirm-close-surface = false
+
+font-size = 16
