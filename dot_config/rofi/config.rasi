@@ -3,8 +3,7 @@
 configuration {
     modi: "drun";
     show: "drun";
-    sort: false;
+    sort: true;
     sorting-method: "fzf";
-    disable-history:false;
 }
 
