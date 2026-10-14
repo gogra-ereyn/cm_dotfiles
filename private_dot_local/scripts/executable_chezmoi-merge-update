@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# usage: chezmoi-merge-update [--no-pull]
+#   --no-pull   skip the git pull
+
 set -euo pipefail
 
 usage() {
@@ -13,8 +16,14 @@ main() {
     while (($#)); do
         case $1 in
         --no-pull) pull=0 ;;
-        -h|--help) usage; return 0 ;;
-        *)         usage >&2; return 2 ;;
+        -h | --help)
+            usage
+            return 0
+            ;;
+        *)
+            usage >&2
+            return 2
+            ;;
         esac
         shift
     done
@@ -81,7 +90,7 @@ main() {
         done
     done
 
-    # Everything unconflicted (or resolved) can now apply without prompting.
+    # everything unconflicted (or resolved) can now apply without prompting
     if ((${#skipped[@]} == 0)); then
         chezmoi apply
     elif ((${#rest[@]})); then

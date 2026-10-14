@@ -141,11 +141,10 @@ keybinds clear-defaults=true {
         bind "Alt Down" { MoveTab "Left"; }
         bind "Alt Up" { MoveTab "Right"; }
         bind "Alt a" { BreakPaneRight; }
-        bind "Alt y" { CopyLastCommandOutput; }
+        bind "Alt v" { CopyLastCommandOutput; }
         bind "Alt z" { Copy; }
         bind "Alt u" { ScrollToPreviousPrompt; }
         bind "Alt d" { ScrollToNextPrompt; }
-        bind "Alt v" { SelectCommandAtScrollPosition; }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
