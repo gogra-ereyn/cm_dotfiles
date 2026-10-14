@@ -271,6 +271,8 @@ bindsym $mod+Shift+b border border none
 
 bindsym $mod+r mode "resize"
 
+bindsym $mod+Return exec ghostty
+
 # colors
 set $color1     #1d2021
 set $color2     #d8a657
