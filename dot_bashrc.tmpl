@@ -46,4 +46,8 @@ avr_dg() {
     sudo pacman -U /var/cache/pacman/pkg/avr-gcc-8.3.0-1-x86_64.pkg.tar.xz
 }
 
+if command -v atuin &>/dev/null; then
+    eval "$(atuin init bash)"
+fi
+
 [[ -f ~/.bashrc.local ]] && source ~/.bashrc.local

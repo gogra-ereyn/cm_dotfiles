@@ -17,20 +17,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
-vim.api.nvim_create_autocmd(
-    'BufReadPost',
-    {
-        pattern = '*',
-        callback = function(_)
-            if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
-                if not vim.fn.expand('%:p'):find('.git', 1, true) then
-                    vim.cmd('exe "normal! g\'\\""')
-                end
-            end
-        end
-    }
-)
-
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "c", "h" },
     callback = function()
@@ -49,6 +35,20 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
+vim.api.nvim_create_autocmd(
+    'BufReadPost',
+    {
+        pattern = '*',
+        callback = function(_)
+            if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+                if not vim.fn.expand('%:p'):find('.git', 1, true) then
+                    vim.cmd('exe "normal! g\'\\""')
+                end
+            end
+        end
+    }
+)
+
 local text = vim.api.nvim_create_augroup('text', { clear = true })
 for _, pat in ipairs({ 'text', 'markdown', 'mail', 'gitcommit' }) do
     vim.api.nvim_create_autocmd('Filetype', {
@@ -59,9 +59,11 @@ for _, pat in ipairs({ 'text', 'markdown', 'mail', 'gitcommit' }) do
 end
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "markdown",
-  callback = function()
-    vim.opt_local.conceallevel = 1
-    vim.opt_local.concealcursor = "nc"
-  end,
+    pattern = "markdown",
+    callback = function()
+        vim.opt_local.conceallevel = 1
+        vim.opt_local.concealcursor = "nc"
+        vim.opt_local.cindent    = true
+        vim.opt_local.cinoptions = ":0,l1,t0,g0,(0"
+    end,
 })

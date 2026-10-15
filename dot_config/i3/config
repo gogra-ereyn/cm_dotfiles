@@ -225,6 +225,7 @@ focus_on_window_activation none
 for_window [class="solanum"] floating enable
 for_window [class="solanum"] resize set 260 120
 for_window [class="mpv"] floating enable
+for_window [class="^Nsxiv$"] floating enable
 for_window [class="mpvk"] floating enable
 for_window [class="^steam_app_default$" title="^World of Warcraft$"] floating enable
 
@@ -249,6 +250,8 @@ mode "resize" {
         bindsym k resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
 
+        bindsym f resize grow width 100 px or 10 ppt
+
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
@@ -260,9 +263,6 @@ mode "resize" {
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
-
-
-
 
 # wrap focused window with a new tab-layout container
 bindsym $mod+Shift+t split h, layout tabbed

@@ -76,3 +76,17 @@ mp4timg() {
 giftimg() {
     timg -pk --frames=1 animation.gif
 }
+
+fl() {
+    local dt="${1:-.}"
+    find $dt -type f -printf '%T@\t%TY-%Tm-%Td %TH:%TM:%TS\t%s\t%p\n' \
+  | sort -n | cut -f2- | sed -E 's/^([^.]*)\.[0-9]+/\1/' \
+  | numfmt --delimiter=$'\t' --field=2 --to=iec --padding=5
+}
+
+fs() {
+    local dt="${1:-.}"
+    find $dt -type f -printf '%s\t%TY-%Tm-%Td %TH:%TM:%TS\t%s\t%p\n' \
+  | sort -n | cut -f2- | sed -E 's/^([^.]*)\.[0-9]+/\1/' \
+  | numfmt --delimiter=$'\t' --field=2 --to=iec --padding=5
+}

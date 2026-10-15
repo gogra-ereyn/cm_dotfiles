@@ -49,7 +49,7 @@ install_cargo_tools() {
 }
 
 install_fzf() {
-    if [[ -f  "$HOME/.fzf" ]]; then
+    if [[ -f "$HOME/.fzf" ]]; then
         echo "fzf already installed" >&2
         return 0
     fi
@@ -69,6 +69,44 @@ install_ruby() {
         install
     fi
     eval "$(rbenv init - bash)"
+}
+
+install_atuin() {
+    if command -v atuin >/dev/null 2>&1; then
+        echo "atuin already installed"
+        return 0
+    fi
+
+    curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh |
+        sh -s -- --non-interactive
+
+    if [[ ! -x "$HOME/.atuin/bin/atuin" ]]; then
+        echo "atuin installation failed" >&2
+        return 1
+    fi
+
+    mkdir -p "$BIN_DIR"
+    ln -sf "$HOME/.atuin/bin/atuin" "$BIN_DIR/atuin"
+}
+
+install_atuin_musl() {
+    local version=${1-18.20.1}
+    local url="https://github.com/atuinsh/atuin/releases/download/v${version}/atuin-x86_64-unknown-linux-musl.tar.gz"
+    local tmp
+
+    command -v atuin >/dev/null 2>&1 && return 0
+
+    tmp=$(mktemp -d) || return 1
+
+    if ! curl -fLsS "$url" -o "$tmp/atuin.tar.gz" ||
+        ! tar -xzf "$tmp/atuin.tar.gz" -C "$tmp"; then
+        rm -rf "$tmp"
+        return 1
+    fi
+
+    mkdir -p "$BIN_DIR"
+    install -m 755 "$tmp/atuin-x86_64-unknown-linux-musl/atuin" "$BIN_DIR/atuin"
+    rm -rf "$tmp"
 }
 
 install_all() {

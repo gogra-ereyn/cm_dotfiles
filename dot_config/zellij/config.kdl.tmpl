@@ -33,7 +33,6 @@ keybinds clear-defaults=true {
         bind "d" { NewPane "Down"; SwitchToMode "Normal"; }
         bind "r" { NewPane "Right"; SwitchToMode "Normal"; }
         bind "x" { CloseFocus; SwitchToMode "Normal"; }
-        bind "f" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
         bind "z" { TogglePaneFrames; SwitchToMode "Normal"; }
         bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
         bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; }
@@ -145,6 +144,10 @@ keybinds clear-defaults=true {
         bind "Alt z" { Copy; }
         bind "Alt u" { ScrollToPreviousPrompt; }
         bind "Alt d" { ScrollToNextPrompt; }
+
+        bind "Alt f" { ToggleFocusFullscreen; }
+        bind "Alt /" { SwitchToMode "EnterSearch"; SearchInput 0; }
+
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
