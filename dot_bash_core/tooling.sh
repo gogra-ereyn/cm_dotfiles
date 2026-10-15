@@ -109,10 +109,13 @@ install_atuin_musl() {
     rm -rf "$tmp"
 }
 
-install_all() {
-    install_neovim_centos
-    install_rustup
-    install_cargo_tools
-    install_fzf
-    return 0
+install_zoxide() {
+    if command -v zoxide >/dev/null 2>&1; then
+        echo "zoxide already installed"
+        return 0
+    fi
+
+    curl --proto '=https' --tlsv1.2 -fsSL \
+        https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh |
+        sh -s -- --bin-dir "$BIN_DIR"
 }

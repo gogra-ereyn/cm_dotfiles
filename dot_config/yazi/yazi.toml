@@ -8,6 +8,11 @@ sort_dir_first = false
 linemode = "mtime"
 ratio = [1, 2, 6]
 
+[[mgr.prepend_keymap]]
+on = "!"
+run = 'shell "$SHELL" --block'
+desc = "Open shell here"
+
 [preview]
 max_width = 5000
 max_height = 5000
