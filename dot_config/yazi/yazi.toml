@@ -14,8 +14,8 @@ run = 'shell "$SHELL" --block'
 desc = "Open shell here"
 
 [preview]
-max_width = 5000
-max_height = 5000
+max_width  = 3840
+max_height = 2160
 
 [opener]
 mpv = [

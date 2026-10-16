@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+video=$1
+pos=$2
+mode=$3
+
+case "$mode" in
+    coarse)
+        duration=60
+        filter=fps=5
+        ;;
+    dense)
+        duration=10
+        filter=null
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+start=$(awk -v p="$pos" -v d="$duration" \
+    'BEGIN { s=p-d/2; printf "%.6f", (s>0?s:0) }')
+
+dir=$(mktemp -d "${TMPDIR:-/tmp}/mpv-frames.XXXXXXXX")
+
+printf 'extracting %s frames from %s\n' "$mode" "$video"
+printf 'start: %s, duration: %s\n' "$start" "$duration"
+
+if ! ffmpeg -hide_banner -loglevel error -nostdin \
+    -ss "$start" -i "$video" \
+    -t "$duration" \
+    -map 0:v:0 -an -sn \
+    -vf "$filter" \
+    -fps_mode passthrough \
+    "$dir/frame_%06d.png"; then
+    printf 'ffmpeg failed\n' >&2
+    exit 1
+fi
+
+shopt -s nullglob
+frames=("$dir"/*.png)
+
+if ((${#frames[@]} == 0)); then
+    printf 'no frames extracted\n' >&2
+    exit 1
+fi
+
+printf 'extracted %d frames to %s\n' "${#frames[@]}" "$dir"
+
+nsxiv -t "${frames[@]}"
