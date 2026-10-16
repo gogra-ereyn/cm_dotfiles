@@ -223,7 +223,7 @@ focus_on_window_activation none
 #for_window [class="^steam_app_"] fullscreen disable
 
 for_window [class="solanum"] floating enable
-for_window [class="solanum"] resize set 260 120
+#for_window [class="solanum"] resize set 260 120
 for_window [class="mpv"] floating enable
 for_window [class="^Nsxiv$"] floating enable
 for_window [class="mpvk"] floating enable

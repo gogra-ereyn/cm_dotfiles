@@ -13,19 +13,15 @@ local function extract(mode)
         return
     end
 
-    local duration = mode == "coarse" and 10 or 2
-    local start = math.max(0, pos - duration / 2)
-
     mp.commandv("set", "pause", "yes")
 
     mp.commandv(
         "run",
         script,
         path,
-        string.format("%.6f", start + duration / 2),
+        string.format("%.6f", pos),
         mode
     )
-
     mp.osd_message("extracting " .. mode .. " frames...")
 end
 
