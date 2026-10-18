@@ -1,5 +1,5 @@
-filter_mode = "workspace"
-filter_mode_shell_up_key_binding = "directory"
+filter_mode = "global"
+filter_mode_shell_up_key_binding = "session"
 enter_accept = false
 style = "compact"
 inline_height = 20
