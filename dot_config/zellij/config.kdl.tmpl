@@ -54,7 +54,6 @@ keybinds clear-defaults=true {
         bind "l" "Right" "j" { GoToNextTab; }
         bind "n" { NewTab; SwitchToMode "Normal"; }
         bind "x" { CloseTab; SwitchToMode "Normal"; }
-        bind "b" { BreakPane; SwitchToMode "Normal"; }
         bind "]" { BreakPaneRight; SwitchToMode "Normal"; }
         bind "[" { BreakPaneLeft; SwitchToMode "Normal"; }
         bind "1" { GoToTab 1; SwitchToMode "Normal"; }
@@ -139,7 +138,6 @@ keybinds clear-defaults=true {
         bind "Alt Right" { GoToNextTab; }
         bind "Alt Down" { MoveTab "Left"; }
         bind "Alt Up" { MoveTab "Right"; }
-        bind "Alt a" { BreakPaneRight; }
         bind "Alt v" { CopyLastCommandOutput; }
         bind "Alt z" { Copy; }
         bind "Alt u" { ScrollToPreviousPrompt; }

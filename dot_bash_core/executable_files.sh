@@ -30,6 +30,16 @@ find_images() {
         \)
 }
 
+find_images0() {
+    find "${1:-.}" -type f \( \
+        -iname '*.jpg' -o \
+        -iname '*.png' -o \
+        -iname '*.jpeg' -o \
+        -iname '*.webp' -o \
+        -iname '*.3gp' \
+        \) -print0
+}
+
 find_videos() {
     find "${1:-.}" -type f \( \
         -iname '*.mp4' -o \
