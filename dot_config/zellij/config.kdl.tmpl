@@ -68,7 +68,6 @@ keybinds clear-defaults=true {
         bind "Tab" { ToggleTab; }
     }
     scroll {
-        bind "Alt s" { SwitchToMode "Normal"; }
         bind "e" { EditScrollback; SwitchToMode "Normal"; }
         bind "/" "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
         bind "G" { ScrollToBottom; SwitchToMode "Normal"; }
@@ -79,6 +78,8 @@ keybinds clear-defaults=true {
         bind "u" { HalfPageScrollUp; }
         bind "[" { ScrollToPreviousPrompt; }
         bind "]" { ScrollToNextPrompt; }
+        bind "Esc" { SwitchToMode "Normal"; }
+        bind "Enter" { SwitchToMode "Normal"; }
     }
     search {
         bind "G" { ScrollToBottom; SwitchToMode "Normal"; }
