@@ -1,0 +1,59 @@
+#if 0
+exec tcc -run "$0" "$@"
+#endif
+/* vim: set ft=c: */
+
+#include <stdint.h>
+#include <stdio.h>
+
+uint32_t next_pow2_gt(uint32_t n)
+{
+	if (n == 0)
+		return 1;
+	n--;
+	n |= n >> 1;
+	n |= n >> 2;
+	n |= n >> 4;
+	n |= n >> 8;
+	n |= n >> 16;
+	return n + 1;
+}
+
+uint64_t next_pow2_gt_u64(uint64_t n)
+{
+	if (n == 0)
+		return 1;
+	n--;
+	n |= n >> 1;
+	n |= n >> 2;
+	n |= n >> 4;
+	n |= n >> 8;
+	n |= n >> 16;
+	n |= n >> 32;
+	return n + 1;
+}
+
+int main(int argc, char **argv)
+{
+	char *input;
+	uint64_t num, ans;
+
+	if (argc == 1) {
+		// todo - read from stdin
+		dprintf(2, "UNIMPLEMENTED\n");
+		return 1;
+	}
+	input = argv[1];
+	num = 0;
+
+	for (; *input; ++input) {
+		if (*input < '0' || *input > '9') {
+			dprintf(2, "invalid numeric char, stopped reading: '%c'\n", *input);
+			break;
+		}
+		num = num * 10 + (*input - '0');
+	}
+	ans = next_pow2_gt_u64(num);
+	dprintf(2, "for num %zu next pow2=%zu\n", num, ans);
+	dprintf(1, "%zu\n", ans);
+}

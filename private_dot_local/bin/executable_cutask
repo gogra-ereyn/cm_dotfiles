@@ -60,6 +60,8 @@ cutask() {
 
     if [[ $no_tw -eq 0 ]]; then
         local -a tw_args=("add" "project:${project}")
+        local t
+
         for t in "${tags[@]}"; do
             tw_args+=("+${t}")
         done
@@ -74,16 +76,19 @@ cutask() {
 
     if [[ $no_obs -eq 0 ]]; then
         local line="- [ ] ${description} #proj/${project}"
+        local note_path="${vault}/todos/$(date +%Y-%m-%d).md"
+        local t
+
         for t in "${tags[@]}"; do
             line+=" #${t}"
         done
         line+=" #from_cutask"
 
-        local -a cunote_args=(append)
-        [[ $dry_run -eq 1 ]] && cunote_args+=(-n)
-        cunote_args+=("$line")
-
-        cunote "${cunote_args[@]}"
+        if [[ $dry_run -eq 1 ]]; then
+            printf '[dry-run] append to %s:\n  %s\n' "$note_path" "$line"
+        else
+            printf '%s\n' "$line" >>"$note_path"
+        fi
     fi
 }
 

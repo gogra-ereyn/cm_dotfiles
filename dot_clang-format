@@ -20,7 +20,7 @@ AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: false
-BinPackArguments: true
+
 BinPackParameters: true
 BraceWrapping:
   AfterClass: false
@@ -52,12 +52,16 @@ CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 8
 ContinuationIndentWidth: 8
-Cpp11BracedListStyle: false
 DerivePointerAlignment: false
 DisableFormat: false
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: false
 
+BinPackArguments: true
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
+Cpp11BracedListStyle: Block
+#Cpp11BracedListStyle: false
 
 IncludeBlocks: Preserve
 IncludeCategories:
