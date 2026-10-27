@@ -57,11 +57,12 @@ DisableFormat: false
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: false
 
-BinPackArguments: true
+#BinPackArguments: true
 BinPackArguments: false
 AllowAllArgumentsOnNextLine: false
 Cpp11BracedListStyle: Block
 #Cpp11BracedListStyle: false
+
 
 IncludeBlocks: Preserve
 IncludeCategories:
