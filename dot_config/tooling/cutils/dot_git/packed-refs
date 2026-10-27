@@ -1,0 +1,9 @@
+# pack-refs with: peeled fully-peeled sorted 
+8404d10f0bef6e25827453e945519ab61ee4a70f refs/remotes/origin/cuteid
+78f74f481084a4a8ee6f0efbb159bf497d1da4d0 refs/remotes/origin/cutestrs
+aa3dd596decbf4110e8764e388fa6b269bfb9404 refs/remotes/origin/cutime
+c8fd24b0825d752e2f1fe29e43459b634e79c5fa refs/remotes/origin/github_actions
+4aa082259c46226241d805d2eab5cf6f9a34074a refs/remotes/origin/master
+b603b87f433a98844de5809ff1a7ac8881f2e67d refs/remotes/origin/nums_revisiting
+b99c71da70c61f60197f668c6f030507c5cb6c06 refs/remotes/origin/rotest
+c8fd24b0825d752e2f1fe29e43459b634e79c5fa refs/tags/v0.0.1-test

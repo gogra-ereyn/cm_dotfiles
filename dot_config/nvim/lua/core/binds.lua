@@ -118,3 +118,6 @@ set("i", "<C-S-9>", "<C-d>", { noremap = true, silent = true })
 set("i", "<C-S-0>", "<C-t>", { noremap = true, silent = true })
 set("x", "<C-S-9>", "<gv", { noremap = true, silent = true })
 set("x", "<C-S-0>", ">gv", { noremap = true, silent = true })
+
+
+set('i', '<C-v>', '<C-r><C-o>+', {noremap=true, silent=true})
