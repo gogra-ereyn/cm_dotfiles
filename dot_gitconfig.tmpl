@@ -26,6 +26,7 @@
     lg = log --graph --decorate --oneline --all
     lg1 = log --graph --decorate --oneline --all --simplify-by-decoration
     up = !git fetch --prune && git rebase --autostash --rebase-merges @{u}
+    ls-subtrees = "!f() { git log --grep '^git-subtree-dir:' --format='%(trailers:key=git-subtree-dir,valueonly)%-' | sort --unique | xargs -I {} bash -c '[[ -d \"$(git rev-parse --show-toplevel)/{}\" ]] && echo {}'; }; f"
 
 [pull]
 	ff = only
