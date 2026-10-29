@@ -78,8 +78,8 @@ keybinds clear-defaults=true {
         bind "u" { HalfPageScrollUp; }
         bind "[" { ScrollToPreviousPrompt; }
         bind "]" { ScrollToNextPrompt; }
-        bind "Esc" { SwitchToMode "Normal"; }
-        bind "Enter" { SwitchToMode "Normal"; }
+        bind "Esc" { ScrollToBottom; SwitchToMode "Normal"; }
+        bind "Enter" { ScrollToBottom; SwitchToMode "Normal"; }
     }
     search {
         bind "G" { ScrollToBottom; SwitchToMode "Normal"; }
@@ -95,6 +95,8 @@ keybinds clear-defaults=true {
         bind "N" { Search "up"; }
         bind "c" { SearchToggleOption "CaseSensitivity"; }
         bind "w" { SearchToggleOption "Wrap"; }
+        bind "Esc" { ScrollToBottom; SwitchToMode "Normal"; }
+        bind "Enter" { ScrollToBottom; SwitchToMode "Normal"; }
     }
     entersearch {
         bind "Esc" { SwitchToMode "Scroll"; }
