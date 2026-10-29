@@ -52,7 +52,6 @@ keybinds clear-defaults=true {
         bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
         bind "h" "Left" "k" { GoToPreviousTab; }
         bind "l" "Right" "j" { GoToNextTab; }
-        bind "n" { NewTab; SwitchToMode "Normal"; }
         bind "x" { CloseTab; SwitchToMode "Normal"; }
         bind "]" { BreakPaneRight; SwitchToMode "Normal"; }
         bind "[" { BreakPaneLeft; SwitchToMode "Normal"; }
@@ -66,6 +65,8 @@ keybinds clear-defaults=true {
         bind "8" { GoToTab 8; SwitchToMode "Normal"; }
         bind "9" { GoToTab 9; SwitchToMode "Normal"; }
         bind "Tab" { ToggleTab; }
+        bind "n" { MessagePlugin "reltab" { name "reltab"; }; SwitchToMode "Normal"; }
+        bind "N" { MessagePlugin "reltab" { name "reltab"; payload "-1"; }; SwitchToMode "Normal"; }
     }
     scroll {
         bind "e" { EditScrollback; SwitchToMode "Normal"; }
@@ -122,6 +123,8 @@ keybinds clear-defaults=true {
         bind "Alt n" { NewPane "Right"; }
         bind "Alt N" { NewPane "Down"; }
 
+        bind "Alt c" { MessagePlugin "reltab" { name "reltab"; }; SwitchToMode "Normal"; }
+
         bind "Alt h" { MoveFocus "Left"; }
         bind "Alt l" { MoveFocus "Right"; }
         bind "Alt j" { MoveFocus "Down"; }
@@ -171,12 +174,17 @@ keybinds clear-defaults=true {
     }
 }
 
+load_plugins {
+    reltab
+}
+
 plugins {
     tab-bar { path "tab-bar"; }
     status-bar { path "status-bar"; }
     strider { path "strider"; }
     compact-bar { path "compact-bar"; }
     session-manager { path "session-manager"; }
+    reltab location="file:~/.config/zellij/plugins/reltab.wasm"
 }
 
 default_shell "bash"
