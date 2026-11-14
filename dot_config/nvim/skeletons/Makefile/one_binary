@@ -1,0 +1,59 @@
+.DEFAULT_GOAL := all
+
+CC = gcc
+CPPFLAGS = -D_GNU_SOURCE
+CFLAGS = -std=c99 -g -O3 -march=native -Wall -Wextra
+LDFLAGS =
+LDLIBS =
+
+BUILD = build
+TARGET = myapp
+
+SRCS = $(wildcard *.c)
+OBJS = $(patsubst %.c,$(BUILD)/%.o,$(SRCS))
+DEPS = $(OBJS:.o=.d)
+COMPDB = $(BUILD)/compile_commands.json
+
+all: $(BUILD)/$(TARGET) $(COMPDB)
+
+$(BUILD)/$(TARGET): $(OBJS) | $(BUILD)
+	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+
+$(BUILD)/%.o: %.c | $(BUILD)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
+
+$(COMPDB): FORCE | $(BUILD)
+	@{ \
+		printf '[\n'; \
+		sep=''; \
+		for f in $(SRCS); do \
+			printf '%s  {"directory": "%s", "file": "%s", "command": "%s"}\n' \
+				"$$sep" "$(CURDIR)" "$$f" \
+				"$(CC) $(CPPFLAGS) $(CFLAGS) -c $$f -o $(BUILD)/$${f%.c}.o"; \
+			sep=,; \
+		done; \
+		printf ']\n'; \
+	} > $@.tmp
+	@cmp -s $@.tmp $@ && rm $@.tmp || mv $@.tmp $@
+
+$(BUILD)/%.s: %.c | $(BUILD)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -S -fverbose-asm $< -o $@
+
+%.run: $(BUILD)/$(TARGET) FORCE
+	@./$(BUILD)/$(TARGET)
+
+%.perf: $(BUILD)/$(TARGET) FORCE
+	perf stat ./$(BUILD)/$(TARGET)
+
+$(BUILD):
+	mkdir -p $@
+
+clean:
+	rm -rf $(BUILD)
+
+FORCE:
+
+.PHONY: all clean FORCE
+
+-include $(DEPS)
+

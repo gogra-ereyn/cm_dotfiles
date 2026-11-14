@@ -1,17 +1,37 @@
-cc = gcc
-cflags = -std=c99 -g -D_GNU_SOURCE -O3 -march=native -Wall -Wextra -MMD -MP
+.DEFAULT_GOAL := all
+
+CC = gcc
+CPPFLAGS = -D_GNU_SOURCE
+CFLAGS = -std=c99 -g -O3 -march=native -Wall -Wextra
+LDFLAGS =
+LDLIBS =
 
 BUILD = build
-srcs = $(wildcard *.c)
-progs = $(addprefix $(BUILD)/, $(basename $(srcs)))
+SRCS = $(wildcard *.c)
+PROGS = $(addprefix $(BUILD)/, $(basename $(SRCS)))
+COMPDB = $(BUILD)/compile_commands.json
 
-all: $(progs)
+all: $(PROGS) $(COMPDB)
 
 $(BUILD)/%: %.c | $(BUILD)
-	$(cc) $(cflags) $< -o $@ -MF $@.d
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -MF $@.d $< -o $@ $(LDFLAGS) $(LDLIBS)
+
+$(COMPDB): FORCE | $(BUILD)
+	@{ \
+		printf '[\n'; \
+		sep=''; \
+		for f in $(SRCS); do \
+			printf '%s  {"directory": "%s", "file": "%s", "command": "%s"}\n' \
+				"$$sep" "$(CURDIR)" "$$f" \
+				"$(CC) $(CPPFLAGS) $(CFLAGS) -c $$f -o $(BUILD)/$${f%.c}.o"; \
+			sep=,; \
+		done; \
+		printf ']\n'; \
+	} > $@.tmp
+	@cmp -s $@.tmp $@ && rm $@.tmp || mv $@.tmp $@
 
 $(BUILD)/%.s: %.c | $(BUILD)
-	$(cc) $(cflags) -S -fverbose-asm $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) -S -fverbose-asm $< -o $@
 
 %.run: $(BUILD)/% FORCE
 	@./$<
@@ -19,14 +39,15 @@ $(BUILD)/%.s: %.c | $(BUILD)
 %.perf: $(BUILD)/% FORCE
 	perf stat ./$<
 
-FORCE:
-
 $(BUILD):
 	mkdir -p $@
 
 clean:
 	rm -rf $(BUILD)
 
+FORCE:
+
 .PHONY: all clean FORCE
 
--include $(progs:=.d)
+-include $(PROGS:=.d)
+
