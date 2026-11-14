@@ -1,0 +1,67 @@
+.DEFAULT_GOAL := all
+
+CC = gcc
+CPPFLAGS = -D_GNU_SOURCE
+CFLAGS = -std=c99 -g -O3 -march=native -Wall -Wextra
+LDFLAGS =
+LDLIBS =
+
+BUILD = build
+
+SRCS = $(wildcard *.c)
+OBJS = $(patsubst %.c,$(BUILD)/%.o,$(SRCS))
+DEPS = $(OBJS:.o=.d)
+COMPDB = $(BUILD)/compile_commands.json
+
+# NB dnt 4get to change the example file & target names below
+
+PROGS = $(addprefix $(BUILD)/,client server)
+$(BUILD)/client: $(addprefix $(BUILD)/,client.o protocol.o network.o)
+$(BUILD)/server: $(addprefix $(BUILD)/,server.o protocol.o config.o)
+
+all: $(PROGS) $(COMPDB)
+
+$(BUILD)/client: $(CLIENT_OBJS)
+	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+
+$(BUILD)/server: $(SERVER_OBJS)
+	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+
+$(BUILD)/%.o: %.c | $(BUILD)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
+
+$(COMPDB): FORCE | $(BUILD)
+	@{ \
+		printf '[\n'; \
+		sep=''; \
+		for f in $(SRCS); do \
+			printf '%s  {"directory": "%s", "file": "%s", "command": "%s"}\n' \
+				"$$sep" "$(CURDIR)" "$$f" \
+				"$(CC) $(CPPFLAGS) $(CFLAGS) -c $$f -o $(BUILD)/$${f%.c}.o"; \
+			sep=,; \
+		done; \
+		printf ']\n'; \
+	} > $@.tmp
+	@cmp -s $@.tmp $@ && rm $@.tmp || mv $@.tmp $@
+
+$(BUILD)/%.s: %.c | $(BUILD)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -S -fverbose-asm $< -o $@
+
+%.run: $(BUILD)/% FORCE
+	@./$<
+
+%.perf: $(BUILD)/% FORCE
+	perf stat ./$<
+
+$(BUILD):
+	mkdir -p $@
+
+clean:
+	rm -rf $(BUILD)
+
+FORCE:
+
+.PHONY: all clean FORCE
+
+-include $(DEPS)
+

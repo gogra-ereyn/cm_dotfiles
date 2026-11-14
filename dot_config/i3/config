@@ -40,7 +40,7 @@ exec --no-startup-id sleep 3 && thunderbird
 
 # for when developers make the 0iq decision
 # of having their applications decide to fullscreen
-exec --no-startup-id python3 ~/.local/bin/i3-no-fullscreen.py
+# exec --no-startup-id python3 ~/.local/bin/i3-no-fullscreen.py
 
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
