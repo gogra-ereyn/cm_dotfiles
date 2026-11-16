@@ -154,9 +154,6 @@ bindsym $mod+0 focus child
 
 bindsym $mod+z exec flameshot gui -c -s -p /apps/flameshot
 
-bindsym F6 exec flameshot gui -c -s -p /apps/flameshot
-
-
 # Focus firefox
 #bindsym $mod+F1 [class="Firefox"] focus
 #
@@ -227,7 +224,7 @@ for_window [class="solanum"] floating enable
 for_window [class="mpv"] floating enable
 for_window [class="^Nsxiv$"] floating enable
 for_window [class="mpvk"] floating enable
-for_window [class="^steam_app_default$" title="^World of Warcraft$"] floating enable
+# for_window [class="^steam_app_default$" title="^World of Warcraft$"] floating enable
 
 ## reload the configuration file
 bindsym $mod+Shift+c reload
