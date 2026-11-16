@@ -7,7 +7,9 @@ LDFLAGS =
 LDLIBS =
 
 BUILD = build
-TARGET = myapp
+
+# NB dont forget to change dis1
+TARGET = main
 
 SRCS = $(wildcard *.c)
 OBJS = $(patsubst %.c,$(BUILD)/%.o,$(SRCS))
